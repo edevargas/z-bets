@@ -1,29 +1,20 @@
-# README #
+# z-bets
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## Build Setup
 
-### What is this repository for? ###
+```bash
+# install dependencies
+$ yarn install
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+# serve with hot reload at localhost:3000
+$ yarn dev
 
-### How do I get set up? ###
+# build for production and launch server
+$ yarn build
+$ yarn start
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+# generate static project
+$ yarn generate
+```
 
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
