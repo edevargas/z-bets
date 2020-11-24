@@ -23,6 +23,9 @@ dist/
 target/
 dist/
 
+# nuxt.js build output
+.nuxt
+
 # JetBrains IDE
 .idea/
 

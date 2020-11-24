@@ -1,15 +1,15 @@
 <template>
     <div>
-        <AppNav />
+        <AppNavAdmin />
         <Nuxt />
     </div>
 </template>
 
 <script>
 export default {
-    name: "DefaultLayout",
+    name: "AdminLayout",
     components: {
-        AppNav: () => import('~/components/AppNav')
+        AppNavAdmin: () => import('~/components/AppNavAdmin')
     },
 }
 </script>
