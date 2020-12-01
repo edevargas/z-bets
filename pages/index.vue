@@ -2,6 +2,7 @@
   <div>
     <NextGame />
     <div class="container">
+       {{ process.env.DATABASE_URL }}
     </div>
   </div>
 </template>
