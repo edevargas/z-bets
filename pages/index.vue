@@ -1,8 +1,6 @@
 <template>
   <div>
     <NextGame />
-    <div class="container">
-    </div>
   </div>
 </template>
 
