@@ -6,9 +6,9 @@
                     Next Game
                 </h1>
                 <div class="wrap-teams">
-                    <Team team="Colombia" />
+                    <Team :team="nextGame.homeTeam" />
                     <div class="has-text-centered">VS</div>
-                    <Team team="Brasil" />
+                    <Team :team="nextGame.awayTeam" />
                 </div>
             </div>
         </div>
@@ -16,18 +16,26 @@
 </template>
 
 <script>
-import stadiumImage from '~/assets/imgs/bleachers.jpg'
-
 export default {
     name: 'NextGame',
     components: {
         Team: () => import('~/components/Team'),
     },
-    data() {
-      return {
-        background: { backgroundImage: `url(${stadiumImage})` },
+    props: {
+      nextGame: {
+        type: Object,
+        default: () => ({})
       }
     },
+    data() {
+      return {
+        background: null,
+      }
+    },
+    created() {
+      const stadiumImage = require('~/assets/imgs/bleachers.jpg')
+      this.background = { backgroundImage: `url(${stadiumImage})` }
+    }
 }
 </script>
 
