@@ -1,19 +1,7 @@
 <template>
   <main class="container is-max-desktop">
     
-    <section class="hero is-dark mt-1">
-      <div class="hero-body">
-        <div class="container">
-          <p class="title is-1 has-text-centered">
-            Colombia <img src="https://api.fifa.com/api/v1/picture/flags-sq-1/col" alt="Colombia">
-            1 - 1
-            <img src="https://api.fifa.com/api/v1/picture/flags-sq-1/bra" alt="Brasil"> Brasil
-          </p>
-          <p class="subtitle is-4 has-text-centered mb-1">Marzo 21 de 2021. 18:00</p>
-          <p class="subtitle is-4 has-text-centered">Barranquilla</p>
-        </div>
-      </div>
-    </section>
+    <NextGame class="next-game" :next-game="nextGame" />
 
     <h1 class="title is-1 mt-4">Realtime results</h1>
     <p class="subtitle is-3 mb-0">Bets</p>
@@ -69,6 +57,9 @@
 <script>
 export default {
   name: 'Results',
+  components: {
+    NextGame: () => import('~/components/NextGame'),
+  },
   data() {
     return {
       bets: [

@@ -1,18 +1,22 @@
-<template>
-    <section class="hero is-medium is-primary is-bold" :style="background">
-        <div class="hero-body">
-            <div class="container">
-                <h1 class="title has-text-centered my-4">
-                    Next Game
-                </h1>
-                <div class="wrap-teams">
-                    <Team :team="nextGame.homeTeam" />
-                    <div class="has-text-centered">VS</div>
-                    <Team :team="nextGame.awayTeam" />
-                </div>
-            </div>
+<template>  
+  <div class="is-flex is-flex-direction-column">
+    <h1 class="title has-text-centered my-4">
+      Next Game
+    </h1>
+    <section class="hero is-dark mt-1">
+      <div class="hero-body">
+        <div class="container">
+          <p class="title is-1 has-text-centered">
+            {{ nextGame.homeTeam }} <img :src="nextGame.homeFlag" :alt="nextGame.homeTeam">
+            {{ nextGame.homeScore }} - {{ nextGame.awayScore }}
+            <img :src="nextGame.awayFlag" :alt="nextGame.awayTeam"> {{ nextGame.awayTeam }}
+          </p>
+          <p class="subtitle is-4 has-text-centered mb-1">{{ nextGame.date }}</p>
+          <p class="subtitle is-4 has-text-centered">{{ nextGame.city }}</p>
         </div>
+      </div>
     </section>
+  </div>    
 </template>
 
 <script>
@@ -29,27 +33,12 @@ export default {
     },
     data() {
       return {
-        background: null,
       }
-    },
-    created() {
-      const stadiumImage = require('~/assets/imgs/bleachers.jpg')
-      this.background = { backgroundImage: `url(${stadiumImage})` }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.hero {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center top;
-}
-
 .wrap-teams {
   display: grid;
   grid-template-rows: auto;
@@ -57,9 +46,5 @@ export default {
   column-gap: 1rem;
   align-items: center;
   justify-content: center;
-}
-
-h1 {
-  text-shadow: 0 0 10px #000;
 }
 </style>
