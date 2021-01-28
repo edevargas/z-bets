@@ -1,6 +1,6 @@
 <template>
   <div class="background" :style="background">
-    <NextGame class="next-game" :next-game="nextGame" />
+    <NextGame class="next-game" />
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       background: null,
-      nextGame: undefined,
+      // nextGame: undefined,
     }
   },
   created() {
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     async retrieveData() {
-      this.nextGame = await getNextMatch()
+      // this.nextGame = await getNextMatch()
     }
   }
 }

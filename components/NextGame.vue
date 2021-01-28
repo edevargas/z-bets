@@ -21,20 +21,31 @@
 
 <script>
 export default {
-    name: 'NextGame',
-    components: {
-        Team: () => import('~/components/Team'),
-    },
-    props: {
-      nextGame: {
-        type: Object,
-        default: () => ({})
-      }
-    },
-    data() {
-      return {
-      }
+  name: 'NextGame',
+  components: {
+      Team: () => import('~/components/Team'),
+  },
+  data() {
+    return {
+      nextGame: {}
     }
+  },
+  created() {
+    this.loadNextGame()
+  },
+  methods: {
+    async loadNextGame() {
+      const { firestore } = this.$fire
+      const today = new Date()
+      const collectionRef = firestore.collection('matches')
+      const query = await collectionRef.where("date", ">", today).limit(1)
+      query.onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.nextGame = doc.data();
+        });
+      });
+    }
+  }
 }
 </script>
 
