@@ -1,5 +1,5 @@
 <template>  
-  <div class="is-flex is-flex-direction-column">
+  <div class="wrapper is-flex is-flex-direction-column">
     <h1 class="title has-text-centered my-4">
       Next Game
     </h1>
@@ -25,37 +25,17 @@ export default {
   components: {
       Team: () => import('~/components/Team'),
   },
-  data() {
-    return {
-      nextGame: {}
+  props: {
+    nextGame: {
+      type: Object,
+      default: () => ({})
     }
   },
-  created() {
-    this.loadNextGame()
-  },
-  methods: {
-    async loadNextGame() {
-      const { firestore } = this.$fire
-      const today = new Date()
-      const collectionRef = firestore.collection('matches')
-      const query = await collectionRef.where("date", ">", today).limit(1)
-      query.onSnapshot((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          this.nextGame = doc.data();
-        });
-      });
-    }
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-.wrap-teams {
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 1fr 100px 1fr;
-  column-gap: 1rem;
-  align-items: center;
-  justify-content: center;
+.hero {
+  background: rgba($color: #111, $alpha: 0.7) !important;
 }
 </style>

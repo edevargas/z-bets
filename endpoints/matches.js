@@ -1,18 +1,11 @@
-
-export async function getNextMatch() {
+export function getNextMatch() {
     const { firestore } = $nuxt.$fire
-    return new Promise((resolve, reject) => {
-        const today = new Date()
-        const matches = firestore.collection('matches')
-        const query = matches.where("date", ">", today).limit(1)
-        console.log("🚀 ~ file: matches.js ~ line 7 ~ getNextMatch ~ query", query)
-        // let final
-        query.onSnapshot((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                resolve(doc.data())
-            });
+    const matches = firestore.collection('matches')
+    const today = new Date()
+    const query = matches.where("date", ">", today).limit(1)
+    query.onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            $nuxt.$emit('next-match', doc.data())
         });
-    })
+    });
 }
-
-

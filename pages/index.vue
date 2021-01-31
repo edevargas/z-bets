@@ -1,6 +1,6 @@
 <template>
   <div class="background" :style="background">
-    <NextGame class="next-game" />
+    <NextGame :next-game="nextGame" class="next-game" />
   </div>
 </template>
 
@@ -15,20 +15,19 @@ export default {
   data() {
     return {
       background: null,
-      // nextGame: undefined,
+      nextGame: undefined,
     }
   },
   created() {
     const stadiumImage = require('~/assets/imgs/bleachers.jpg')
     this.background = { backgroundImage: `url(${stadiumImage})` }
+    
+    getNextMatch()
+    // realtime listener
+    this.$nuxt.$on('next-match', (detail) => this.nextGame = detail)
   },
-  mounted() {
-    this.retrieveData()
-  },
-  methods: {
-    async retrieveData() {
-      // this.nextGame = await getNextMatch()
-    }
+  beforeDestroy() {
+    this.$nuxt.$off('next-match')
   }
 }
 </script>

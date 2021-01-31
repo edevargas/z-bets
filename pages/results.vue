@@ -1,7 +1,7 @@
 <template>
   <main class="container is-max-desktop">
     
-    <NextGame class="next-game" :next-game="nextGame" />
+    <NextGame :next-game="nextGame" class="next-game" />
 
     <h1 class="title is-1 mt-4">Realtime results</h1>
     <p class="subtitle is-3 mb-0">Bets</p>
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { getNextMatch } from '~/endpoints/matches'
+
 export default {
   name: 'Results',
   components: {
@@ -62,6 +64,7 @@ export default {
   },
   data() {
     return {
+      nextGame: undefined,
       bets: [
         {
           user: 'Lorena Sandoval',
@@ -107,6 +110,14 @@ export default {
         },
       ]
     }
+  },
+  created() {
+    getNextMatch()
+    // realtime listener
+    this.$nuxt.$on('next-match', (detail) => this.nextGame = detail)
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('next-match')
   }
 }
 </script>
