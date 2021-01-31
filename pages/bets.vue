@@ -3,7 +3,7 @@
     
     <NextGame :next-game="nextGame" class="next-game" />
 
-    <h1 class="title is-1 mt-4">Realtime results</h1>
+    <h1 class="title is-1 mt-4">Realtime bets</h1>
     <p class="subtitle is-3 mb-0">Bets</p>
     <table class="table is-hoverable is-fullwidth">
       <thead>
@@ -58,7 +58,7 @@
 import { getNextMatch } from '~/endpoints/matches'
 
 export default {
-  name: 'Results',
+  name: 'Bets',
   components: {
     NextGame: () => import('~/components/NextGame'),
   },

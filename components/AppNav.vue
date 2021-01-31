@@ -18,17 +18,14 @@
                     History
                 </nuxt-link>
 
-                <nuxt-link to="/results" class="navbar-item">
-                    Realtime results
+                <nuxt-link to="/bets" class="navbar-item">
+                    Realtime bets
                 </nuxt-link>
             </div>
 
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-primary">
-                            <strong>Sign up</strong>
-                        </a>
                         <a class="button is-light">
                             Log in
                         </a>
