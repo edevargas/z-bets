@@ -81,11 +81,11 @@ export default {
           homeScore: 3,
           awayScore: 1,
         },
-          {
-            user: 'Javier Albadán',
-            homeScore: 4,
-            awayScore: 1,
-          },
+        {
+          user: 'Javier Albadán',
+          homeScore: 4,
+          awayScore: 1,
+        },
       ],
       losers: [
         {

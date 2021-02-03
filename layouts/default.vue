@@ -7,9 +7,9 @@
 
 <script>
 export default {
-    name: "DefaultLayout",
-    components: {
-        AppNav: () => import('~/components/AppNav')
-    },
+  name: 'DefaultLayout',
+  components: {
+    AppNav: () => import('~/components/AppNav')
+  },
 }
 </script>

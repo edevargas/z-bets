@@ -23,11 +23,11 @@
 
 <script>
 export default {
-    name: 'Team',
-    props: {
-        team: {
-            type: String,
-        }
+  name: 'Team',
+  props: {
+    team: {
+      type: String,
     }
+  }
 }
 </script>
