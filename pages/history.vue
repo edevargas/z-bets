@@ -2,25 +2,16 @@
   <main class="container is-max-desktop">
     <h1 class="title is-1 mt-4">South America Qualifiers</h1>
     <p class="subtitle is-3">Matches</p>
-    <table class="table is-hoverable is-fullwidth">
+    <table class="table is-hoverable is-fullwidth mb-5">
       <tbody>
-        <tr v-for="(item, index) in matches" :key="index" class="has-text-centered">
-          <td class="is-vcentered">
-            {{ item.date.toDate() | formatDate }} <br>
-          </td>
-          <td class="is-vcentered">
-            {{ item.city }}
-          </td>
-          <td class="is-flex">
-            <div class="team is-flex is-justify-content-flex-end">
-              {{ item.homeTeam }}
-              <img :src="item.homeFlag" :alt="item.homeTeam" class="mx-2">
+        <tr v-for="(item, index) in matches" :key="index" class="has-text-left">
+          <td class="is-flex is-vcentered is-justify-content-space-between is-size-5">
+            <div class="info">
+              {{ item.city }}
+              <br>
+              {{ item.date.toDate() | formatDate }}
             </div>
-            <div class="score">{{ item.homeScore }} - {{ item.awayScore }}</div>
-            <div class="team is-flex is-justify-content-flex-start">
-              <img :src="item.awayFlag" :alt="item.awayTeam" class="mx-2">
-              {{ item.awayTeam }}
-            </div>
+            <Match wrapper-classes="is-flex-wrap-nowrap" :match="item" />
           </td>
         </tr>
       </tbody>
@@ -33,6 +24,9 @@ import { getAllMatches } from '~/endpoints/matches'
 
 export default {
   name: 'History',
+  components: {
+    Match: () => import('~/components/Match'),
+  },
   data() {
     return {
       matches: []
