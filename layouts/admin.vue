@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <AppNavAdmin />
-        <Nuxt />
-    </div>
+  <div>
+    <AppNavAdmin />
+    <Nuxt />
+  </div>
 </template>
 
 <script>

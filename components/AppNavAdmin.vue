@@ -1,46 +1,77 @@
 <template>
-    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item">
-                Z-Bets · Admin
-            </a>
+  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <nuxt-link to="/" class="navbar-item">
+        Z-Bets
+      </nuxt-link>
 
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
+      <a role="button" class="navbar-burger burger" data-target="navbar" @click="active = !active">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
 
-        <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item">
-                    Create game
-                </a>
+    <div id="navbar" :class="['navbar-menu', active ? 'is-active' : null]">
+      <div class="navbar-start">
+        <nuxt-link to="/history" class="navbar-item">
+          Bets
+        </nuxt-link>
 
-                <a class="navbar-item">
-                    Create team
-                </a>
-            </div>
+        <nuxt-link to="/bets" class="navbar-item">
+          Current Game
+        </nuxt-link>
+      </div>
 
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-primary">
-                            <strong>Sign up</strong>
-                        </a>
-                        <a class="button is-light">
-                            Log in
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+      <div class="navbar-end is-flex is-align-items-center is-flex is-justify-content-flex-end px-2">
+        <button v-if="!user" type="button" class="button is-primary is-outlined is-rounded mb-0">
+          Log in
+        </button>
+        <template v-else>
+          {{ user.displayName }}
+          <img :src="user.photoURL" :alt="user.displayName" class="avatar image is-32x32 ml-2 mr-4">
+          <button type="button" class="button is-danger is-outlined is-rounded mb-0">
+            Log out
+          </button>
+        </template>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { login, logOut } from '~/endpoints/auth'
+
 export default {
   name: 'AppNav',
+  data() {
+    return {
+      active: false,
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'user'
+    })
+  },
+  methods: {
+    login,
+    logOut,
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+.avatar {
+  border-radius: 50%;
+}
+
+.navbar-menu {
+  background: #363636;
+
+  .navbar-item {
+    color: #fff;
+  }
+}
+</style>

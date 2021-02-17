@@ -1,7 +1,6 @@
 <template>
   <main class="container is-max-desktop">
-    
-    <NextGame :next-game="nextGame" class="next-game" />
+    <NextGame :next-game="nextGame" />
 
     <h1 class="title is-1 mt-4">Realtime bets</h1>
     <p class="subtitle is-3 mb-0">Bets</p>
