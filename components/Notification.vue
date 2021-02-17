@@ -17,7 +17,7 @@ const CLASS_MAPPER = {
 
 export default {
   name: 'Notification',
-  data () {
+  data() {
     return {
       show: false,
       body: '',
