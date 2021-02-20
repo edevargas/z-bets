@@ -3,7 +3,7 @@ export default async function({ store, redirect, route }) {
 
   if (requiresAuth(route)) {
     if (!user) {
-      redirect('/') 
+      redirect('/login') 
     }
   }
 }

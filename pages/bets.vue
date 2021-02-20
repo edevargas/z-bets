@@ -58,6 +58,9 @@ import { getNextMatch } from '~/endpoints/matches'
 
 export default {
   name: 'Bets',
+  meta: {
+    requiresAuth: true,
+  },
   components: {
     NextGame: () => import('~/components/NextGame'),
   },

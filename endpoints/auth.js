@@ -14,15 +14,12 @@ export async function login() {
     })
 }
 
-// function isZemogaDomain({ hd: domain }) {
-//   return domain === 'zemoga.com'
-// }
-
 export function logOut() {
   $nuxt.$fire.auth.signOut()
     .then(() => {
       const notification = { type: 'info', body: 'Sign-out successful' }
       $nuxt.$emit('show-notification', notification)
+      $nuxt.$router.push('/')
     })
     .catch(({ message: body }) => {
       const notification = { type: 'error', body }
