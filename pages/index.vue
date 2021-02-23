@@ -1,7 +1,10 @@
 <template>
   <div>
     <BackgroundImg image="bleachers.jpg" placeholder="bleachers-min.jpg" />
-    <NextGame :next-game="nextGame" class="background-content" />
+    <div class="background-content">
+      <Betting v-if="betNow" :match="nextGame" @close="betNow = false" />
+      <NextGame v-else :next-game="nextGame" @bet-now="betNow = true" />
+    </div>
   </div>
 </template>
 
@@ -12,11 +15,13 @@ export default {
   name: 'Index',
   components: {
     BackgroundImg: () => import('~/components/BackgroundImg'),
+    Betting: () => import('~/components/Betting'),
     NextGame: () => import('~/components/NextGame'),
   },
   data() {
     return {
       nextGame: undefined,
+      betNow: false,
     }
   },
   created() {
