@@ -1,16 +1,16 @@
 <template>  
   <div class="wrapper is-flex is-flex-direction-column">
-    <h1 class="title has-text-centered my-4">
-      Next Game
-    </h1>
-    <section class="hero is-dark mt-1">
+    <section class="hero transparent is-dark">
+      <h1 class="title has-text-centered mt-5 mb-0">
+        Next Game
+      </h1>
       <div class="hero-body">
         <div v-if="isAvailable" class="container has-text-centered">
           <Match wrapper-classes="is-flex-wrap-nowrap" :match="nextGame" is-title />
           <p class="subtitle is-4 mt-1 mb-1">{{ nextGame.date.toDate() | formatDate }}</p>
           <p class="subtitle is-4 mb-4">{{ nextGame.city }}</p>
           
-          <button v-if="user" type="button" class="button is-outlined is-rounded is-primary" @click="$emit('bet-now')">
+          <button v-if="user" type="button" :class="[zButton, 'is-primary']" @click="$emit('bet-now')">
             Bet now
           </button>
         </div>
@@ -33,6 +33,11 @@ export default {
       default: () => ({})
     }
   },
+  data() {
+    return {
+      zButton: this.$nuxt.context.env.Z_BUTTON
+    }
+  },
   computed: {
     ...mapGetters({
       user: 'user'
@@ -43,9 +48,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.hero {
-  background: rgba($color: #111, $alpha: 0.7) !important;
-}
-</style>

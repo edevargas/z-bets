@@ -18,19 +18,24 @@
           History
         </nuxt-link>
 
-        <nuxt-link to="/bets" class="navbar-item">
-          Realtime bets
-        </nuxt-link>
+        <template v-if="user">
+          <nuxt-link to="/bets" class="navbar-item">
+            Realtime bets
+          </nuxt-link>
+          <nuxt-link to="/user/my-bets" class="navbar-item">
+            My bets
+          </nuxt-link>
+        </template>
       </div>
 
       <div class="navbar-end is-flex is-align-items-center is-flex is-justify-content-flex-end px-2">
-        <button v-if="!user" type="button" class="button is-outlined is-rounded is-primary mb-0" @click="login">
+        <button v-if="!user" type="button" :class="[zButton, 'is-primary mb-0']" @click="login">
           Log in
         </button>
         <template v-else>
           {{ user.displayName }}
           <img :src="user.photoURL" :alt="user.displayName" class="avatar image is-32x32 ml-2 mr-4">
-          <button type="button" class="button is-outlined is-rounded is-danger mb-0" @click="logOut">
+          <button type="button" :class="[zButton, 'is-danger mb-0']" @click="logOut">
             Log out
           </button>
         </template>
@@ -48,6 +53,7 @@ export default {
   data() {
     return {
       active: false,
+      zButton: this.$nuxt.context.env.Z_BUTTON,
     }
   },
   computed: {

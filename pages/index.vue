@@ -1,6 +1,7 @@
 <template>
-  <div class="background" :style="background">
-    <NextGame :next-game="nextGame" class="next-game" />
+  <div>
+    <BackgroundImg image="bleachers.jpg" placeholder="bleachers-min.jpg" />
+    <NextGame :next-game="nextGame" class="background-content" />
   </div>
 </template>
 
@@ -10,18 +11,15 @@ import { getNextMatch } from '~/endpoints/matches'
 export default {
   name: 'Index',
   components: {
+    BackgroundImg: () => import('~/components/BackgroundImg'),
     NextGame: () => import('~/components/NextGame'),
   },
   data() {
     return {
-      background: null,
       nextGame: undefined,
     }
   },
   created() {
-    const stadiumImage = require('~/assets/imgs/bleachers.jpg')
-    this.background = { backgroundImage: `url(${stadiumImage})` }
-    
     getNextMatch()
     // realtime listener
     this.$nuxt.$on('next-match', (detail) => this.nextGame = detail)
@@ -31,22 +29,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center top;
-}
-
-.next-game {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-</style>
