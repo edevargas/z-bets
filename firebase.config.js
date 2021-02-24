@@ -1,3 +1,9 @@
+/**
+ * Usage:
+ * While `$fire` contains the initialized service instances
+ * `$fireModule` gives you access to the (not-initialized) Firebase module itself with all its static methods
+ */
+
 export default {
   config: {
     apiKey: process.env.API_KEY,

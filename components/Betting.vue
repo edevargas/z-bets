@@ -67,6 +67,8 @@ export default {
       const payload = {
         userId: user.uid,
         matchId: match.id,
+        match,
+        user,
         awayScore,
         homeScore,
         voucher,

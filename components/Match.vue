@@ -39,6 +39,7 @@ export default {
   min-width: 250px;
 
   img {
+    width: 40px;
     border-radius: 0.5rem;
     object-fit: contain;
   }

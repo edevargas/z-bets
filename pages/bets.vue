@@ -1,60 +1,47 @@
 <template>
   <main class="container is-max-desktop">
-    <NextGame :next-game="nextGame" />
-
     <h1 class="title is-1 mt-4">Realtime bets</h1>
     <p class="subtitle is-3 mb-0">Bets</p>
-    <table class="table is-hoverable is-fullwidth">
-      <thead>
-        <tr class="has-text-centered is-size-5 is-selected">
-          <th>Participante</th>
-          <th>Colombia </th>
-          <th>Brasil</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in bets" :key="index" class="is-size-5">
-          <td>
-            {{item.user}}
-          </td>
-          <td class="has-text-centered">
-            {{item.homeScore}}
-          </td>
-          <td class="has-text-centered">
-            {{item.awayScore}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
     
-    <p class="subtitle is-3 mb-0">Losers</p>
-    <table class="table is-hoverable is-fullwidth">
-      <thead>
-        <tr class="has-text-centered is-size-5 has-background-danger">
-          <th class=" has-text-white">Participante</th>
-          <th class=" has-text-white">Colombia </th>
-          <th class=" has-text-white">Brasil</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in losers" :key="index" class="is-size-5">
-          <td>
-            {{item.user}}
-          </td>
-          <td class="has-text-centered">
-            {{item.homeScore}}
-          </td>
-          <td class="has-text-centered">
-            {{item.awayScore}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <progress v-if="loading" class="progress is-primary mt-6" />
+    <template v-else>
+      <NextGame v-if="nextGame.status === 'pending'" :next-game="nextGame" class="my-4" />
+      <Match v-else wrapper-classes="is-flex-wrap-nowrap my-4" :match="nextGame" is-title />
+
+      <table class="table is-hoverable is-fullwidth">
+        <thead>
+          <tr class="has-text-centered is-size-5 is-selected">
+            <th>User</th>
+            <th>Betting</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="(item, index) in bets" >
+            <tr :key="index">
+              <td class="is-flex has-text-left is-vcentered is-size-5">
+                <Avatar :user="item.user" />
+                {{ item.user.displayName }}
+              </td>
+              <td class="has-text-centered is-vcentered is-size-5">
+                {{ item.homeScore }}
+                -
+                {{ item.awayScore }}
+              </td>
+              <td class="has-text-centered is-vcentered is-size-5" width="25%">
+                <div class="status">{{ item.status }}</div>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </template>
   </main>
 </template>
 
 <script>
 import { getNextMatch } from '~/endpoints/matches'
+import { getBetsByMatch } from '~/endpoints/bets'
 
 export default {
   name: 'Bets',
@@ -63,63 +50,28 @@ export default {
   },
   components: {
     NextGame: () => import('~/components/NextGame'),
+    Avatar: () => import('~/components/Avatar'),
   },
   data() {
     return {
+      loading: true,
       nextGame: undefined,
-      bets: [
-        {
-          user: 'Lorena Sandoval',
-          homeScore: 1,
-          awayScore: 1,
-        },
-        {
-          user: 'Pilar Gonzalez',
-          homeScore: 2,
-          awayScore: 1,
-        },
-        {
-          user: 'Alfredo Forero',
-          homeScore: 3,
-          awayScore: 1,
-        },
-        {
-          user: 'Javier Albadán',
-          homeScore: 4,
-          awayScore: 1,
-        },
-      ],
-      losers: [
-        {
-          user: 'Juan Quintero',
-          homeScore: 0,
-          awayScore: 2,
-        },
-        {
-          user: 'Sandra Aguilera',
-          homeScore: 1,
-          awayScore: 0,
-        },
-        {
-          user: 'Emilio Romero',
-          homeScore: 0,
-          awayScore: 0,
-        },
-        {
-          user: 'Derly Carrillo',
-          homeScore: 2,
-          awayScore: 0,
-        },
-      ]
+      bets: []
     }
   },
   created() {
     getNextMatch()
     // realtime listener
-    this.$nuxt.$on('next-match', (detail) => this.nextGame = detail)
+    this.$nuxt.$on('next-match', (data) => {
+      this.loading = false
+      this.nextGame = data
+      getBetsByMatch(data.id)
+    })
+    this.$nuxt.$on('bets-by-match', (data) => this.bets = data)
   },
   beforeDestroy() {
     this.$nuxt.$off('next-match')
+    this.$nuxt.$off('bets-by-match')
   }
 }
 </script>

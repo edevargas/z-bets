@@ -3,9 +3,9 @@ export function getBetsByMatch(matchId) {
   const bets = firestore.collection('bets')
   const query = bets.where('matchId', '==', matchId)
   query.onSnapshot((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      $nuxt.$emit('bets-by-match', doc.data())
-    })
+    const data = []
+    querySnapshot.forEach((doc) => data.push(doc.data()))
+    $nuxt.$emit('bets-by-match', data)
   })
 }
 
@@ -20,7 +20,11 @@ export async function getBetsByUser(userId) {
 export function betting(payload) {
   return new Promise((resolve, reject) => {
     const { firestore } = $nuxt.$fire
-    firestore.collection('bets').add(payload)
+    const finalBet = {
+      ...payload,
+      timestamp: $nuxt.$fireModule.firestore.Timestamp.now()
+    }
+    firestore.collection('bets').add(finalBet)
       .then((docRef) => resolve({ error: null, data: docRef.id }))
       .catch((error) => reject({ error, data: null }))
   })

@@ -1,5 +1,5 @@
 <template>  
-  <progressive-img class="background" :src="bkg.final" :placeholder="bkg.placeholder" />
+  <progressive-background class="background" :src="bkg.final" :placeholder="bkg.placeholder" />
 </template>
 
 <script>

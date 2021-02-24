@@ -27,7 +27,7 @@ export default {
   created() {
     getNextMatch()
     // realtime listener
-    this.$nuxt.$on('next-match', (detail) => this.nextGame = detail)
+    this.$nuxt.$on('next-match', (data) => this.nextGame = data)
   },
   beforeDestroy() {
     this.$nuxt.$off('next-match')

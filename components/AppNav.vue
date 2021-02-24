@@ -34,7 +34,7 @@
         </button>
         <template v-else>
           {{ user.displayName }}
-          <img :src="user.photoURL" :alt="user.displayName" class="avatar image is-32x32 ml-2 mr-4">
+          <Avatar :user="user" class="mr-4" />
           <button type="button" :class="[zButton, 'is-danger mb-0']" @click="logOut">
             Log out
           </button>
@@ -50,6 +50,9 @@ import { login, logOut } from '~/endpoints/auth'
 
 export default {
   name: 'AppNav',
+  components: {
+    Avatar: () => import('~/components/Avatar'),
+  },
   data() {
     return {
       active: false,
@@ -69,10 +72,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.avatar {
-  border-radius: 50%;
-}
-
 .navbar-menu {
   background: #363636;
 
