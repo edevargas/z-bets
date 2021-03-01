@@ -1,40 +1,40 @@
 <template>
   <main class="container is-max-desktop">
     <h1 class="title is-1 mt-4">Realtime bets</h1>
-    <p class="subtitle is-3 mb-0">Bets</p>
-    
+    <p class="subtitle is-3 mb-3">User & bets</p>
+
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
-      <NextGame v-if="nextGame.status === 'pending'" :next-game="nextGame" class="my-4" />
-      <Match v-else wrapper-classes="is-flex-wrap-nowrap my-4" :match="nextGame" is-title />
-
       <table class="table is-hoverable is-fullwidth">
-        <thead>
-          <tr class="has-text-centered is-size-5 is-selected">
-            <th>User</th>
-            <th>Betting</th>
-            <th>Status</th>
-          </tr>
-        </thead>
         <tbody>
-          <template v-for="(item, index) in bets" >
+          <template v-for="(item, index) in bets">
             <tr :key="index">
-              <td class="is-flex has-text-left is-vcentered is-size-5">
-                <Avatar :user="item.user" />
-                {{ item.user.displayName }}
-              </td>
-              <td class="has-text-centered is-vcentered is-size-5">
-                {{ item.homeScore }}
-                -
-                {{ item.awayScore }}
-              </td>
-              <td class="has-text-centered is-vcentered is-size-5" width="25%">
-                <div class="status">{{ item.status }}</div>
+              <td class="is-size-5">
+                <div class="user">
+                  <Avatar :user="item.user" />
+                  {{ item.user.displayName }}
+                </div>
+                <div class="bet">
+                  <img
+                    :src="item.match.homeFlag"
+                    :alt="item.match.homeTeam"
+                    class="mx-2"
+                  />
+                  <div class="score">
+                    {{ item.homeScore }}
+                    -
+                    {{ item.awayScore }}
+                  </div>
+                  <img :src="item.match.awayFlag" class="mx-2" />
+                </div>
               </td>
             </tr>
           </template>
         </tbody>
       </table>
+      <p v-if="bets.length === 0" class="has-text-centered is-size-5">
+        · Still no items ·
+      </p>
     </template>
   </main>
 </template>
@@ -46,11 +46,11 @@ import { getBetsByMatch } from '~/endpoints/bets'
 export default {
   name: 'Bets',
   meta: {
-    requiresAuth: true,
+    requiresAuth: true
   },
   components: {
-    NextGame: () => import('~/components/NextGame'),
-    Avatar: () => import('~/components/Avatar'),
+    NextGame: () => import('~/components/bets/NextGame'),
+    Avatar: () => import('~/components/utils/Avatar')
   },
   data() {
     return {
@@ -63,11 +63,13 @@ export default {
     getNextMatch()
     // realtime listener
     this.$nuxt.$on('next-match', (data) => {
-      this.loading = false
       this.nextGame = data
       getBetsByMatch(data.id)
     })
-    this.$nuxt.$on('bets-by-match', (data) => this.bets = data)
+    this.$nuxt.$on('bets-by-match', (data) => {
+      this.bets = data
+      if (this.loading) this.loading = false
+    })
   },
   beforeDestroy() {
     this.$nuxt.$off('next-match')
@@ -75,3 +77,40 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+td {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .user,
+  .bet {
+    display: flex;
+    align-items: center;
+  }
+
+  .score {
+    display: inline-flex;
+    min-width: 50px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 767px) {
+  td {
+    flex-direction: column;
+
+    .user {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    .bet {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+}
+</style>

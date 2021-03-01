@@ -1,5 +1,9 @@
-<template>  
-  <progressive-background class="background" :src="bkg.final" :placeholder="bkg.placeholder" />
+<template>
+  <progressive-background
+    class="background"
+    :src="bkg.final"
+    :placeholder="bkg.placeholder"
+  />
 </template>
 
 <script>
@@ -13,7 +17,7 @@ export default {
     placeholder: {
       type: String,
       default: ''
-    },
+    }
   },
   data() {
     return {
@@ -24,9 +28,9 @@ export default {
     const { image, placeholder } = this
     this.bkg = {
       final: require(`~/assets/imgs/${image}`),
-      placeholder: require(`~/assets/imgs/${placeholder}`),
+      placeholder: require(`~/assets/imgs/${placeholder}`)
     }
-  },
+  }
 }
 </script>
 
@@ -49,8 +53,9 @@ export default {
   position: absolute;
   z-index: 1;
   top: 50%;
-  left: 50%;
+  left: 0;
+  right: 0;
   width: 100%;
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
 }
 </style>

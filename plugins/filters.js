@@ -10,3 +10,9 @@ Vue.filter('formatDate', (timestamp) => {
 Vue.filter('initials', (str) => {
   return str.substring(0, 3)
 })
+
+Vue.filter('currency', (value) => {
+  const currencyOptions = { style: 'currency', currency: 'COP', maximumSignificantDigits: 3 }
+  const amount = new Intl.NumberFormat('es-CO', currencyOptions).format(value)
+  return `${amount} COP`
+})

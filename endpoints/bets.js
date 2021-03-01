@@ -1,7 +1,9 @@
-export function getBetsByMatch(matchId) {
-  const { firestore } = $nuxt.$fire
-  const bets = firestore.collection('bets')
-  const query = bets.where('matchId', '==', matchId)
+export function getBetsByMatch(matchId, onlyApproved = true) {
+  const bets = $nuxt.$fire.firestore.collection('bets')
+  let query = bets.where('matchId', '==', matchId)
+  if (onlyApproved) {
+    query = query.where('status', '==', 'approved')
+  }
   query.onSnapshot((querySnapshot) => {
     const data = []
     querySnapshot.forEach((doc) => data.push(doc.data()))
@@ -10,8 +12,7 @@ export function getBetsByMatch(matchId) {
 }
 
 export async function getBetsByUser(userId) {
-  const { firestore } = $nuxt.$fire
-  const bets = firestore.collection('bets')
+  const bets = $nuxt.$fire.firestore.collection('bets')
   const { docs } = await bets.where('userId', '==', userId).get()
   // TODO Check reactivity in UI
   return docs.map((item) => item.data())
@@ -19,12 +20,11 @@ export async function getBetsByUser(userId) {
 
 export function betting(payload) {
   return new Promise((resolve, reject) => {
-    const { firestore } = $nuxt.$fire
     const finalBet = {
       ...payload,
       timestamp: $nuxt.$fireModule.firestore.Timestamp.now()
     }
-    firestore.collection('bets').add(finalBet)
+    $nuxt.$fire.firestore.collection('bets').add(finalBet)
       .then((docRef) => resolve({ error: null, data: docRef.id }))
       .catch((error) => reject({ error, data: null }))
   })

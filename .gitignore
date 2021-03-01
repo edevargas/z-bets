@@ -29,6 +29,9 @@ dist/
 # nuxt.js build output
 .nuxt
 
+# environment file
+.firebase
+
 # JetBrains IDE
 .idea/
 

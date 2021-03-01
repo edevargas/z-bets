@@ -10,8 +10,8 @@
 export default {
   name: 'DefaultLayout',
   components: {
-    AppNav: () => import('~/components/AppNav'),
-    Notification: () => import('~/components/Notification')
-  },
+    AppNav: () => import('~/components/layout/AppNav'),
+    Notification: () => import('~/components/utils/Notification')
+  }
 }
 </script>

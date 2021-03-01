@@ -14,20 +14,20 @@ import { getNextMatch } from '~/endpoints/matches'
 export default {
   name: 'Index',
   components: {
-    BackgroundImg: () => import('~/components/BackgroundImg'),
-    Betting: () => import('~/components/Betting'),
-    NextGame: () => import('~/components/NextGame'),
+    BackgroundImg: () => import('~/components/layout/BackgroundImg'),
+    Betting: () => import('~/components/bets/Betting'),
+    NextGame: () => import('~/components/bets/NextGame')
   },
   data() {
     return {
       nextGame: undefined,
-      betNow: false,
+      betNow: false
     }
   },
   created() {
     getNextMatch()
     // realtime listener
-    this.$nuxt.$on('next-match', (data) => this.nextGame = data)
+    this.$nuxt.$on('next-match', (data) => (this.nextGame = data))
   },
   beforeDestroy() {
     this.$nuxt.$off('next-match')

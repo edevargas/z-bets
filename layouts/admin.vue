@@ -9,7 +9,7 @@
 export default {
   name: 'AdminLayout',
   components: {
-    AppNavAdmin: () => import('~/components/AppNavAdmin')
-  },
+    AppNavAdmin: () => import('~/components/layout/AppNavAdmin')
+  }
 }
 </script>

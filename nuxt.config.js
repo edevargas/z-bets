@@ -9,16 +9,36 @@ export default {
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'z-bets',
+    htmlAttrs: {
+      lang: 'es'
+    },
+    title: 'Z-Bets',
     meta: [
       { charset: 'utf-8' },
+      { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      { hid: 'description', name: 'description', content: '' },
+      { name: 'keywords', content: 'Zemoga, FED, grupo de estudio, apuestas internas' },
+      { name: 'theme-color', content: '#00D1B2' },
+      { name: 'msapplication-navbutton-color', content: '#00D1B2' },
+      { name: 'apple-mobile-web-app-status-bar-style', content: '#00D1B2' },
+      { property: 'og:site_name', content: 'Z-Bets' },
+      { property: 'og:title', content: 'Z-Bets' },
+      { property: 'og:type', content: 'webapp' },
+      { property: 'og:url', content: 'https://z-bets.web.app/' },
+      { property: 'og:image', content: '/favicon.png' },
+      { property: 'og:description', content: 'Z-FED · JAMstack group study' },
+      { property: 'og:locale', content: 'es_CO' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+
+  /*
+	 ** Customize the progress-bar color
+	 */
+  loading: { color: '#00D1B2' },
 
   env: {
     Z_BUTTON: 'button is-outlined is-rounded'
