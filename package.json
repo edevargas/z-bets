@@ -20,6 +20,7 @@
     "firebase": "^8.1.1",
     "node-sass": "^5.0.0",
     "nuxt": "^2.14.6",
+    "nuxt-i18n": "^6.20.4",
     "sass-loader": "^10.1.0",
     "vue-progressive-image": "^3.2.0"
   },

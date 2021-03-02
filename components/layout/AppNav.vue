@@ -30,18 +30,18 @@
         <nuxt-link
           to="/history"
           class="navbar-item"
-        > History </nuxt-link>
+        >  {{ $t('matches') }} </nuxt-link>
 
         <template v-if="user">
           <nuxt-link
             to="/bets"
             class="navbar-item"
-          > Realtime bets </nuxt-link>
+          > {{ $t('realtime_bets') }} </nuxt-link>
           <nuxt-link
             to="/user/my-bets"
             class="navbar-item"
           >
-            My bets
+            {{ $t('my_bets') }}
           </nuxt-link>
         </template>
       </div>
@@ -53,7 +53,7 @@
           :class="[zButton, 'is-primary mb-0']"
           @click="login"
         >
-          Log in
+          {{ $t('login') }}
         </button>
         <template v-else>
           {{ user.displayName }}
@@ -66,7 +66,7 @@
             :class="[zButton, 'is-danger mb-0']"
             @click="logOut"
           >
-            Log out
+            {{ $t('logout') }}
           </button>
         </template>
       </div>

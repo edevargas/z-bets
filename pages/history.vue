@@ -1,7 +1,7 @@
 <template>
   <main class="container is-max-desktop">
-    <h1 class="title is-1 mt-4">South America Qualifiers</h1>
-    <p class="subtitle is-3 mb-3">Matches</p>
+    <h1 class="title is-1 mt-4">{{ $t('south_america_qualifiers') }}</h1>
+    <p class="subtitle is-3 mb-3">{{$t('matches')}}</p>
 
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>

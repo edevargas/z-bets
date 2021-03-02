@@ -1,5 +1,8 @@
 import firebaseConfig from './firebase.config'
 
+import en from './locales/en.json'
+import es from './locales/es.json'
+
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
@@ -75,10 +78,22 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     '@nuxtjs/bulma',
-    '@nuxtjs/firebase'
+    '@nuxtjs/firebase',
+    'nuxt-i18n',
   ],
 
   firebase: firebaseConfig,
+
+  i18n: {
+    locales: ['en', 'es'],
+    defaultLocale: 'en',
+    vueI18n: {
+      fallbackLocale: 'en',
+      lazy: true,
+      langDir: 'locales/',
+      messages: { en, es }
+    }
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
