@@ -10,6 +10,10 @@ const notificationsController = require('./components/notifications/Notification
 //   response.send("Hello from Firebase!");
 // });
 
-exports.sendSlackNotifications = functions.firestore
+exports.sendBetCreationSlackNotification = functions.firestore
   .document('bets/{betId}')
-  .onCreate(notificationsController.sendSlackNotificationsController);
+  .onCreate(notificationsController.sendBetCreationSlackNotificationController);
+
+exports.sendWinnersSlackNotification = functions.firestore
+  .document('matches/{matchId}')
+  .onUpdate(notificationsController.sendWinnersSlackNotificationController);

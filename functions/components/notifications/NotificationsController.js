@@ -1,7 +1,19 @@
 const { Notifications } = require('./Notifications.js');
 
-exports.sendSlackNotificationsController = (dataSnapshot, context) => {
+exports.sendBetCreationSlackNotificationController = (dataSnapshot, context) => {
   const notifications = new Notifications();
 
-  return notifications.betCreation(dataSnapshot.data());
+  return notifications.betCreation(dataSnapshot.data(), context);
+};
+
+exports.sendWinnersSlackNotificationController = (dataSnapshot) => {
+  const changedData = dataSnapshot.after.data();
+
+  if (changedData.status === 'finished') {
+    const notifications = new Notifications();
+
+    return notifications.betWinners(changedData, dataSnapshot.before.id);
+  }
+
+  return null;
 };
