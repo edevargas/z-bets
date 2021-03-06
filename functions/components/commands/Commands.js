@@ -3,7 +3,7 @@ const { Notifications } = require('../notifications/Notifications');
 const { STATUS } = require('../constants/status');
 
 class Commands {
-  changeMatchCurrentStatus(payload) {
+  changeMatchCurrentStatus(currentStatus, newStatus) {
     const notifications = new Notifications();
 
     const MATCHES_DB = admin.firestore().collection('matches');
@@ -12,7 +12,7 @@ class Commands {
     let isUpdated = false;
 
     return MATCHES_DB
-      .where('status', '==', STATUS.pending)
+      .where('status', '==', currentStatus)
       .get()
       .then((dataSnapshot) => {
         dataSnapshot.forEach((doc) => {
@@ -26,7 +26,7 @@ class Commands {
           if (isSameDayMatch) {
             MATCHES_DB.doc(doc.id)
               .update({
-                status: STATUS.started
+                status: newStatus
               });
             isUpdated = true;
           }
@@ -36,9 +36,13 @@ class Commands {
       })
       .then((isUpdated) => {
         let result = false;
+        const status = newStatus === STATUS.started
+          ? 'Empezó el partido, apuestas cerradas! ⚽️'
+          : 'Terminó el partido... ⚽️';
+
         if (isUpdated) {
           notifications.sendSlackNotification({
-            text: 'Empezó el partido, apuestas cerradas! ⚽️'
+            text: status
           });
           result = true;
         }
