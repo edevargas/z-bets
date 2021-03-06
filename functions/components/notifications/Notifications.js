@@ -1,10 +1,5 @@
 const axios = require('axios');
-const Firestore = require('@google-cloud/firestore');
-
-const firestore = new Firestore({
-  projectId: 'z-bets',
-  timestampsInSnapshots: true,
-});
+const admin = require('firebase-admin');
 
 class Notifications {
   sendSlackNotification(payload) {
@@ -34,7 +29,7 @@ class Notifications {
     let winners = [];
     let customMsg = 'Nadie ganó 😭';
 
-    return firestore.collection('bets')
+    return admin.firestore().collection('bets')
       .where('matchId', '==', id)
       .get()
       .then((dataSnapshot) => {
