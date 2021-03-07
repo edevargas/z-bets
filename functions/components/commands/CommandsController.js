@@ -1,16 +1,18 @@
 const { Commands } = require('./Commands');
 const { STATUS } = require('../constants/status');
+const { ADMINS } = require('./config/admins');
+const { COMMANDS } = require('./config/slash-commands');
 
 exports.changeMatchCurrentStatus = (payload) => {
   const commands = new Commands();
   const { user_name, command } = payload;
-  const isAdmin = user_name === 'juan.castaneda';
+  const isAdmin = ADMINS.includes(user_name);
 
   if (isAdmin && command) {
-    if (command === '/match-start') {
+    if (command === COMMANDS.start) {
       return commands.changeMatchCurrentStatus(STATUS.pending, STATUS.started);
     }
-    if (command === '/match-end') {
+    if (command === COMMANDS.end) {
       return commands.changeMatchCurrentStatus(STATUS.started, STATUS.finished);
     }
   }

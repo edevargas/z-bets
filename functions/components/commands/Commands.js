@@ -1,14 +1,16 @@
 const admin = require('firebase-admin');
+const moment = require('moment');
 const { Notifications } = require('../notifications/Notifications');
 const { STATUS } = require('../constants/status');
+
+const { parseZone } = moment;
 
 class Commands {
   changeMatchCurrentStatus(currentStatus, newStatus) {
     const notifications = new Notifications();
 
     const MATCHES_DB = admin.firestore().collection('matches');
-    const TODAY = new Date();
-    TODAY.setUTCHours(-5);
+    const TODAY = parseZone(new Date());
     let isUpdated = false;
 
     return MATCHES_DB
@@ -16,12 +18,8 @@ class Commands {
       .get()
       .then((dataSnapshot) => {
         dataSnapshot.forEach((doc) => {
-          const parsedMatchDate = doc.data().date.toDate();
-          const isSameDayMatch = (
-            parsedMatchDate.getFullYear() === TODAY.getFullYear() &&
-            parsedMatchDate.getMonth() === TODAY.getMonth() &&
-            parsedMatchDate.getDate() === TODAY.getDate()
-          );
+          const PARSED_MATCH_DATE = parseZone(doc.data().date.toDate());
+          const isSameDayMatch = PARSED_MATCH_DATE.isSame(TODAY, 'day');
 
           if (isSameDayMatch) {
             MATCHES_DB.doc(doc.id)
