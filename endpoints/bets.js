@@ -1,4 +1,5 @@
 export function getBetsByMatch(matchId, onlyApproved = true) {
+  console.log('🚀 ~ file: bets.js ~ line 2 ~ getBetsByMatch ~ matchId', matchId)
   const bets = $nuxt.$fire.firestore.collection('bets')
   let query = bets.where('matchId', '==', matchId)
   if (onlyApproved) {
@@ -6,7 +7,7 @@ export function getBetsByMatch(matchId, onlyApproved = true) {
   }
   query.onSnapshot((querySnapshot) => {
     const data = []
-    querySnapshot.forEach((doc) => data.push(doc.data()))
+    querySnapshot.forEach((doc) => data.push({ ...doc.data(), id: doc.id }))
     $nuxt.$emit('bets-by-match', data)
   })
 }

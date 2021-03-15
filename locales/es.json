@@ -6,5 +6,9 @@
   "bet_now": "Apostar",
   "my_bets": "Mis Apuestas",
   "realtime_bets": "Apuestas en vivo",
-  "south_america_qualifiers": "Clasificatorias sudamericanas"
+  "south_america_qualifiers": "Clasificatorias sudamericanas",
+  "approve": "Aprobar",
+  "check_voucher": "Revisar voucher",
+  "bets_approval_title": "Aprobación de apuestas",
+  "bets_approval_subtitle": "Verifica el voucher para aprobar la apuesta"
 }

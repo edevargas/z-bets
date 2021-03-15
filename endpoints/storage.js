@@ -38,3 +38,14 @@ export function validateSizeFile(file) {
   const maxSizeInBytes = 500000 // 500Kb
   return file.size <= maxSizeInBytes
 }
+
+export function getFileUrl(folder, fileName){
+  console.log('🚀 ~ file: storage.js ~ line 43 ~ getFileUrl ~ folder, fileName', folder, fileName)
+  return new Promise((resolve) => {
+    const storageRef = $nuxt.$fire.storage.ref().child(`${folder}/${fileName}`)
+
+    storageRef.getDownloadURL()
+      .then((url) => resolve(url))
+      .catch(() => resolve(''))  
+  })
+}

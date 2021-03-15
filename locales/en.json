@@ -6,5 +6,9 @@
   "bet_now": "Bet Now",
   "my_bets": "My Bets",
   "realtime_bets": "Realtime Bets",
-  "south_america_qualifiers": "South America Qualifiers"
+  "south_america_qualifiers": "South America Qualifiers",
+  "approve": "Approve",
+  "check_voucher": "Check voucher",
+  "bets_approval_title": "Bets approval",
+  "bets_approval_subtitle": "Check voucher to approve betting"
 }

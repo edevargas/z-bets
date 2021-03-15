@@ -44,7 +44,7 @@ export default {
   loading: { color: '#00D1B2' },
 
   env: {
-    Z_BUTTON: 'button is-outlined is-rounded'
+    Z_BUTTON: 'button is-outlined is-rounded is-small'
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
