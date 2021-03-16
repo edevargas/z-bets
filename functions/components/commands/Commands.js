@@ -3,6 +3,7 @@ const isSameDay = require('date-fns/isSameDay');
 const utcToZonedTime = require('date-fns-tz/utcToZonedTime');
 const { Notifications } = require('../notifications/Notifications');
 const { STATUS } = require('../constants/status');
+const { getSlackFlag, getScoreMsg } = require('../utils/flag-mapper');
 
 class Commands {
   changeMatchCurrentStatus(currentStatus, newStatus) {
@@ -12,6 +13,10 @@ class Commands {
     const TIME_ZONE = 'America/Bogota';
     const TODAY = utcToZonedTime(new Date(), TIME_ZONE);
     let isUpdated = false;
+    let homeFlag;
+    let awayFlag;
+    let homeScore;
+    let awayScore;
 
     return MATCHES_DB
       .where('status', '==', currentStatus)
@@ -22,6 +27,10 @@ class Commands {
           const isSameDayMatch = isSameDay(MATCH_DATE, TODAY);
 
           if (isSameDayMatch) {
+            homeFlag = doc.data().homeFlag;
+            awayFlag = doc.data().awayFlag;
+            homeScore = doc.data().homeScore;
+            awayScore = doc.data().awayScore;
             MATCHES_DB.doc(doc.id)
               .update({
                 status: newStatus
@@ -35,8 +44,8 @@ class Commands {
       .then((isUpdated) => {
         let result = false;
         const status = newStatus === STATUS.started
-          ? 'Empezó el partido, apuestas cerradas! ⚽️'
-          : 'Terminó el partido... ⚽️';
+          ? `Empezó el partido ${getSlackFlag(homeFlag)} - ${getSlackFlag(awayFlag)}, Apuestas cerradas! ⚽️`
+          : `📣📣 Terminó el partido ${getScoreMsg(homeFlag, homeScore, awayFlag, awayScore)}`;
 
         if (isUpdated) {
           notifications.sendSlackNotification({
