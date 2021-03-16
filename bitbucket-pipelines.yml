@@ -25,7 +25,7 @@ pipelines:
   branches:
     develop:
       - step:
-          name: Build and Test
+          name: Build, Test and deploy
           caches:
             - node
           script:
@@ -33,20 +33,22 @@ pipelines:
   #              - npm test
             - npm run build
             - npm run generate
-          artifacs:
-            - dist/**
-            - firebase.**
-      - step:
-          name: Deploy to Production
-          deployment: Production
-#          trigger: manual
-          clone:
-            enabled: false
-          caches:
-              - node
-          script:
             - pipe: atlassian/firebase-deploy:1.0.0
               variables:
                 FIREBASE_TOKEN: $FIREBASE_TOKEN_CI
                 PROJECT_ID: 'z-bets'
                 EXTRA_ARGS: '--only hosting'
+#       - step:
+#           name: Deploy to Production
+#           deployment: Production
+# #          trigger: manual
+#           clone:
+#             enabled: false
+#           caches:
+#               - node
+#           script:
+#             - pipe: atlassian/firebase-deploy:1.0.0
+#               variables:
+#                 FIREBASE_TOKEN: $FIREBASE_TOKEN_CI
+#                 PROJECT_ID: 'z-bets'
+#                 EXTRA_ARGS: '--only hosting'
