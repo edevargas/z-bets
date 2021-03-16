@@ -45,4 +45,4 @@ pipelines:
           script:
             - pipe: atlassian/firebase-deploy:0.3.0
               variables:
-                FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
+                FIREBASE_TOKEN: $FIREBASE_TOKEN_CI
