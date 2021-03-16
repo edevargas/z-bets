@@ -37,11 +37,12 @@ pipelines:
       - step:
           name: Deploy to Production
           deployment: Production
-          trigger: manual
+#          trigger: manual
           clone:
             enabled: false
           script:
-            - pipe: atlassian/firebase-deploy:0.3.0
+            - pipe: atlassian/firebase-deploy:1.0.0
               variables:
                 FIREBASE_TOKEN: $FIREBASE_TOKEN_CI
                 PROJECT_ID: 'z-bets'
+                EXTRA_ARGS: '--only hosting'
