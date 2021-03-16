@@ -1,5 +1,6 @@
 const axios = require('axios');
 const admin = require('firebase-admin');
+const { getScoreMsg } = require('../utils/flag-mapper');
 
 class Notifications {
   sendSlackNotification(payload) {
@@ -19,7 +20,7 @@ class Notifications {
     const { homeFlag, awayFlag } = data.match;
 
     return this.sendSlackNotification({
-      text: `${displayName} registró una nueva apuesta ${homeFlag} ${homeScore} - ${awayScore} ${awayFlag}`
+      text: `${displayName} registró una nueva apuesta: ${getScoreMsg(homeFlag, homeScore, awayFlag, awayScore)}`
     });
   }
 
