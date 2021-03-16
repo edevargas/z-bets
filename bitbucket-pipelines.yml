@@ -35,7 +35,6 @@ pipelines:
               - npm run build
               - npm run generate
             artifacs:
-              - **
               - dist/**
               - firebase.**
       - step:
