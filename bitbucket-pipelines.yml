@@ -35,8 +35,11 @@ pipelines:
             - npm run generate
             - pipe: atlassian/firebase-deploy:1.0.0
               variables:
+                API_KEY: $API_KEY
+                AUTH_DOMAIN: $AUTH_DOMAIN
+                DATABASE_URL: $DATABASE_URL
                 FIREBASE_TOKEN: $FIREBASE_TOKEN_CI
-                PROJECT_ID: 'z-bets'
+                PROJECT_ID: $PROJECT_ID
                 EXTRA_ARGS: '--only hosting'
 #       - step:
 #           name: Deploy to Production
