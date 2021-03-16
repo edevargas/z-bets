@@ -14,14 +14,14 @@ pipelines:
           script:
             - npm install
             - npm test
-      - step:
-          name: Lint the node package
-          script:
-            # Run your linter of choice here
-            - npm install
-            - npm run lint
-          caches:
-            - node
+#      - step:
+#          name: Lint the node package
+#          script:
+#            # Run your linter of choice here
+#            - npm install
+#            - npm run lint
+#          caches:
+#            - node
   branches:
     develop:
       - parallel:
