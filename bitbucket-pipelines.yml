@@ -35,14 +35,17 @@ pipelines:
               - npm run build
               - npm run generate
             artifacs:
+              - **
               - dist/**
-              - firebase.json
+              - firebase.**
       - step:
           name: Deploy to Production
           deployment: Production
 #          trigger: manual
           clone:
             enabled: false
+          caches:
+              - node
           script:
             - pipe: atlassian/firebase-deploy:1.0.0
               variables:
