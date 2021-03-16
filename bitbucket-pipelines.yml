@@ -24,19 +24,18 @@ pipelines:
 #            - node
   branches:
     develop:
-      - parallel:
-        - step:
-            name: Build and Test
-            caches:
-              - node
-            script:
-              - npm install
-#              - npm test
-              - npm run build
-              - npm run generate
-            artifacs:
-              - dist/**
-              - firebase.**
+      - step:
+          name: Build and Test
+          caches:
+            - node
+          script:
+            - npm install
+  #              - npm test
+            - npm run build
+            - npm run generate
+          artifacs:
+            - dist/**
+            - firebase.**
       - step:
           name: Deploy to Production
           deployment: Production
