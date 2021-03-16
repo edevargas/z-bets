@@ -34,20 +34,18 @@ pipelines:
 #              - npm test
               - npm run build
               - npm run generate
-              - pipe: atlassian/firebase-deploy:1.0.0
-                variables:
-                  FIREBASE_TOKEN: $FIREBASE_TOKEN_CI
-                  PROJECT_ID: 'z-bets'
-                  EXTRA_ARGS: '--only hosting'
-#       - step:
-#           name: Deploy to Production
-#           deployment: Production
-# #          trigger: manual
-#           clone:
-#             enabled: false
-#           script:
-#             - pipe: atlassian/firebase-deploy:1.0.0
-#               variables:
-#                 FIREBASE_TOKEN: $FIREBASE_TOKEN_CI
-#                 PROJECT_ID: 'z-bets'
-#                 EXTRA_ARGS: '--only hosting'
+            artifacs:
+              - dist/**
+              - firebase.json
+      - step:
+          name: Deploy to Production
+          deployment: Production
+#          trigger: manual
+          clone:
+            enabled: false
+          script:
+            - pipe: atlassian/firebase-deploy:1.0.0
+              variables:
+                FIREBASE_TOKEN: $FIREBASE_TOKEN_CI
+                PROJECT_ID: 'z-bets'
+                EXTRA_ARGS: '--only hosting'
