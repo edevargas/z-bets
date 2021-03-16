@@ -34,8 +34,6 @@ pipelines:
 #              - npm test
               - npm run build
               - npm run generate
-            artifacts:
-              - build/**
       - step:
           name: Deploy to Production
           deployment: Production
