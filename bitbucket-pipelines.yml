@@ -1,0 +1,48 @@
+
+
+image: node:10.15.3
+
+# Workflow Configuration
+
+pipelines:
+  default:
+    - parallel:
+      - step:
+          name: Build and Test
+          caches:
+            - node
+          script:
+            - npm install
+#            - npm test
+#      - step:
+#          name: Lint the node package
+#          script:
+#            # Run your linter of choice here
+#            - npm install
+#            - npm run lint
+#          caches:
+#            - node
+  branches:
+    develop:
+      - parallel:
+        - step:
+            name: Build and Test
+            caches:
+              - node
+            script:
+              - npm install
+#              - npm test
+              - npm run build
+              - npm run generate
+            artifacts:
+              - build/**
+      - step:
+          name: Deploy to Production
+          deployment: Production
+          trigger: manual
+          clone:
+            enabled: false
+          script:
+            - pipe: atlassian/firebase-deploy:0.3.0
+              variables:
+                FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
