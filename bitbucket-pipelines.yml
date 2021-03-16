@@ -13,7 +13,7 @@ pipelines:
             - node
           script:
             - npm install
-            - npm test
+#            - npm test
 #      - step:
 #          name: Lint the node package
 #          script:
@@ -31,7 +31,7 @@ pipelines:
               - node
             script:
               - npm install
-              - npm test
+#              - npm test
               - npm run build
               - npm run generate
             artifacts:
