@@ -40,6 +40,7 @@ pipelines:
                 DATABASE_URL: $DATABASE_URL
                 FIREBASE_TOKEN: $FIREBASE_TOKEN_CI
                 PROJECT_ID: $PROJECT_ID
+                STORAGE_BUCKET: $STORAGE_BUCKET
                 EXTRA_ARGS: '--only hosting'
 #       - step:
 #           name: Deploy to Production
