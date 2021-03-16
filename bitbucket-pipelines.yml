@@ -44,7 +44,7 @@ pipelines:
                 MESSAGING_SENDER_ID: $MESSAGING_SENDER_ID
                 APP_ID: $APP_ID
                 MEASUREMENT_ID: $MEASUREMENT_ID
-                EXTRA_ARGS: '--only hosting,functions'
+                EXTRA_ARGS: '--only hosting'
 #       - step:
 #           name: Deploy to Production
 #           deployment: Production
