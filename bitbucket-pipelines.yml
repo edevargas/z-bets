@@ -41,7 +41,10 @@ pipelines:
                 FIREBASE_TOKEN: $FIREBASE_TOKEN_CI
                 PROJECT_ID: $PROJECT_ID
                 STORAGE_BUCKET: $STORAGE_BUCKET
-                EXTRA_ARGS: '--only hosting'
+                MESSAGING_SENDER_ID: $MESSAGING_SENDER_ID
+                APP_ID: $APP_ID
+                MEASUREMENT_ID: $MEASUREMENT_ID
+                EXTRA_ARGS: '--only hosting,functions'
 #       - step:
 #           name: Deploy to Production
 #           deployment: Production
