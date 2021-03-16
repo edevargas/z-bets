@@ -12,6 +12,8 @@ class Commands {
     const TIME_ZONE = 'America/Bogota';
     const TODAY = utcToZonedTime(new Date(), TIME_ZONE);
     let isUpdated = false;
+    let homeTeam;
+    let awayTeam;
 
     return MATCHES_DB
       .where('status', '==', currentStatus)
@@ -22,6 +24,8 @@ class Commands {
           const isSameDayMatch = isSameDay(MATCH_DATE, TODAY);
 
           if (isSameDayMatch) {
+            homeTeam = doc.data().homeTeam;
+            awayTeam = doc.data().awayTeam;
             MATCHES_DB.doc(doc.id)
               .update({
                 status: newStatus
@@ -35,7 +39,7 @@ class Commands {
       .then((isUpdated) => {
         let result = false;
         const status = newStatus === STATUS.started
-          ? 'Empezó el partido, apuestas cerradas! ⚽️'
+          ? `Empezó el partido ${homeTeam} - ${awayTeam}, Apuestas cerradas! ⚽️`
           : 'Terminó el partido... ⚽️';
 
         if (isUpdated) {
