@@ -10,5 +10,8 @@
   "approve": "Aprobar",
   "check_voucher": "Revisar voucher",
   "bets_approval_title": "Aprobación de apuestas",
-  "bets_approval_subtitle": "Verifica el voucher para aprobar la apuesta"
+  "bets_approval_subtitle": "Verifica el voucher para aprobar la apuesta",
+  "page_not_found": "Página no encontrada",
+  "error_ocurred": "Ha ocurrido un error",
+  "go_to_home_page": "Ir a inicio"
 }

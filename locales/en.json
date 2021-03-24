@@ -10,5 +10,8 @@
   "approve": "Approve",
   "check_voucher": "Check voucher",
   "bets_approval_title": "Bets approval",
-  "bets_approval_subtitle": "Check voucher to approve betting"
+  "bets_approval_subtitle": "Check voucher to approve betting",
+  "page_not_found": "Page not found",
+  "error_ocurred": "An error occurred",
+  "go_to_home_page": "Go to home page"
 }
