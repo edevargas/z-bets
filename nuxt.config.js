@@ -1,7 +1,5 @@
 import firebaseConfig from './firebase.config'
-
-import en from './locales/en.json'
-import es from './locales/es.json'
+import i18nConfig from './i18n.config'
 
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
@@ -83,17 +81,7 @@ export default {
   ],
 
   firebase: firebaseConfig,
-
-  i18n: {
-    locales: ['en', 'es'],
-    defaultLocale: 'en',
-    vueI18n: {
-      fallbackLocale: 'en',
-      lazy: true,
-      langDir: 'locales/',
-      messages: { en, es }
-    }
-  },
+  i18n: i18nConfig,
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
