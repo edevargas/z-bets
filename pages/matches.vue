@@ -27,7 +27,7 @@
 import { getAllMatches } from '~/endpoints/matches'
 
 export default {
-  name: 'History',
+  name: 'Matches',
   components: {
     Match: () => import('~/components/bets/Match')
   },

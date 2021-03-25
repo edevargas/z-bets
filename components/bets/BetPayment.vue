@@ -3,11 +3,11 @@
     <progress v-if="loading" class="progress is-primary mt-3" />
     <template v-else>
       <button type="button" :class="[zButton, 'is-warning']">
-        Copy receiver number
+        {{ $t('copy_receiver_number') }}
       </button>
 
       <div class="title is-5 my-5">
-        Remember to pay {{ payments.amount | currency }}
+        {{ $t('remember_to_pay') }} {{ payments.amount | currency }}
       </div>
       <a
         target="_blank"
@@ -24,20 +24,20 @@
         Daviplata
       </a>
 
-      <div class="title is-5 my-5">¿Have you already paid?</div>
+      <div class="title is-5 my-5">{{ $t('already_paid') }}</div>
       <button
         type="button"
         :class="[zButton, 'is-danger is-inverted mx-2']"
         @click="$emit('back')"
       >
-        ← Back
+        ← {{ $t('back') }}
       </button>
       <button
         type="button"
         :class="[zButton, 'is-primary mx-2']"
         @click="$emit('next')"
       >
-        Next →
+        {{ $t('next') }} →
       </button>
     </template>
   </div>

@@ -41,7 +41,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { login, logOut } from '~/endpoints/auth'
+import { logIn, logOut } from '~/endpoints/auth'
 
 export default {
   name: 'AppNav',
@@ -56,7 +56,7 @@ export default {
     })
   },
   methods: {
-    login,
+    logIn,
     logOut,
   }
 }

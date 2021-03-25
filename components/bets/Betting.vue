@@ -13,7 +13,6 @@
           <BetPayment v-if="step === 2" @back="step = 1" @next="step = 3" />
           <BetVoucher
             v-if="step === 3"
-            :match="match"
             @back="step = 2"
             @set-voucher="setVoucher"
           />
@@ -66,8 +65,8 @@ export default {
       user: 'user'
     }),
     title() {
-      const titles = ['Give the score', 'Make the payment', 'Upload the voucher', 'Betting confirmation']
-      return titles[this.step - 1]
+      const titles = ['give_score', 'make_payment', 'upload_voucher', 'betting_confirmation']
+      return this.$t(titles[this.step - 1])
     }
   },
   methods: {
@@ -119,7 +118,7 @@ export default {
         return
       }
 
-      const notification = { type: 'success', body: '¡Bet done! Pending approval', time: 5000 }
+      const notification = { type: 'success', body: this.$t('bet_done'), time: 5000 }
       this.$nuxt.$emit('show-notification', notification)
       this.$emit('close')
     }

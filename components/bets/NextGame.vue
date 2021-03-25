@@ -19,6 +19,7 @@
             {{ $t('bet_now') }}
           </button>
         </div>
+        <progress v-else class="progress is-primary my-6" />
       </div>
     </section>
   </div>

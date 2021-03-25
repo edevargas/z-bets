@@ -1,5 +1,4 @@
 export function getBetsByMatch(matchId, onlyApproved = true) {
-  console.log('🚀 ~ file: bets.js ~ line 2 ~ getBetsByMatch ~ matchId', matchId)
   const bets = $nuxt.$fire.firestore.collection('bets')
   let query = bets.where('matchId', '==', matchId)
   if (onlyApproved) {

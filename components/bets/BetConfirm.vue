@@ -1,21 +1,21 @@
 <template>
   <div class="wrap-payment">
     <Match :match="match" :score="score" is-title />
-    <p v-if="voucher" class="mt-2 mb-5">Voucher ✅</p>
-    <p v-else>Please, send the voucher to admin ⚠️</p>
+    <p v-if="voucher" class="mt-2 mb-5">{{ $t('voucher') }} ✅</p>
+    <p v-else>{{ $t('without_voucher') }} ⚠️</p>
     <button
       type="button"
       :class="[zButton, 'is-danger is-inverted mx-2']"
       @click="$emit('back')"
     >
-      ← Back
+      ← {{ $t('back') }}
     </button>
     <button
       type="button"
       :class="[zButton, 'is-primary mx-2', confirming ? 'is-loading' : null]"
       @click="confirm"
     >
-      Finish 🤞🏼
+      {{ $t('finish') }} 🤞🏼
     </button>
   </div>
 </template>

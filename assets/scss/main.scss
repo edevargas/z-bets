@@ -5,3 +5,14 @@ html {
 .hero.transparent {
   background: rgba($color: #111, $alpha: 0.8) !important;
 }
+
+progress {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 500px) {
+  progress {
+    max-width: 75%;
+  }
+}

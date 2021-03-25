@@ -21,7 +21,7 @@
       :class="[zButton, 'is-danger mx-2']"
       @click="$emit('cancel')"
     >
-      Cancel
+      {{ $t('cancel') }}
     </button>
     <button
       type="button"
@@ -29,7 +29,7 @@
       :disabled="!validateHomeScore || !validateAwayScore"
       @click="next"
     >
-      Next →
+      {{ $t('next') }} →
     </button>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
   methods: {
     next() {
       if (!this.validateHomeScore || !this.validateAwayScore) {
-        const notification = { type: 'error', body: 'Check scores' }
+        const notification = { type: 'error', body: this.$t('check_scores') }
         this.$nuxt.$emit('show-notification', notification)
       }
 
@@ -80,7 +80,7 @@ export default {
         return true
       }
 
-      const notification = { type: 'info', body: 'Number between 0 - 9' }
+      const notification = { type: 'info', body: this.$t('validate_number') }
       this.$nuxt.$emit('show-notification', notification)
       return false
     }

@@ -4,20 +4,20 @@
       <label class="file-label">
         <input @change="onFileChange" type="file" class="file-input" />
         <span class="file-cta">
-          <span class="file-label">📤 Choose an image</span>
+          <span class="file-label">📤 {{ $t('choose_image') }}</span>
         </span>
-        <span class="file-name">{{ fileName || "Without selection" }}</span>
+        <span class="file-name">{{ fileName || $t('without_selection') }}</span>
       </label>
     </div>
 
-    <div class="title is-5 my-5">You need the voucher to finish betting</div>
+    <div class="title is-5 my-5">{{ $t('voucher_needed') }}</div>
     <div class="wrap-buttons">
       <button
         type="button"
         :class="[zButton, 'is-danger is-inverted mx-2']"
         @click="$emit('back')"
       >
-        ← Back
+        ← {{ $t('back') }}
       </button>
       <button
         type="button"
@@ -25,7 +25,7 @@
         :disabled="disabled"
         @click="next"
       >
-        Next →
+        {{ $t('next') }} →
       </button>
     </div>
   </div>
@@ -55,12 +55,12 @@ export default {
     onFileChange(e) {
       this.voucher = e.target.files[0]
       if (this.disabled) {
-        this.showError('File type not allowed (only images)')
+        this.showError(this.$t('file_type_not_allowed'))
         return
       }
 
       if (!this.isValidSizeFile) {
-        this.showError('File exceeds allowed size')
+        this.showError(this.$t('file_exceeds_size'))
         return
       }
 
@@ -78,3 +78,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.file-name {
+  max-width: unset;
+}
+</style>

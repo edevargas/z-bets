@@ -44,7 +44,7 @@
         </tbody>
       </table>
       <p v-if="bets.length === 0" class="has-text-centered is-size-5">
-        · Still no items ·
+        {{ $t('still_no_items') }}
       </p>
     </template>
     <ApprovalModal
@@ -62,7 +62,7 @@ import { getNextMatch } from '~/endpoints/matches'
 import { getBetsByMatch } from '~/endpoints/bets'
 
 export default {
-  layout: 'admin',
+  // layout: 'admin',
   name: 'BetsApproval',
   meta: {
     requiresAuth: true,
@@ -101,12 +101,7 @@ export default {
   },
   methods: {
     getStatus(status) {
-      const types = {
-        pending: 'Pending',
-        approved: 'Approved',
-        denied: 'Denied'
-      }
-      return types[status]
+      return this.$t(`bet_${status}`) || ''
     },
     approve() {}
   }

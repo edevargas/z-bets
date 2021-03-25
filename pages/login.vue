@@ -3,13 +3,13 @@
     <BackgroundImg image="seats.jpg" placeholder="seats-min.jpg" />
     <main class="background-content hero transparent is-dark has-text-centered">
       <div class="hero-body">
-        <h1 class="title is-1 mx-5">¿Are you a Zemogian?</h1>
+        <h1 class="title is-1 mx-5">{{ $t('login_title') }}</h1>
         <button
           type="button"
           :class="[zButton, 'is-primary mb-0']"
-          @click="login"
+          @click="logIn"
         >
-          Log in
+          {{ $t('log_in') }}
         </button>
       </div>
     </main>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { login } from '~/endpoints/auth'
+import { logIn } from '~/endpoints/auth'
 
 export default {
   name: 'Login',
@@ -30,7 +30,7 @@ export default {
     }
   },
   methods: {
-    login
+    logIn
   }
 }
 </script>

@@ -1,11 +1,12 @@
-export async function login() {
+export async function logIn() {
   const provider = new $nuxt.$fireModule.auth.GoogleAuthProvider()
   
   await $nuxt.$fire.auth.signInWithPopup(provider)
     .then((result) => {
       const { additionalUserInfo: { isNewUser, profile } } = result
       if (isNewUser) {
-        const notification = { type: 'info', body: `${profile.given_name}, welcome to Z-Bets` }
+        const welcome = $nuxt.$t('welcome')
+        const notification = { type: 'info', body: `${profile.given_name}, ${welcome}` }
         $nuxt.$emit('show-notification', notification)
       }
     }).catch(({ message: body }) => {
@@ -17,7 +18,7 @@ export async function login() {
 export function logOut() {
   $nuxt.$fire.auth.signOut()
     .then(() => {
-      const notification = { type: 'info', body: 'Sign-out successful' }
+      const notification = { type: 'info', body: $nuxt.$t('sign_out_successful') }
       $nuxt.$emit('show-notification', notification)
       $nuxt.$router.push('/')
     })

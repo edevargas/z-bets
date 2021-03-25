@@ -1,7 +1,7 @@
 <template>
   <main class="container is-max-desktop">
-    <h1 class="title is-1 mt-4">Realtime bets</h1>
-    <p class="subtitle is-3 mb-3">User & bets</p>
+    <h1 class="title is-1 mt-4">{{ $t('realtime_bets') }}</h1>
+    <p class="subtitle is-3 mb-3">{{ $t('scores') }}</p>
 
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
@@ -33,7 +33,7 @@
         </tbody>
       </table>
       <p v-if="bets.length === 0" class="has-text-centered is-size-5">
-        · Still no items ·
+        {{ $t('still_no_items') }}
       </p>
     </template>
   </main>

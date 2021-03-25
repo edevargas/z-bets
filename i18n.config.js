@@ -14,9 +14,10 @@ export default {
       flag: '🇨🇴'
     }
   ],
-  defaultLocale: 'en',
+  defaultLocale: 'es',
+  strategy: 'no_prefix',
   vueI18n: {
-    fallbackLocale: 'en',
+    fallbackLocale: 'es',
     lazy: true,
     langDir: 'locales/',
     messages: { en, es }

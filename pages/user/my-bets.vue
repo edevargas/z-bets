@@ -1,7 +1,7 @@
 <template>
   <main class="container is-max-desktop">
-    <h1 class="title is-1 mt-4">My bets</h1>
-    <p class="subtitle is-3 mb-3">Matches & statuses</p>
+    <h1 class="title is-1 mt-4">{{ $t('my_bets') }}</h1>
+    <p class="subtitle is-3 mb-3">{{ $t('bets_results') }}</p>
 
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
@@ -19,10 +19,10 @@
                 <div class="actions">
                   <div class="status">{{ getStatus(item.status) }}</div>
                   <nuxt-link
-                    to="/history"
+                    to="/matches"
                     :class="[zButton, 'is-primary result']"
                   >
-                    View result
+                    {{ $t('view_result') }}
                   </nuxt-link>
                 </div>
               </td>
@@ -31,7 +31,7 @@
         </tbody>
       </table>
       <p v-if="bets.length === 0" class="has-text-centered is-size-5">
-        · Still no items ·
+        {{ $t('still_no_items') }}
       </p>
     </template>
   </main>
@@ -71,13 +71,8 @@ export default {
       return { homeScore, awayScore }
     },
     getStatus(status) {
-      const types = {
-        pending: 'Pending',
-        approved: 'Approved',
-        denied: 'Denied'
-      }
-      return types[status]
-    }
+      return this.$t(`bet_${status}`) || ''
+    },
   }
 }
 </script>

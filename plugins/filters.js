@@ -2,9 +2,13 @@ import Vue from 'vue'
 
 Vue.filter('formatDate', (timestamp) => {
   const dateOptions = {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'
+    weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
   }
-  return timestamp.toLocaleDateString('en-US', dateOptions)
+  const dateCodes = {
+    en: 'en-US',
+    es: 'es-CO',
+  }
+  return timestamp.toLocaleDateString(dateCodes[$nuxt.$i18n.locale], dateOptions)
 })
 
 Vue.filter('initials', (str) => {

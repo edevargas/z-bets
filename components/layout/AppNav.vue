@@ -2,6 +2,7 @@
   <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <nuxt-link to="/" class="navbar-item"> Z-Bets </nuxt-link>
+      <SwitchLanguage />
 
       <a
         role="button"
@@ -13,13 +14,12 @@
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
-      <SwitchLanguage />
     </div>
 
 
     <div id="navbar" :class="['navbar-menu', active ? 'is-active' : null]">
       <div class="navbar-start">
-        <nuxt-link to="/history" class="navbar-item">
+        <nuxt-link to="/matches" class="navbar-item">
           {{ $t("matches") }}
         </nuxt-link>
 
@@ -31,7 +31,6 @@
             {{ $t("my_bets") }}
           </nuxt-link>
         </template>
-        
       </div>
 
       <div
@@ -41,9 +40,9 @@
           v-if="!user"
           type="button"
           :class="[zButton, 'is-primary mb-0']"
-          @click="login"
+          @click="logIn"
         >
-          {{ $t("login") }}
+          {{ $t("log_in") }}
         </button>
         <template v-else>
           {{ user.displayName }}
@@ -53,7 +52,7 @@
             :class="[zButton, 'is-danger mb-0']"
             @click="logOut"
           >
-            {{ $t("logout") }}
+            {{ $t("log_out") }}
           </button>
         </template>
       </div>
@@ -63,7 +62,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { login, logOut } from '~/endpoints/auth'
+import { logIn, logOut } from '~/endpoints/auth'
 
 export default {
   name: 'AppNav',
@@ -83,7 +82,7 @@ export default {
     }),
   },
   methods: {
-    login,
+    logIn,
     logOut
   }
 }
@@ -95,6 +94,10 @@ export default {
 
   .navbar-item {
     color: #fff;
+
+    &:hover {
+      background-color: #121212;
+    }
   }
 }
 </style>

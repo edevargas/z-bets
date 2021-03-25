@@ -13,19 +13,19 @@
       <section class="modal-card-body">
         <img v-if="voucher" :src="voucher" />
         <p v-else-if="error" class="title is-2 my-6 has-text-centered">
-          🙁 Image not provided
+          🙁 {{ $t('image_not_provided') }}
         </p>
         <progress v-else class="progress is-primary my-6" />
       </section>
       <footer class="modal-card-foot">
         <button :class="[zButton, 'result']" @click="$emit('close')">
-          Cancel
+          {{ $t('cancel') }}
         </button>
         <button
           :class="[zButton, 'is-primary result']"
           @click="$emit('approve')"
         >
-          Approve
+          {{ $t('approve') }}
         </button>
       </footer>
     </div>
@@ -54,19 +54,24 @@ export default {
   },
   computed: {
     title() {
-      return this.bet?.user?.displayName || 'Approving'
-    }
+      return this.bet?.user?.displayName || this.$t('bets_approval_modal_title')
+    },
   },
   watch: {
     async bet(newVal) {
-      if (newVal) {
-        console.log('🚀 ~ file: ApprovalModal.vue ~ line 61 ~ bet ~ newVal.id', newVal.id)
+      if (Object.keys(newVal).length) {
         const voucher = await getFileUrl('vouchers', newVal.id)
         if (!voucher) {
           this.error = true
         }
 
         this.voucher = voucher
+      }
+    },
+    open(newVal) {
+      if (!newVal) {
+        this.error = false
+        this.voucher = ''
       }
     }
   }

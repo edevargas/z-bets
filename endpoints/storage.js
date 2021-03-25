@@ -1,15 +1,15 @@
 export function uploadFile({ file, folder, name }) {
   return new Promise((resolve, reject) => {
     if (!file) {
-      reject({ error: 'Select a valid image', data: null })
+      reject({ error: $nuxt.$t('file_valid_image'), data: null })
     }
 
     if (!validateTypeFile(file)) {
-      reject({ error: 'File type not allowed (only images)', data: null })
+      reject({ error: $nuxt.$t('file_type_not_allowed'), data: null })
     }
 
     if (!validateSizeFile(file)) {
-      reject({ error: 'File exceeds allowed size', data: null })
+      reject({ error: $nuxt.$t('file_exceeds_size'), data: null })
     }
 
     const storageRef = $nuxt.$fire.storage.ref().child(`${folder}/${name}`)
@@ -40,7 +40,10 @@ export function validateSizeFile(file) {
 }
 
 export function getFileUrl(folder, fileName){
-  console.log('🚀 ~ file: storage.js ~ line 43 ~ getFileUrl ~ folder, fileName', folder, fileName)
+  if(!folder || !fileName) {
+    return ''
+  }
+  
   return new Promise((resolve) => {
     const storageRef = $nuxt.$fire.storage.ref().child(`${folder}/${fileName}`)
 
