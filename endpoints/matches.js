@@ -13,5 +13,5 @@ export async function getAllMatches() {
   const matches = $nuxt.$fire.firestore.collection('matches')
   const { docs } = await matches.orderBy('date', 'asc').get()
   // TODO Check reactivity in UI
-  return docs.map((item) => item.data())
+  return docs.map((item) => ({ ...item.data(), id: item.id }))
 }

@@ -2,7 +2,7 @@
   <div :class="['wrapper mb-0', keepRow ? 'keep-row' : null]">
     <div :class="['team home mb-0', titleClass]">
       {{ match.homeTeam }}
-      <img :src="match.homeFlag" :alt="match.homeTeam" class="mx-2" />
+      <img :src="match.homeFlag" :alt="match.homeId" class="mx-2" />
     </div>
     <div :class="['score mb-0', titleClass]">
       <span v-if="gambling" class="is-4">-</span>
@@ -14,7 +14,7 @@
       </span>
     </div>
     <div :class="['team away mb-0', titleClass]">
-      <img :src="match.awayFlag" :alt="match.awayTeam" class="mx-2" />
+      <img :src="match.awayFlag" :alt="match.awayId" class="mx-2" />
       {{ match.awayTeam }}
     </div>
   </div>

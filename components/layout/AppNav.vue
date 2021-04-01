@@ -19,8 +19,8 @@
 
     <div id="navbar" :class="['navbar-menu', active ? 'is-active' : null]">
       <div class="navbar-start">
-        <nuxt-link to="/matches" class="navbar-item">
-          {{ $t("matches") }}
+        <nuxt-link to="/fixture" class="navbar-item">
+          {{ $t("fixture") }}
         </nuxt-link>
 
         <template v-if="user">

@@ -19,7 +19,7 @@
                 <div class="actions">
                   <div class="status">{{ getStatus(item.status) }}</div>
                   <nuxt-link
-                    to="/matches"
+                    to="/fixture"
                     :class="[zButton, 'is-primary result']"
                   >
                     {{ $t('view_result') }}
