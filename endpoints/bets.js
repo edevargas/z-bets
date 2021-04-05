@@ -1,8 +1,10 @@
+import { BET_STATUS } from '~/plugins/constants'
+
 export function getBetsByMatch(matchId, onlyApproved = true) {
   const bets = $nuxt.$fire.firestore.collection('bets')
   let query = bets.where('matchId', '==', matchId)
   if (onlyApproved) {
-    query = query.where('status', '==', 'approved')
+    query = query.where('status', '==', BET_STATUS.APPROVED)
   }
   query.onSnapshot((querySnapshot) => {
     const data = []

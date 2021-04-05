@@ -29,6 +29,7 @@
 
 <script>
 import { getAllMatches } from '~/endpoints/matches'
+import { MATCH_STATUS } from '~/plugins/constants'
 
 export default {
   name: 'Matches',
@@ -51,7 +52,7 @@ export default {
       return `tag ${tagColor} is-light`
     },
     isFinished({ status }) {
-      return status === 'finished'
+      return status === MATCH_STATUS.FINISHED
     },
   }
 }

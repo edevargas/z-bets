@@ -2,7 +2,7 @@
   <div :class="['wrapper mb-0', keepRow ? 'keep-row' : null]">
     <div :class="['team home mb-0', titleClass]">
       {{ match.homeTeam }}
-      <img :src="match.homeFlag" :alt="match.homeId" class="mx-2" />
+      <img :src="match.homeId | flag" :alt="match.homeId" class="mx-2" />
     </div>
     <div :class="['score mb-0', titleClass]">
       <span v-if="gambling" class="is-4">-</span>
@@ -14,13 +14,15 @@
       </span>
     </div>
     <div :class="['team away mb-0', titleClass]">
-      <img :src="match.awayFlag" :alt="match.awayId" class="mx-2" />
+      <img :src="match.awayId | flag" :alt="match.awayId" class="mx-2" />
       {{ match.awayTeam }}
     </div>
   </div>
 </template>
 
 <script>
+import { BET_STATUS } from '~/plugins/constants'
+
 export default {
   name: 'Match',
   props: {
@@ -46,7 +48,7 @@ export default {
     },
     showVersus() {
       const { match, hasScore } = this
-      return match.status === 'pending' && !hasScore
+      return match.status === BET_STATUS.PENDING && !hasScore
     }
   }
 }

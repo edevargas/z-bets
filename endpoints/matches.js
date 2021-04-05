@@ -1,7 +1,8 @@
+import { BET_STATUS } from '~/plugins/constants'
+
 export function getNextMatch() {
   const matches = $nuxt.$fire.firestore.collection('matches')
-  const today = new Date()
-  const query = matches.where('status', '==', 'pending').orderBy('date', 'asc').limit(1)
+  const query = matches.where('status', '==', BET_STATUS.PENDING).orderBy('date', 'asc').limit(1)
   query.onSnapshot((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       $nuxt.$emit('next-match', { ...doc.data(), id: doc.id })

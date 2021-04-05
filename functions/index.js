@@ -17,7 +17,7 @@ app.post('/v1', (req, res, next) => {
   return commandsController.changeMatchCurrentStatus(req.body)
     .then((isUpdated) => {
       console.log('PAYLOAD', req.body);
-      const result = isUpdated ? 'Estado del Partido actualizado ✅' : 'Aún no empieza el partido ❌';
+      const result = isUpdated ? 'Estado del partido actualizado ✅' : 'Aún no empieza el partido ❌';
       return res.status(200).json({
         result,
       });

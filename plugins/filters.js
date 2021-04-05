@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { FLAGS_API_FIFA } from './constants'
 
 Vue.filter('formatDate', (timestamp) => {
   const dateOptions = {
@@ -11,12 +12,10 @@ Vue.filter('formatDate', (timestamp) => {
   return timestamp.toLocaleDateString(dateCodes[$nuxt.$i18n.locale], dateOptions)
 })
 
-Vue.filter('initials', (str) => {
-  return str.substring(0, 3)
-})
-
 Vue.filter('currency', (value) => {
   const currencyOptions = { style: 'currency', currency: 'COP', maximumSignificantDigits: 3 }
   const amount = new Intl.NumberFormat('es-CO', currencyOptions).format(value)
   return `${amount} COP`
 })
+
+Vue.filter('flag', (teamId) => `${FLAGS_API_FIFA}${teamId}`)

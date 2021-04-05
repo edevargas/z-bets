@@ -35,6 +35,7 @@
 import { mapGetters } from 'vuex'
 import { betting } from '~/endpoints/bets'
 import { uploadFile } from '~/endpoints/storage'
+import { BET_STATUS } from '~/plugins/constants'
 
 export default {
   name: 'Betting',
@@ -92,7 +93,7 @@ export default {
         match,
         awayScore,
         homeScore,
-        status: 'pending'
+        status: BET_STATUS.PENDING,
       }
     },
     async finish() {

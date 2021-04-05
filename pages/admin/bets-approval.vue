@@ -19,13 +19,13 @@
                     {{ item.user.displayName }}
                   </div>
                   <div class="bet">
-                    <img :src="item.match.homeFlag" class="mx-2" />
+                    <img :src="item.match.homeId" class="mx-2" />
                     <div class="score">
                       {{ item.homeScore }}
                       -
                       {{ item.awayScore }}
                     </div>
-                    <img :src="item.match.awayFlag" class="mx-2" />
+                    <img :src="item.match.awayId" class="mx-2" />
                   </div>
                   <div class="actions">
                     <div class="status">{{ getStatus(item.status) }}</div>

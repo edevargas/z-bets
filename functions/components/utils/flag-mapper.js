@@ -1,5 +1,3 @@
-const FLAG_URL = 'https://api.fifa.com/api/v1/picture/flags-sq-1/';
-
 const FLAG_MAPPER = {
   col: ':flag-co:',
   per: ':flag-pe:',
@@ -12,14 +10,10 @@ const FLAG_MAPPER = {
   bra: ':flag-br:',
 };
 
-const getSlackFlag = (flagUrl = '') => {
-  const flagKey = flagUrl.replace(FLAG_URL, '');
+const getSlackFlag = (teamId = '') => FLAG_MAPPER[teamId] || '';
 
-  return FLAG_MAPPER[flagKey];
-};
-
-const getScoreMsg = (homeFlag, homeScore, awayFlag, awayScore) => (
-  `${getSlackFlag(homeFlag)} ${homeScore} - ${awayScore} ${getSlackFlag(awayFlag)}`
+const getScoreMsg = (homeId, homeScore, awayId, awayScore) => (
+  `${getSlackFlag(homeId)} ${homeScore} - ${awayScore} ${getSlackFlag(awayId)}`
 );
 
 module.exports = {

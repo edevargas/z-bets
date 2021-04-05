@@ -6,14 +6,14 @@
         v-model="homeScore"
         type="number"
         class="input is-medium"
-        :placeholder="match.homeTeam | initials"
+        :placeholder="match.homeId"
       />
       vs
       <input
         v-model="awayScore"
         type="number"
         class="input is-medium"
-        :placeholder="match.awayTeam | initials"
+        :placeholder="match.awayId"
       />
     </div>
     <button

@@ -17,10 +17,10 @@ class Notifications {
   betCreation(data) {
     const { displayName } = data.user;
     const { homeScore, awayScore } = data;
-    const { homeFlag, awayFlag } = data.match;
+    const { homeId, awayId } = data.match;
 
     return this.sendSlackNotification({
-      text: `${displayName} registró una nueva apuesta: ${getScoreMsg(homeFlag, homeScore, awayFlag, awayScore)}`
+      text: `${displayName} registró una nueva apuesta: ${getScoreMsg(homeId, homeScore, awayId, awayScore)}`
     });
   }
 

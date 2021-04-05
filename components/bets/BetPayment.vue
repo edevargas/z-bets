@@ -7,21 +7,16 @@
       </button>
 
       <div class="title is-5 my-5">
-        {{ $t('remember_to_pay') }} {{ payments.amount | currency }}
+        {{ $t('remember_to_pay') }} {{ betSettings.amount | currency }}
       </div>
       <a
+        v-for="(item, key) in paymentSettings"
+        :key="key"
         target="_blank"
-        :href="`${payments.nequi}`"
-        :class="[zButton, 'is-link mx-2']"
+        :href="item.link"
+        :class="[zButton, item.color, 'mx-2']"
       >
-        Nequi
-      </a>
-      <a
-        target="_blank"
-        :href="`${payments.daviplata}`"
-        :class="[zButton, 'is-danger mx-2']"
-      >
-        Daviplata
+        {{ item.name }}
       </a>
 
       <div class="title is-5 my-5">{{ $t('already_paid') }}</div>
@@ -44,28 +39,32 @@
 </template>
 
 <script>
-import { getPaymentSettings } from '~/endpoints/settings'
+import { getBetSettings, getPaymentSettings } from '~/endpoints/settings'
 
 export default {
   name: 'BetPayment',
   data() {
     return {
       zButton: this.$nuxt.context.env.Z_BUTTON,
-      payments: {}
+      betSettings: {},
+      paymentSettings: {}
     }
   },
   mounted() {
+    getBetSettings()
     getPaymentSettings()
     // realtime listener
-    this.$nuxt.$on('payments', (data) => (this.payments = data))
+    this.$nuxt.$on('bet-settings', (data) => (this.betSettings = data))
+    this.$nuxt.$on('payment-settings', (data) => (this.paymentSettings = data))
   },
   computed: {
     loading() {
-      return !Object.keys(this.payments).length
+      return !Object.keys(this.paymentSettings).length
     }
   },
   beforeDestroy() {
-    this.$nuxt.$off('payments')
+    this.$nuxt.$off('bet-settings')
+    this.$nuxt.$off('payment-settings')
   }
 }
 </script>
