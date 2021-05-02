@@ -1,15 +1,15 @@
 export function uploadFile({ file, folder, name }) {
   return new Promise((resolve, reject) => {
     if (!file) {
-      reject({ error: $nuxt.$t('file_valid_image'), data: null })
+      reject({ error: 'file_valid_image', data: null })
     }
 
     if (!validateTypeFile(file)) {
-      reject({ error: $nuxt.$t('file_type_not_allowed'), data: null })
+      reject({ error: 'file_type_not_allowed', data: null })
     }
 
     if (!validateSizeFile(file)) {
-      reject({ error: $nuxt.$t('file_exceeds_size'), data: null })
+      reject({ error: 'file_exceeds_size', data: null })
     }
 
     const storageRef = $nuxt.$fire.storage.ref().child(`${folder}/${name}`)
@@ -29,7 +29,7 @@ export function validateTypeFile(file) {
     return false
   }
 
-  const [, type] = file.name.split('.')
+  const type = file.name.split('.').pop()
   const typesAllowed = ['png', 'jpg', 'jpeg']
   return typesAllowed.includes(type?.toLowerCase())
 }

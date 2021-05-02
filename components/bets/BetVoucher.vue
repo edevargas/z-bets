@@ -11,6 +11,14 @@
     </div>
 
     <div class="title is-5 my-5">{{ $t('voucher_needed') }}</div>
+    <div
+      v-if="showLinkToMinifyImg"
+      class="title is-5 has-text-primary has-background-dark py-2"
+      style="width: 100%;"
+    >
+      🗂 {{ $t('minify_image') }} <a href="https://tinypng.com/" target="_blank">Tinypng</a>
+    </div>
+
     <div class="wrap-buttons">
       <button
         type="button"
@@ -40,7 +48,8 @@ export default {
     return {
       zButton: this.$nuxt.context.env.Z_BUTTON,
       voucher: '',
-      fileName: ''
+      fileName: '',
+      showLinkToMinifyImg: false,
     }
   },
   computed: {
@@ -55,20 +64,22 @@ export default {
     onFileChange(e) {
       this.voucher = e.target.files[0]
       if (this.disabled) {
-        this.showError(this.$t('file_type_not_allowed'))
+        this.showError('file_type_not_allowed')
         return
       }
 
       if (!this.isValidSizeFile) {
-        this.showError(this.$t('file_exceeds_size'))
+        this.showError('file_exceeds_size')
+        this.showLinkToMinifyImg = true
         return
       }
 
+      this.showLinkToMinifyImg = false
       this.fileName = this.voucher.name
     },
     showError(message) {
       this.voucher = this.fileName = ''
-      const notification = { type: 'error', body: message }
+      const notification = { type: 'error', body: this.$t(message) }
       this.$nuxt.$emit('show-notification', notification)
     },
     next() {
@@ -82,5 +93,9 @@ export default {
 <style lang="scss" scoped>
 .file-name {
   max-width: unset;
+}
+
+.title a {
+  text-decoration: underline;
 }
 </style>

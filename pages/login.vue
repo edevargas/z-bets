@@ -11,6 +11,7 @@
         >
           {{ $t('log_in') }}
         </button>
+        <p class="mt-4">{{ $t('login_description') }}</p>
       </div>
     </main>
   </div>

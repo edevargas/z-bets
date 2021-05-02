@@ -2,12 +2,18 @@
   <div class="wrap-payment">
     <progress v-if="loading" class="progress is-primary mt-3" />
     <template v-else>
-      <button type="button" :class="[zButton, 'is-warning']">
+      <h1 class="title has-text-centered mb-5">
+        {{ betSettings.amount | currency }}
+      </h1>
+      <button v-if="!error" type="button" :class="[zButton, 'is-warning']" @click="copyNumber">
         {{ $t('copy_receiver_number') }}
       </button>
+      <div v-else class="title is-4 has-text-warning has-background-dark py-2">
+        ⚠️ {{ $t('error_ocurred') }}. {{ $t('fallback_copy_number') }}
+      </div>
 
       <div class="title is-5 my-5">
-        {{ $t('remember_to_pay') }} {{ betSettings.amount | currency }}
+        {{ $t('transfer_options') }} 
       </div>
       <a
         v-for="(item, key) in paymentSettings"
@@ -47,7 +53,8 @@ export default {
     return {
       zButton: this.$nuxt.context.env.Z_BUTTON,
       betSettings: {},
-      paymentSettings: {}
+      paymentSettings: {},
+      error: false,
     }
   },
   mounted() {
@@ -65,6 +72,26 @@ export default {
   beforeDestroy() {
     this.$nuxt.$off('bet-settings')
     this.$nuxt.$off('payment-settings')
+  },
+  methods: {
+    async copyNumber() {
+      const { transferNumber } = this.betSettings
+      const failedCopy = { type: 'error', body: this.$t('number_failed_copy') }
+
+      if (!transferNumber) {
+        this.$nuxt.$emit('show-notification', failedCopy)
+        this.error = true
+        return
+      }
+      
+      navigator.clipboard.writeText(transferNumber).then(() => {
+        const successfulCopy = { type: 'info', body: this.$t('number_succesful_copy') }
+        this.$nuxt.$emit('show-notification', successfulCopy)
+      }, () => {
+        this.$nuxt.$emit('show-notification', failedCopy)
+        this.error = true
+      })
+    }
   }
 }
 </script>

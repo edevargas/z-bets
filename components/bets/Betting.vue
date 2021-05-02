@@ -58,7 +58,7 @@ export default {
       homeScore: 0,
       awayScore: 0,
       voucher: '',
-      folder: ''
+      folder: '',
     }
   },
   computed: {
@@ -113,7 +113,7 @@ export default {
       const { error, data } = await uploadFile({ file, folder, name: idBet })
 
       if (error && !data) {
-        const notification = { type: 'error', body: error }
+        const notification = { type: 'error', body: this.$t(error) }
         this.$nuxt.$emit('show-notification', notification)
         this.$emit('close')
         return
