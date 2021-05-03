@@ -17,16 +17,24 @@
         </p>
         <progress v-else class="progress is-primary my-6" />
       </section>
-      <footer class="modal-card-foot">
+      <footer class="modal-card-foot is-flex is-justify-content-space-between">
         <button :class="[zButton, 'result']" @click="$emit('close')">
           {{ $t('cancel') }}
         </button>
-        <button
-          :class="[zButton, 'is-primary result']"
-          @click="$emit('approve')"
-        >
-          {{ $t('approve') }}
-        </button>
+        <div>
+          <button
+            :class="[zButton, 'is-danger result']"
+            @click="$emit('deny')"
+          >
+            {{ $t('deny') }}
+          </button>
+          <button
+            :class="[zButton, 'is-primary result']"
+            @click="$emit('approve')"
+          >
+            {{ $t('approve') }}
+          </button>
+        </div>
       </footer>
     </div>
   </div>

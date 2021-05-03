@@ -31,3 +31,14 @@ export function betting(payload) {
       .catch((error) => reject({ error, data: null }))
   })
 }
+
+export function betApprove(betId, approval) {
+  return new Promise((resolve, reject) => {
+    const betRef = $nuxt.$fire.firestore.collection('bets').doc(betId)
+    betRef.update({
+      status: approval ? BET_STATUS.APPROVED : BET_STATUS.DENIED
+    })
+      .then(() => resolve({ error: null, data: 'ok' }))
+      .catch((error) => reject({ error, data: null }))
+  })
+}

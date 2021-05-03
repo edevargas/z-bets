@@ -31,10 +31,17 @@
             {{ $t("my_bets") }}
           </nuxt-link>
         </template>
+
+        <template v-if="isAdmin">
+          🔐
+          <nuxt-link v-if="matchAccess('bet_approval')" to="/admin/bets-approval" class="navbar-item">
+            {{ $t("bets_approval") }}
+          </nuxt-link>
+        </template>
       </div>
 
       <div
-        class="navbar-end is-flex is-align-items-center is-flex is-justify-content-flex-end px-2"
+        class="navbar-end is-flex is-align-items-center is-justify-content-flex-end px-2"
       >
         <button
           v-if="!user"
@@ -80,10 +87,21 @@ export default {
     ...mapGetters({
       user: 'user'
     }),
+    isAdmin() {
+      if (!this.user) {
+        return false
+      }
+
+      return this.user.adminAccess
+    }
   },
   methods: {
     logIn,
-    logOut
+    logOut,
+    matchAccess(path) {
+      const accessRegex = new RegExp(this.user.adminAccess)
+      return path.match(accessRegex)
+    }
   }
 }
 </script>

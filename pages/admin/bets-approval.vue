@@ -7,7 +7,7 @@
     <template v-else>
       <table class="table is-hoverable is-fullwidth">
         <tbody>
-          <template v-for="(item, index) in bets">
+          <template v-for="(item, index) in betsForApproval">
             <tr :key="index">
               <td class="has-text-left is-size-5">
                 <div class="bet-timestamp">
@@ -43,15 +43,16 @@
           </template>
         </tbody>
       </table>
-      <p v-if="bets.length === 0" class="has-text-centered is-size-5">
+      <p v-if="betsForApproval.length === 0" class="has-text-centered is-size-5">
         {{ $t('still_no_items') }}
       </p>
     </template>
     <ApprovalModal
       :bet="betDetail"
       :open="openModal"
-      @approve="approve"
-      @close="(betDetail = undefined), (openModal = false)"
+      @approve="approve(true)"
+      @deny="approve(false)"
+      @close="closeModal"
     />
   </main>
 </template>
@@ -59,14 +60,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getNextMatch } from '~/endpoints/matches'
-import { getBetsByMatch } from '~/endpoints/bets'
+import { getBetsByMatch, betApprove } from '~/endpoints/bets'
 
 export default {
-  // layout: 'admin',
   name: 'BetsApproval',
   meta: {
     requiresAuth: true,
-    onlyAdmin: true
+    adminAccess: 'bet_approval',
   },
   components: {
     Avatar: () => import('~/components/utils/Avatar'),
@@ -77,7 +77,7 @@ export default {
       zButton: this.$nuxt.context.env.Z_BUTTON,
       loading: true,
       nextGame: undefined,
-      bets: [],
+      betsForApproval: [],
       betDetail: undefined,
       openModal: false
     }
@@ -92,19 +92,41 @@ export default {
     // realtime listener
     this.$nuxt.$on('next-match', (data) => {
       this.nextGame = data
-      getBetsByMatch(data.id, false)
+      const onlyApproved = false
+      getBetsByMatch(data.id, onlyApproved)
     })
     this.$nuxt.$on('bets-by-match', (data) => {
-      this.bets = data
+      this.betsForApproval = data
       if (this.loading) this.loading = false
     })
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('next-match')
+    this.$nuxt.$off('bets-by-match')
   },
   methods: {
     getStatus(status) {
       return this.$t(`bet_${status}`) || ''
     },
-    approve() {}
-  }
+    async approve(newStatus) {
+      const { id } = this.betDetail
+      const { error, data } = await betApprove(id, newStatus)
+
+      if (error && !data) {
+        const notification = { type: 'error', body: this.$t('error_updating_bet_status') }
+        this.$nuxt.$emit('show-notification', notification)
+        return
+      }
+
+      const notification = { type: 'success', body: this.$t(newStatus ? 'bet_approved' : 'bet_denied') }
+      this.$nuxt.$emit('show-notification', notification)
+      this.closeModal()
+    },
+    closeModal() {
+      this.betDetail = undefined
+      this.openModal = false
+    }
+  },
 }
 </script>
 

@@ -27,3 +27,19 @@ export function logOut() {
       $nuxt.$emit('show-notification', notification)
     })
 }
+
+export function getAdminAccess(email) {
+  return new Promise((resolve) => {
+    const { firestore } = $nuxt.$fire
+    const userId = email.split('@')[0]
+    const admins = firestore.collection('admins').doc(userId)
+    admins.onSnapshot((doc) => {
+      if (!doc || !Object.keys(doc).length) {
+        resolve('')
+      }
+      
+      const { access } = doc.data()
+      resolve(access)
+    })
+  })
+}

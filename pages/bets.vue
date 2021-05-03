@@ -1,8 +1,11 @@
 <template>
   <main class="container is-max-desktop">
     <h1 class="title is-1 mt-4">{{ $t('realtime_bets') }}</h1>
-    <p class="subtitle is-3 mb-3">{{ $t('scores') }}</p>
+    <h2 class="title is-3 has-background-dark has-text-centered has-text-primary py-2 mb-5">
+      {{ $t('amount_collected') }} {{ totalAmount | currency }}
+    </h2>
 
+    <p class="subtitle is-3 mt-1 mb-3">{{ $t('scores') }}</p>
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
       <table class="table is-hoverable is-fullwidth">
@@ -15,13 +18,13 @@
                   {{ item.user.displayName }}
                 </div>
                 <div class="bet">
-                  <img :src="item.match.homeId" class="mx-2" />
+                  <img :src="item.match.homeId | flag" class="mx-2" />
                   <div class="score">
                     {{ item.homeScore }}
                     -
                     {{ item.awayScore }}
                   </div>
-                  <img :src="item.match.awayId" class="mx-2" />
+                  <img :src="item.match.awayId | flag" class="mx-2" />
                 </div>
               </td>
             </tr>
@@ -36,6 +39,7 @@
 </template>
 
 <script>
+import { getBetSettings } from '~/endpoints/settings'
 import { getNextMatch } from '~/endpoints/matches'
 import { getBetsByMatch } from '~/endpoints/bets'
 
@@ -52,12 +56,15 @@ export default {
     return {
       loading: true,
       nextGame: undefined,
+      betSettings: {},
       bets: []
     }
   },
   created() {
+    getBetSettings()
     getNextMatch()
     // realtime listener
+    this.$nuxt.$on('bet-settings', (data) => (this.betSettings = data))
     this.$nuxt.$on('next-match', (data) => {
       this.nextGame = data
       getBetsByMatch(data.id)
@@ -68,8 +75,18 @@ export default {
     })
   },
   beforeDestroy() {
+    this.$nuxt.$off('bet-settings')
     this.$nuxt.$off('next-match')
     this.$nuxt.$off('bets-by-match')
+  },
+  computed: {
+    totalAmount() {
+      if (!this.betSettings) {
+        return 0
+      }
+
+      return this.bets.length * this.betSettings.amount || 0
+    }
   }
 }
 </script>
