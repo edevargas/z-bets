@@ -41,16 +41,12 @@ export default {
   name: 'Betting',
   components: {
     BetScores: () => import('~/components/bets/BetScores'),
-    BetScores: () => import('~/components/bets/BetScores'),
-    BetScores: () => import('~/components/bets/BetScores'),
-    BetScores: () => import('~/components/bets/BetScores')
+    BetPayment: () => import('~/components/bets/BetPayment'),
+    BetVoucher: () => import('~/components/bets/BetVoucher'),
+    BetConfirm: () => import('~/components/bets/BetConfirm')
   },
   props: {
-    match: {
-      type: Object,
-      required: true,
-      default: () => ({})
-    }
+    match: { type: Object, required: true }
   },
   data() {
     return {

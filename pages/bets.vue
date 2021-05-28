@@ -1,39 +1,36 @@
 <template>
   <main class="container is-max-desktop">
     <h1 class="title is-1 mt-4">{{ $t('realtime_bets') }}</h1>
-    <h2 class="title is-3 has-background-dark has-text-centered has-text-primary py-2 mb-5">
+    <h2 class="title is-3 has-background-dark has-text-centered has-text-primary py-2 mb-2">
       {{ $t('amount_collected') }} {{ totalAmount | currency }}
     </h2>
+    <h2 class="title is-3 has-text-centered has-text-primary py-2 mb-5">
+      <Match :match="nextGame" is-title />
+    </h2>
 
-    <p class="subtitle is-3 mt-1 mb-3">{{ $t('scores') }}</p>
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
+      <p class="subtitle is-3 mt-1 mb-3">{{ $t('bets_in_progress') }}</p>
+      
       <table class="table is-hoverable is-fullwidth">
         <tbody>
-          <template v-for="(item, index) in bets">
-            <tr :key="index">
-              <td class="is-size-5">
-                <div class="user">
-                  <Avatar :user="item.user" />
-                  {{ item.user.displayName }}
-                </div>
-                <div class="bet">
-                  <img :src="item.match.homeId | flag" class="mx-2" />
-                  <div class="score">
-                    {{ item.homeScore }}
-                    -
-                    {{ item.awayScore }}
-                  </div>
-                  <img :src="item.match.awayId | flag" class="mx-2" />
-                </div>
-              </td>
-            </tr>
-          </template>
+          <BetItemRow v-for="(item, index) in inProgressBets" :key="index" :item="item" />
+          <tr v-if="inProgressBets.length === 0" class="has-text-centered is-size-5">
+            {{ $t('still_no_items') }}
+          </tr>
         </tbody>
       </table>
-      <p v-if="bets.length === 0" class="has-text-centered is-size-5">
-        {{ $t('still_no_items') }}
-      </p>
+      
+      <p class="subtitle is-3 mt-1 mb-3">{{ $t('bets_lost') }}</p>
+      <table class="table is-hoverable is-fullwidth">
+        <tbody>
+          <BetItemRow v-for="(item, index) in lostBets" :key="index" :item="item" />
+          <tr v-if="lostBets.length === 0" class="has-text-centered is-size-5">
+            {{ $t('still_no_items') }}
+          </tr>
+        </tbody>
+      </table>
+      
     </template>
   </main>
 </template>
@@ -46,11 +43,11 @@ import { getBetsByMatch } from '~/endpoints/bets'
 export default {
   name: 'Bets',
   meta: {
-    requiresAuth: true
+    requiresAuth: true,
   },
   components: {
-    NextGame: () => import('~/components/bets/NextGame'),
-    Avatar: () => import('~/components/utils/Avatar')
+    Match: () => import('~/components/bets/Match'),
+    BetItemRow: () => import('~/components/bets/BetItemRow'),
   },
   data() {
     return {
@@ -86,44 +83,35 @@ export default {
       }
 
       return this.bets.length * this.betSettings.amount || 0
-    }
+    },
+    inProgressBets() {
+      return this.bets
+        .filter(this.currentScoreLower)
+        .sort(this.sorter)
+    },
+    lostBets() {
+      return this.bets
+        .filter(this.currentScoreBigger)
+        .sort(this.sorter)
+    },
+  },
+  methods: {
+    currentScoreLower({ homeScore, awayScore }) {
+      return this.nextGame.homeScore <= homeScore && this.nextGame.awayScore <= awayScore
+    },
+    currentScoreBigger({ homeScore, awayScore }) {
+      return this.nextGame.homeScore > homeScore || this.nextGame.awayScore > awayScore
+    },
+    sorter(firstEl, secondEl) {
+      return firstEl.homeScore - secondEl.homeScore
+    },
+    getScore(item) {
+      const { homeScore, awayScore } = item
+      return { homeScore, awayScore }
+    },
+    getStatus(status) {
+      return this.$t(`bet_${status}`) || ''
+    },
   }
 }
 </script>
-
-<style lang="scss" scoped>
-td {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-
-  .user,
-  .bet {
-    display: flex;
-    align-items: center;
-  }
-
-  .score {
-    display: inline-flex;
-    min-width: 50px;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 767px) {
-  td {
-    flex-direction: column;
-
-    .user {
-      width: 100%;
-      justify-content: flex-start;
-    }
-
-    .bet {
-      width: 100%;
-      justify-content: flex-end;
-    }
-  }
-}
-</style>

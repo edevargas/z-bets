@@ -1,11 +1,17 @@
-import { BET_STATUS } from '~/plugins/constants'
+import { BET_STATUS, MATCH_STATUS } from '~/plugins/constants'
 
-export function getBetsByMatch(matchId, onlyApproved = true) {
+export function getAllBets() {
   const bets = $nuxt.$fire.firestore.collection('bets')
-  let query = bets.where('matchId', '==', matchId)
-  if (onlyApproved) {
-    query = query.where('status', '==', BET_STATUS.APPROVED)
-  }
+  bets.onSnapshot((querySnapshot) => {
+    const data = []
+    querySnapshot.forEach((doc) => data.push({ ...doc.data(), id: doc.id }))
+    $nuxt.$emit('bets', data)
+  })
+}
+
+export function getBetsByMatch(matchId) {
+  const bets = $nuxt.$fire.firestore.collection('bets')
+  const query = bets.where('matchId', '==', matchId)
   query.onSnapshot((querySnapshot) => {
     const data = []
     querySnapshot.forEach((doc) => data.push({ ...doc.data(), id: doc.id }))
@@ -13,11 +19,23 @@ export function getBetsByMatch(matchId, onlyApproved = true) {
   })
 }
 
-export async function getBetsByUser(userId) {
+export function getBetsByUser(userId) {
   const bets = $nuxt.$fire.firestore.collection('bets')
-  const { docs } = await bets.where('userId', '==', userId).get()
-  // TODO Check reactivity in UI
-  return docs.map((item) => item.data())
+  const query = bets.where('userId', '==', userId)
+  query.onSnapshot((querySnapshot) => {
+    const data = []
+    querySnapshot.forEach((doc) => data.push({ ...doc.data(), id: doc.id }))
+    $nuxt.$emit('bets-by-user', data)
+  })
+}
+
+export function isTimeAvailable({ id }) {
+  return new Promise((resolve) => {
+    const docRef = $nuxt.$fire.firestore.collection('matches').doc(id)
+    docRef.get()
+      .then((doc) => resolve(doc?.data()?.status === MATCH_STATUS.STARTED))
+      .catch(() => resolve(false))
+  })
 }
 
 export function betting(payload) {

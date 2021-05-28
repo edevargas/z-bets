@@ -14,7 +14,7 @@
             v-if="user"
             type="button"
             :class="[zButton, 'is-primary']"
-            @click="$emit('bet-now')"
+            @click="$store.commit('setMatchToBet', nextGame)"
           >
             {{ $t('bet_now') }}
           </button>
@@ -27,22 +27,17 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { getNextMatch } from '~/endpoints/matches'
 
 export default {
   name: 'NextGame',
   components: {
     Match: () => import('~/components/bets/Match')
   },
-  props: {
-    nextGame: {
-      type: Object,
-      required: true,
-      default: () => ({})
-    }
-  },
   data() {
     return {
-      zButton: this.$nuxt.context.env.Z_BUTTON
+      zButton: this.$nuxt.context.env.Z_BUTTON,
+      nextGame: {},
     }
   },
   computed: {
@@ -52,6 +47,14 @@ export default {
     isAvailable() {
       return Object.keys(this.nextGame).length
     }
-  }
+  },
+  created() {
+    getNextMatch()
+    // realtime listener
+    this.$nuxt.$on('next-match', (data) => (this.nextGame = data))
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('next-match')
+  },
 }
 </script>

@@ -34,8 +34,8 @@
 
         <template v-if="isAdmin">
           🔐
-          <nuxt-link v-if="matchAccess('bet_approval')" to="/admin/bets-approval" class="navbar-item">
-            {{ $t("bets_approval") }}
+          <nuxt-link v-if="matchAccess('bets_history')" to="/admin/bets-history" class="navbar-item">
+            {{ $t("bets_history") }}
           </nuxt-link>
         </template>
       </div>

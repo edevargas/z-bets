@@ -7,7 +7,7 @@
     <template v-else>
       <table class="table is-hoverable is-fullwidth">
         <tbody>
-          <tr v-for="(item, index) in matches" :key="index">
+          <tr v-for="(item, index) in matches" :key="index" :class="{ 'is-finished': isFinished(item)}">
             <td class="is-vcentered is-size-5">
               <div class="info">
                 {{ item.city }}
@@ -59,6 +59,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+tr {
+  transition: 0.2s;
+
+  &.is-finished {
+    background: #eee;
+  }
+}
+
 td {
   display: flex;
   flex-direction: row;

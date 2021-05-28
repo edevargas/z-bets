@@ -2,6 +2,7 @@
   <div>
     <AppNav />
     <Nuxt />
+    <BettingModal />
     <Notification />
   </div>
 </template>
@@ -11,7 +12,8 @@ export default {
   name: 'DefaultLayout',
   components: {
     AppNav: () => import('~/components/layout/AppNav'),
-    Notification: () => import('~/components/utils/Notification')
+    BettingModal: () => import('~/components/bets/BettingModal'),
+    Notification: () => import('~/components/utils/Notification'),
   }
 }
 </script>

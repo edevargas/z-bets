@@ -14,16 +14,22 @@
                   <div class="bet-timestamp">
                     {{ item.timestamp.toDate() | formatDate }}
                   </div>
-                  <Match :match="item.match" :score="getScore(item)" keep-row />
+                  <Match :item="item" :score="getScore(item)" keep-row />
                 </div>
                 <div class="actions">
                   <div class="status">{{ getStatus(item.status) }}</div>
-                  <nuxt-link
-                    to="/fixture"
+                  <button
+                    v-if="item.status === 'pending'"
                     :class="[zButton, 'is-primary result']"
                   >
-                    {{ $t('view_result') }}
-                  </nuxt-link>
+                    {{ $t('edit') }}
+                  </button>
+                  <button
+                    v-if="item.status === 'pending'"
+                    :class="[zButton, 'is-danger result']"
+                  >
+                    {{ $t('delete') }}
+                  </button>
                 </div>
               </td>
             </tr>
@@ -61,9 +67,16 @@ export default {
       user: 'user'
     })
   },
-  async created() {
-    this.bets = await getBetsByUser(this.user.uid)
-    this.loading = false
+  created() {
+    getBetsByUser(this.user.uid)
+    // realtime listener
+    this.$nuxt.$on('bets-by-user', (data) => {
+      this.bets = data
+      if (this.loading) this.loading = false
+    })
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('bets-by-user')
   },
   methods: {
     getScore(item) {

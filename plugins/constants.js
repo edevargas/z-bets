@@ -8,6 +8,6 @@ export const MATCH_STATUS = {
 
 export const BET_STATUS = {
   PENDING: 'pending',
-  APPROVED: 'approved',
-  DENIED: 'denied',
+  WON: 'won',
+  LOST: 'lost',
 }
