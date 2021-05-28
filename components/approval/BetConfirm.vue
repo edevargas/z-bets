@@ -2,7 +2,7 @@
   <div class="wrap-payment">
     <Match :match="match" :score="score" is-title />
     <p v-if="voucher" class="mt-2 mb-5">{{ $t('voucher') }} ✅</p>
-    <p v-else>{{ $t('without_voucher') }} ⚠️</p>
+    <p v-else class="mt-2 mb-5">{{ $t('without_voucher') }} ⚠️</p>
     <button
       type="button"
       :class="[zButton, 'is-danger is-inverted mx-2']"
@@ -27,23 +27,10 @@ export default {
     Match: () => import('~/components/bets/Match')
   },
   props: {
-    match: {
-      type: Object,
-      required: true,
-      default: () => ({})
-    },
-    homeScore: {
-      type: [Number, String],
-      required: true
-    },
-    awayScore: {
-      type: [Number, String],
-      required: true
-    },
-    voucher: {
-      type: File,
-      required: true
-    }
+    match: { type: Object, required: true },
+    homeScore: { type: [Number, String], required: true },
+    awayScore: { type: [Number, String], required: true },
+    voucher: { type: [File, String], required: true }
   },
   data() {
     return {

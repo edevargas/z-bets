@@ -41,11 +41,7 @@ export default {
     Match: () => import('~/components/bets/Match')
   },
   props: {
-    match: {
-      type: Object,
-      required: true,
-      default: () => ({})
-    }
+    match: { type: Object, required: true }
   },
   data() {
     return {
