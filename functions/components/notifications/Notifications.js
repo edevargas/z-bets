@@ -43,10 +43,10 @@ class Notifications {
           .map(({ user }) => user.displayName);
 
         if (winners.length === 1) {
-          customMsg = `El ganador es ${winners.join('')} 🥳🥳⚽️🇨🇴`;
+          customMsg = `El ganador es ${winners.join('')} 🥳🥳🥳`;
         }
         if (winners.length > 1) {
-          customMsg = `Los ganadores son ${winners.join(', ')} 🥳🥳⚽️🇨🇴`;
+          customMsg = `Los ganadores son ${winners.join(', ')} 🥳🥳🥳`;
         }
 
         return this.sendSlackNotification({

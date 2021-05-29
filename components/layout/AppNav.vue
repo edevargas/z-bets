@@ -17,7 +17,7 @@
     </div>
 
 
-    <div id="navbar" :class="['navbar-menu', active ? 'is-active' : null]">
+    <div id="navbar" :class="['navbar-menu vivify fadeIn', active ? 'is-active' : null]" @click="active = false">
       <div class="navbar-start">
         <nuxt-link to="/fixture" class="navbar-item">
           {{ $t("fixture") }}
@@ -116,6 +116,16 @@ export default {
     &:hover {
       background-color: #121212;
     }
+  }
+}
+
+@media (max-width: 1023px) {
+  #navbar {
+    position: absolute;
+    top: 52px;
+    left: 0;
+    right: 0;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.8);
   }
 }
 </style>

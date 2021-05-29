@@ -8,9 +8,9 @@
       <span v-if="gambling" class="is-4">-</span>
       <span v-else-if="showVersus" class="is-4">vs</span>
       <span v-else>
-        {{ betScore ? item.homeScore : match.homeScore }}
+        {{ hasScore ? score.homeScore : match.homeScore }}
         -
-        {{ betScore ? item.awayScore : match.awayScore }}
+        {{ hasScore ? score.awayScore : match.awayScore }}
       </span>
     </div>
     <div :class="['team away mb-0', titleClass]">
@@ -26,8 +26,8 @@ import { BET_STATUS } from '~/plugins/constants'
 export default {
   name: 'Match',
   props: {
-    item: { type: Object, required: true, default: () => ({}) },
-    betScore: Boolean,
+    match: { type: Object, required: true, default: () => ({}) },
+    score: { type: Object, default: () => ({}) },
     keepRow: Boolean,
     isTitle: Boolean,
     gambling: Boolean
@@ -36,15 +36,12 @@ export default {
     titleClass() {
       return this.isTitle ? 'title is-2' : ''
     },
-    match() {
-      return this.item?.match || {}
-    },
     hasScore() {
       return Object.keys(this.score).length
     },
     showVersus() {
-      const { match, betScore } = this
-      return match.status === BET_STATUS.PENDING && !betScore
+      const { match, hasScore } = this
+      return match.status === BET_STATUS.PENDING && !hasScore
     }
   }
 }

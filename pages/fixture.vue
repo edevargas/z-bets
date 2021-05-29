@@ -1,6 +1,9 @@
 <template>
   <main class="container is-max-desktop">
-    <h1 class="title is-1 mt-4">{{ $t('fixture') }}</h1>
+    <h1 class="title is-1 mt-4">
+      <img src="~/static/fixture.svg" alt="" class="title-image">
+      {{ $t('fixture') }}
+    </h1>
     <p class="subtitle is-3 mb-3">{{ $t('matches_colombia') }}</p>
 
     <progress v-if="loading" class="progress is-primary mt-6" />

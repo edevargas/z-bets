@@ -1,7 +1,7 @@
 <template>
   <div :class="['modal', isOpen ? 'is-active' : null]">
     <div class="modal-background"></div>
-    <div class="modal-card">
+    <div class="modal-card vivify swoopInBottom">
       <header class="modal-card-head">
         <p class="modal-card-title">{{ $t('give_score') }}</p>
         <button class="delete" aria-label="close" @click="closeModal" />
@@ -14,6 +14,7 @@
             type="number"
             class="input is-medium"
             :placeholder="match.homeId"
+            :disabled="confirm"
           />
           vs
           <input
@@ -21,34 +22,34 @@
             type="number"
             class="input is-medium"
             :placeholder="match.awayId"
+            :disabled="confirm"
           />
         </div>
-        <p class="title is-3 has-background-dark has-text-centered has-text-primary py-2 mb-2">
-          {{ $t('payroll_discount') }}
-        </p>
-      </section>
-      <footer class="modal-card-foot is-flex is-justify-content-space-between">
-        <button :class="[zButton, 'result']" @click="closeModal">
-          {{ $t('cancel') }}
-        </button>
-        <div>
+        <div class="is-flex is-justify-content-center">
           <button
             v-if="!confirm"
-            :class="[zButton, 'is-primary result']"
+            :class="[zButton, 'is-primary vivify flipInX']"
             :disabled="!validateHomeScore || !validateAwayScore"
             @click="confirm = true"
           >
             {{ $t('bet_now') }}
           </button>
-          <button
-            v-else
-            :class="[zButton, 'is-primary result']"
-            @click="finish"
-          >
-            {{ $t('finish') }} 🤞🏼
-          </button>
+          <div v-else class="vivify flipInX">
+            <p class="is-6 has-text-centered py-2">
+              {{ $t('confirm_bet') }}
+            </p>
+            <button :class="[zButton, 'mx-2']" @click="confirm = false">
+              {{ $t('edit') }}
+            </button>
+            <button :class="[zButton, 'is-primary mx-2']" @click="finish">
+              {{ $t('confirm') }} 🤞🏼
+            </button>
+          </div>
         </div>
-      </footer>
+        <p class="has-background-dark has-text-centered has-text-warning my-5 p-2">
+          {{ $t('payroll_discount') }}
+        </p>
+      </section>
     </div>
   </div>
 </template>
@@ -141,6 +142,9 @@ export default {
       this.closeModal()
     },
     closeModal() {
+      this.homeScore = ''
+      this.awayScore = ''
+      this.confirm = false
       this.$store.commit('setMatchToBet', {})
     }
   },

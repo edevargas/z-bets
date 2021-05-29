@@ -32,7 +32,7 @@ export default {
       { property: 'og:locale', content: 'es_CO' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
     ]
   },
 
@@ -47,6 +47,7 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
+    '~/assets/css/vivify.min.css',
     '~/assets/scss/main.scss'
   ],
 

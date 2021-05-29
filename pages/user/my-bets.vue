@@ -1,51 +1,45 @@
 <template>
   <main class="container is-max-desktop">
-    <h1 class="title is-1 mt-4">{{ $t('my_bets') }}</h1>
-    <p class="subtitle is-3 mb-3">{{ $t('bets_results') }}</p>
+    <h1 class="title is-1 mt-4 mb4">
+      <img src="~/static/bets.svg" alt="" class="title-image">
+      {{ $t('my_bets') }}
+    </h1>
 
     <progress v-if="loading" class="progress is-primary mt-6" />
-    <template v-else>
-      <table class="table is-hoverable is-fullwidth">
-        <tbody>
-          <template v-for="(item, index) in bets">
-            <tr :key="index">
-              <td class="has-text-left is-size-5">
-                <div class="match">
-                  <div class="bet-timestamp">
-                    {{ item.timestamp.toDate() | formatDate }}
-                  </div>
-                  <Match :item="item" :score="getScore(item)" keep-row />
-                </div>
-                <div class="actions">
-                  <div class="status">{{ getStatus(item.status) }}</div>
-                  <button
-                    v-if="item.status === 'pending'"
-                    :class="[zButton, 'is-primary result']"
-                  >
-                    {{ $t('edit') }}
-                  </button>
-                  <button
-                    v-if="item.status === 'pending'"
-                    :class="[zButton, 'is-danger result']"
-                  >
-                    {{ $t('delete') }}
-                  </button>
-                </div>
-              </td>
-            </tr>
+    <BetsTable v-else :items="bets" timestamp keep-row>
+      <template v-slot="{ item }">
+        <div class="actions">
+          <div class="status" v-if="confirm !== item.id">{{ getStatus(item.status) }}</div>
+          <template v-if="item.status === 'pending'">
+            <template v-if="!confirm">
+              <button :class="[zButton, 'is-primary action-buttons']">
+                {{ $t('edit') }}
+              </button>
+              <button
+                :class="[zButton, 'is-danger action-buttons']"
+                @click="confirm = item.id"
+              >
+                {{ $t('delete') }}
+              </button>
+            </template>
+            <div v-if="confirm === item.id" class="vivify flipInX">
+              <button :class="[zButton, 'my-1']" @click="confirm = false">
+                {{ $t('cancel') }}
+              </button>
+              <button :class="[zButton, 'is-danger my-1']" @click="deleteBet(item)">
+                {{ $t('confirm_deleting') }} 🗑
+              </button>
+            </div>
           </template>
-        </tbody>
-      </table>
-      <p v-if="bets.length === 0" class="has-text-centered is-size-5">
-        {{ $t('still_no_items') }}
-      </p>
-    </template>
+        </div>
+      </template>
+    </BetsTable>
   </main>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { getBetsByUser } from '~/endpoints/bets'
+import { getBetsByUser, deleteBet } from '~/endpoints/bets'
 
 export default {
   name: 'MyBets',
@@ -53,13 +47,14 @@ export default {
     requiresAuth: true
   },
   components: {
-    Match: () => import('~/components/bets/Match')
+    BetsTable: () => import('~/components/bets/BetsTable'),
   },
   data() {
     return {
       zButton: this.$nuxt.context.env.Z_BUTTON,
       loading: true,
-      bets: []
+      bets: [],
+      confirm: false,
     }
   },
   computed: {
@@ -79,19 +74,27 @@ export default {
     this.$nuxt.$off('bets-by-user')
   },
   methods: {
-    getScore(item) {
-      const { homeScore, awayScore } = item
-      return { homeScore, awayScore }
-    },
     getStatus(status) {
       return this.$t(`bet_${status}`) || ''
     },
+    async deleteBet(item) {
+      const { error, data } = await deleteBet(item.id)
+
+      if (error && !data) {
+        const notification = { type: 'error', body: error }
+        this.$nuxt.$emit('show-notification', notification)
+        return
+      }
+
+      const notification = { type: 'success', body: this.$t('bet_deleted'), time: 4000 }
+      this.$nuxt.$emit('show-notification', notification)
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.result {
+.action-buttons {
   display: none;
 }
 
@@ -100,7 +103,7 @@ export default {
 }
 
 tr:hover {
-  .result {
+  .action-buttons {
     display: initial;
   }
 

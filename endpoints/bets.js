@@ -2,7 +2,8 @@ import { BET_STATUS, MATCH_STATUS } from '~/plugins/constants'
 
 export function getAllBets() {
   const bets = $nuxt.$fire.firestore.collection('bets')
-  bets.onSnapshot((querySnapshot) => {
+  const query = bets.orderBy('timestamp', 'desc')
+  query.onSnapshot((querySnapshot) => {
     const data = []
     querySnapshot.forEach((doc) => data.push({ ...doc.data(), id: doc.id }))
     $nuxt.$emit('bets', data)
@@ -11,7 +12,7 @@ export function getAllBets() {
 
 export function getBetsByMatch(matchId) {
   const bets = $nuxt.$fire.firestore.collection('bets')
-  const query = bets.where('matchId', '==', matchId)
+  const query = bets.where('matchId', '==', matchId).orderBy('timestamp', 'desc')
   query.onSnapshot((querySnapshot) => {
     const data = []
     querySnapshot.forEach((doc) => data.push({ ...doc.data(), id: doc.id }))
@@ -21,7 +22,7 @@ export function getBetsByMatch(matchId) {
 
 export function getBetsByUser(userId) {
   const bets = $nuxt.$fire.firestore.collection('bets')
-  const query = bets.where('userId', '==', userId)
+  const query = bets.where('userId', '==', userId).orderBy('timestamp', 'desc')
   query.onSnapshot((querySnapshot) => {
     const data = []
     querySnapshot.forEach((doc) => data.push({ ...doc.data(), id: doc.id }))
@@ -56,6 +57,15 @@ export function betApprove(betId, approval) {
     betRef.update({
       status: approval ? BET_STATUS.APPROVED : BET_STATUS.DENIED
     })
+      .then(() => resolve({ error: null, data: 'ok' }))
+      .catch((error) => reject({ error, data: null }))
+  })
+}
+
+export function deleteBet(betId) {
+  return new Promise((resolve, reject) => {
+    const betRef = $nuxt.$fire.firestore.collection('bets').doc(betId)
+    betRef.delete()
       .then(() => resolve({ error: null, data: 'ok' }))
       .catch((error) => reject({ error, data: null }))
   })

@@ -2,7 +2,8 @@ import { logOut } from '~/endpoints/auth'
 
 export const state = () => ({
   firstLogin: false,
-  user: null
+  user: null,
+  matchToBet: {},
 })
 
 export const mutations = {
@@ -10,11 +11,14 @@ export const mutations = {
     if (state.hasOwnProperty(key)) {
       state[key] = value
     }
+  },
+  setMatchToBet(state, payload) {
+    state.matchToBet = payload
   }
 }
 
 export const actions = {
-  onAuthStateChangedAction: ({ state, commit }, { authUser }) => {
+  onAuthStateChangedAction({ state, commit }, { authUser }) {
     if (!authUser) {
       commit('mutation', { key: 'user', value: null })
       if (state.firstLogin) logOut() 
@@ -29,9 +33,10 @@ export const actions = {
     if (!state.firstLogin) {
       commit('mutation', { key: 'firstLogin', value: true })
     }
-  }
+  },
 }
 
 export const getters = {
-  user: ({ user }) => user 
+  user: ({ user }) => user,
+  matchToBet: ({ matchToBet }) => matchToBet,
 }

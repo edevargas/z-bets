@@ -1,6 +1,9 @@
 <template>
   <main class="container is-max-desktop">
-    <h1 class="title is-1 mt-4">{{ $t('realtime_bets') }}</h1>
+    <h1 class="title is-1 mt-4">
+      <img src="~/static/live.svg" alt="" class="title-image">
+      {{ $t('realtime_bets') }}
+    </h1>
     <h2 class="title is-3 has-background-dark has-text-centered has-text-primary py-2 mb-2">
       {{ $t('amount_collected') }} {{ totalAmount | currency }}
     </h2>
@@ -11,26 +14,10 @@
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
       <p class="subtitle is-3 mt-1 mb-3">{{ $t('bets_in_progress') }}</p>
-      
-      <table class="table is-hoverable is-fullwidth">
-        <tbody>
-          <BetItemRow v-for="(item, index) in inProgressBets" :key="index" :item="item" />
-          <tr v-if="inProgressBets.length === 0" class="has-text-centered is-size-5">
-            {{ $t('still_no_items') }}
-          </tr>
-        </tbody>
-      </table>
-      
+      <BetsTable :items="inProgressBets" user keep-row />
+      <hr>
       <p class="subtitle is-3 mt-1 mb-3">{{ $t('bets_lost') }}</p>
-      <table class="table is-hoverable is-fullwidth">
-        <tbody>
-          <BetItemRow v-for="(item, index) in lostBets" :key="index" :item="item" />
-          <tr v-if="lostBets.length === 0" class="has-text-centered is-size-5">
-            {{ $t('still_no_items') }}
-          </tr>
-        </tbody>
-      </table>
-      
+      <BetsTable :items="lostBets" user keep-row />      
     </template>
   </main>
 </template>
@@ -47,7 +34,7 @@ export default {
   },
   components: {
     Match: () => import('~/components/bets/Match'),
-    BetItemRow: () => import('~/components/bets/BetItemRow'),
+    BetsTable: () => import('~/components/bets/BetsTable'),
   },
   data() {
     return {
@@ -104,10 +91,6 @@ export default {
     },
     sorter(firstEl, secondEl) {
       return firstEl.homeScore - secondEl.homeScore
-    },
-    getScore(item) {
-      const { homeScore, awayScore } = item
-      return { homeScore, awayScore }
     },
     getStatus(status) {
       return this.$t(`bet_${status}`) || ''

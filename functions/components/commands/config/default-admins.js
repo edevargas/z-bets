@@ -1,7 +1,6 @@
 const DEFAULT_ADMINS = [
   'javier.albadan',
   'jenny.medina',
-  'juan.castaneda',
   'wbeimar.logatto',
 ];
 

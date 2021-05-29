@@ -5,14 +5,14 @@
         {{ item.timestamp.toDate() | formatDate }}
       </div>
       <div class="bet-info">
-        <div class="user">
+        <div v-if="user" class="user">
           <Avatar :user="item.user" />
           {{ item.user.displayName }}
         </div>
         <div class="bet">
-          <Match :item="item" :score="getScore(item)" keep-row />
+          <Match :match="item.match" :score="getScore(item)" :keep-row="keepRow" />
         </div>
-        <slot />
+        <slot v-bind="{ item }" />
       </div>
     </td>
   </tr>
@@ -26,8 +26,16 @@ export default {
   },
   props: {
     item: { type: Object, required: true },
+    user: Boolean,
     timestamp: Boolean,
+    keepRow: Boolean,
   },
+  methods: {
+    getScore(item) {
+      const { homeScore, awayScore } = item
+      return { homeScore, awayScore }
+    },
+  }
 }
 </script>
 
@@ -53,7 +61,7 @@ export default {
   }
 
   .actions {
-    min-width: 160px;
+    min-width: 200px;
     text-align: right;
   }
 }
