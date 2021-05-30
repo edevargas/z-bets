@@ -1,7 +1,8 @@
 <template>
   <div>
-    <NextGame />
-    <div class="container">
+    <BackgroundImg image="bleachers.jpg" placeholder="bleachers-min.jpg" />
+    <div class="background-content">
+      <NextGame />
     </div>
   </div>
 </template>
@@ -10,7 +11,8 @@
 export default {
   name: 'Index',
   components: {
-    NextGame: () => import('~/components/NextGame'),
-  }
+    BackgroundImg: () => import('~/components/layout/BackgroundImg'),
+    NextGame: () => import('~/components/bets/NextGame'),
+  },
 }
 </script>
