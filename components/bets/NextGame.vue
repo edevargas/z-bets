@@ -3,7 +3,7 @@
     <section class="hero transparent is-dark">
       <h1 class="title has-text-centered mt-5 mb-0">{{ $t('next_game') }}</h1>
       <div class="hero-body pt-5">
-        <div v-if="isAvailable" class="container has-text-centered">
+        <div v-if="isAvailable" class="container has-text-centered vivify fadeIn">
           <Match :match="nextGame" is-title />
           <p class="subtitle is-4 mt-2 mb-2">
             {{ nextGame.date.toDate() | formatDate }}

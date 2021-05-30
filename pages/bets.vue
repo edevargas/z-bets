@@ -1,10 +1,10 @@
 <template>
   <main class="container is-max-desktop">
     <h1 class="title is-1 mt-4">
-      <img src="~/static/live.svg" alt="" class="title-image">
+      <img src="~/assets/svg/live.svg" alt="" class="title-image">
       {{ $t('realtime_bets') }}
     </h1>
-    <h2 class="title is-3 has-background-dark has-text-centered has-text-primary py-2 mb-2">
+    <h2 class="title is-4 has-background-dark has-text-centered has-text-primary py-2 mb-2">
       {{ $t('amount_collected') }} {{ totalAmount | currency }}
     </h2>
     <h2 class="title is-3 has-text-centered has-text-primary py-2 mb-5">
@@ -16,8 +16,10 @@
       <p class="subtitle is-3 mt-1 mb-3">{{ $t('bets_in_progress') }}</p>
       <BetsTable :items="inProgressBets" user keep-row />
       <hr>
-      <p class="subtitle is-3 mt-1 mb-3">{{ $t('bets_lost') }}</p>
-      <BetsTable :items="lostBets" user keep-row />      
+      <template v-if="lostBets.length">
+        <p class="subtitle is-3 mt-1 mb-3">{{ $t('bets_lost') }}</p>
+        <BetsTable :items="lostBets" user keep-row />
+      </template>
     </template>
   </main>
 </template>

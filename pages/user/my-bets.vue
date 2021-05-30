@@ -1,7 +1,7 @@
 <template>
   <main class="container is-max-desktop">
     <h1 class="title is-1 mt-4 mb4">
-      <img src="~/static/bets.svg" alt="" class="title-image">
+      <img src="~/assets/svg/bets.svg" alt="" class="title-image">
       {{ $t('my_bets') }}
     </h1>
 

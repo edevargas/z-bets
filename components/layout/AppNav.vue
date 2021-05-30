@@ -1,5 +1,10 @@
 <template>
-  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+  <nav
+    class="navbar is-dark"
+    role="navigation"
+    aria-label="main navigation"
+    v-click-outside="onClickOutside"
+  >
     <div class="navbar-brand">
       <nuxt-link to="/" class="navbar-item"> Z-Bets </nuxt-link>
       <SwitchLanguage />
@@ -16,8 +21,7 @@
       </a>
     </div>
 
-
-    <div id="navbar" :class="['navbar-menu vivify fadeIn', active ? 'is-active' : null]" @click="active = false">
+    <div id="navbar" :class="['navbar-menu vivify fadeInTop duration-300', active ? 'is-active' : null]">
       <div class="navbar-start">
         <nuxt-link to="/fixture" class="navbar-item">
           {{ $t("fixture") }}
@@ -33,11 +37,14 @@
         </template>
 
         <template v-if="isAdmin">
-          🔐
           <nuxt-link v-if="matchAccess('bets_history')" to="/admin/bets-history" class="navbar-item">
-            {{ $t("bets_history") }}
+            🔐 Admin
           </nuxt-link>
         </template>
+
+        <nuxt-link to="/faq" class="navbar-item">
+          {{ $t("faq") }}
+        </nuxt-link>
       </div>
 
       <div
@@ -52,7 +59,7 @@
           {{ $t("log_in") }}
         </button>
         <template v-else>
-          {{ user.displayName }}
+          {{ username }}
           <Avatar :user="user" class="mr-4" />
           <button
             type="button"
@@ -70,9 +77,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import { logIn, logOut } from '~/endpoints/auth'
+import vClickOutside from 'v-click-outside'
 
 export default {
   name: 'AppNav',
+  directives: {
+    clickOutside: vClickOutside.directive
+  },
   components: {
     Avatar: () => import('~/components/utils/Avatar'),
     SwitchLanguage: () => import('~/components/utils/SwitchLanguage')
@@ -87,6 +98,9 @@ export default {
     ...mapGetters({
       user: 'user'
     }),
+    username() {
+      return this.user?.displayName?.split(' ').shift() || ''
+    },
     isAdmin() {
       if (!this.user) {
         return false
@@ -95,13 +109,19 @@ export default {
       return this.user.adminAccess
     }
   },
+  created() {
+    this.$nuxt.$on('close-nav', () => this.active = false)
+  },
   methods: {
     logIn,
     logOut,
     matchAccess(path) {
       const accessRegex = new RegExp(this.user.adminAccess)
       return path.match(accessRegex)
-    }
+    },
+    onClickOutside() {
+      this.active = false
+    },
   }
 }
 </script>

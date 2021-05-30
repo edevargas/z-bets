@@ -10,14 +10,8 @@
 export default {
   name: 'BackgroundImg',
   props: {
-    image: {
-      type: String,
-      default: ''
-    },
-    placeholder: {
-      type: String,
-      default: ''
-    }
+    image: { type: String, default: '' },
+    placeholder: { type: String, default: '' },
   },
   data() {
     return {

@@ -57,6 +57,7 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
+    '~/plugins/after-each',
     '~/plugins/filters',
     '~/plugins/vue-progressive'
   ],

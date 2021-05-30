@@ -1,5 +1,5 @@
 <template>
-  <table class="table is-hoverable is-fullwidth">
+  <table class="table is-hoverable is-striped is-fullwidth vivify fadeIn duration-400">
     <tbody>
       <BetItemRow
         v-for="(item, index) in items"
