@@ -1,5 +1,9 @@
 <template>
-  <img :src="user.photoURL" :alt="user.displayName" class="avatar image is-32x32">
+  <img
+    :src="user.photoURL"
+    :alt="user.displayName"
+    class="avatar image is-32x32"
+  />
 </template>
 
 <script>
@@ -8,9 +12,9 @@ export default {
   props: {
     user: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
-  }
+  },
 }
 </script>
 

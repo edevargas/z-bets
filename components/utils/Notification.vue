@@ -34,10 +34,10 @@ export default {
   watch: {
     show(newVal) {
       if (newVal) {
-        setTimeout(() => this.show = false, 3000)
+        setTimeout(() => (this.show = false), 3000)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

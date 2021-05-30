@@ -21,7 +21,13 @@
       </a>
     </div>
 
-    <div id="navbar" :class="['navbar-menu vivify fadeInTop duration-300', active ? 'is-active' : null]">
+    <div
+      id="navbar"
+      :class="[
+        'navbar-menu vivify fadeInTop duration-300',
+        active ? 'is-active' : null,
+      ]"
+    >
       <div class="navbar-start">
         <nuxt-link to="/fixture" class="navbar-item">
           {{ $t("fixture") }}
@@ -37,7 +43,11 @@
         </template>
 
         <template v-if="isAdmin">
-          <nuxt-link v-if="matchAccess('bets_history')" to="/admin/bets-history" class="navbar-item">
+          <nuxt-link
+            v-if="matchAccess('bets_history')"
+            to="/admin/bets-history"
+            class="navbar-item"
+          >
             🔐 Admin
           </nuxt-link>
         </template>
@@ -82,21 +92,21 @@ import vClickOutside from 'v-click-outside'
 export default {
   name: 'AppNav',
   directives: {
-    clickOutside: vClickOutside.directive
+    clickOutside: vClickOutside.directive,
   },
   components: {
     Avatar: () => import('~/components/utils/Avatar'),
-    SwitchLanguage: () => import('~/components/utils/SwitchLanguage')
+    SwitchLanguage: () => import('~/components/utils/SwitchLanguage'),
   },
   data() {
     return {
       active: false,
-      zButton: this.$nuxt.context.env.Z_BUTTON
+      zButton: this.$nuxt.context.env.Z_BUTTON,
     }
   },
   computed: {
     ...mapGetters({
-      user: 'user'
+      user: 'user',
     }),
     username() {
       return this.user?.displayName?.split(' ').shift() || ''
@@ -107,10 +117,10 @@ export default {
       }
 
       return this.user.adminAccess
-    }
+    },
   },
   created() {
-    this.$nuxt.$on('close-nav', () => this.active = false)
+    this.$nuxt.$on('close-nav', () => (this.active = false))
   },
   methods: {
     logIn,
@@ -122,7 +132,7 @@ export default {
     onClickOutside() {
       this.active = false
     },
-  }
+  },
 }
 </script>
 

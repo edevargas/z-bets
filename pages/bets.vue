@@ -1,11 +1,13 @@
 <template>
   <main class="container is-max-desktop">
     <h1 class="title is-1 mt-4">
-      <img src="~/assets/svg/live.svg" alt="" class="title-image">
-      {{ $t('realtime_bets') }}
+      <img src="~/assets/svg/live.svg" alt="" class="title-image" />
+      {{ $t("realtime_bets") }}
     </h1>
-    <h2 class="title is-4 has-background-dark has-text-centered has-text-primary py-2 mb-2">
-      {{ $t('amount_collected') }} {{ totalAmount | currency }}
+    <h2
+      class="title is-4 has-background-dark has-text-centered has-text-primary py-2 mb-2"
+    >
+      {{ $t("amount_collected") }} {{ totalAmount | currency }}
     </h2>
     <h2 class="title is-3 has-text-centered has-text-primary py-2 mb-5">
       <Match :match="nextGame" is-title />
@@ -13,11 +15,11 @@
 
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
-      <p class="subtitle is-3 mt-1 mb-3">{{ $t('bets_in_progress') }}</p>
+      <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_in_progress") }}</p>
       <BetsTable :items="inProgressBets" user keep-row />
-      <hr>
+      <hr />
       <template v-if="lostBets.length">
-        <p class="subtitle is-3 mt-1 mb-3">{{ $t('bets_lost') }}</p>
+        <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_lost") }}</p>
         <BetsTable :items="lostBets" user keep-row />
       </template>
     </template>
@@ -43,7 +45,7 @@ export default {
       loading: true,
       nextGame: undefined,
       betSettings: {},
-      bets: []
+      bets: [],
     }
   },
   created() {
@@ -74,14 +76,10 @@ export default {
       return this.bets.length * this.betSettings.amount || 0
     },
     inProgressBets() {
-      return this.bets
-        .filter(this.currentScoreLower)
-        .sort(this.sorter)
+      return this.bets.filter(this.currentScoreLower).sort(this.sorter)
     },
     lostBets() {
-      return this.bets
-        .filter(this.currentScoreBigger)
-        .sort(this.sorter)
+      return this.bets.filter(this.currentScoreBigger).sort(this.sorter)
     },
   },
   methods: {
@@ -97,6 +95,6 @@ export default {
     getStatus(status) {
       return this.$t(`bet_${status}`) || ''
     },
-  }
+  },
 }
 </script>

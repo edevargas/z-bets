@@ -16,13 +16,13 @@ export default {
   props: ['error'],
   data() {
     return {
-      zButton: this.$nuxt.context.env.Z_BUTTON
+      zButton: this.$nuxt.context.env.Z_BUTTON,
     }
   },
   computed: {
     title() {
       return this.$t(this.error.statusCode === 404 ? 'page_not_found' : 'error_ocurred')
-    }
-  }
+    },
+  },
 }
 </script>

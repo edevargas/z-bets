@@ -34,7 +34,7 @@ const requiresAdmin = ({ meta }) => meta[0]?.adminAccess
 const setAmin = (store, user, adminAccess) => {
   store.commit('mutation', {
     key: 'user',
-    value: { ...user, adminAccess }
+    value: { ...user, adminAccess },
   })
 }
 

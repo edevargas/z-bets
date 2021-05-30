@@ -6,13 +6,13 @@ export default {
     {
       code: 'en',
       name: 'English',
-      flag: '🇺🇸'
+      flag: '🇺🇸',
     },
     {
       code: 'es',
       name: 'Español',
-      flag: '🇨🇴'
-    }
+      flag: '🇨🇴',
+    },
   ],
   defaultLocale: 'es',
   strategy: 'no_prefix',
@@ -20,6 +20,6 @@ export default {
     fallbackLocale: 'es',
     lazy: true,
     langDir: 'locales/',
-    messages: { en, es }
-  }
+    messages: { en, es },
+  },
 }

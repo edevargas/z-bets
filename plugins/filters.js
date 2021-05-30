@@ -3,7 +3,7 @@ import { FLAGS_API_FIFA } from './constants'
 
 Vue.filter('formatDate', (timestamp) => {
   const dateOptions = {
-    weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
+    weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric',
   }
   const dateCodes = {
     en: 'en-US',

@@ -1,33 +1,38 @@
 <template>
   <main class="container is-max-desktop">
     <h1 class="title is-1 mt-4 mb4">
-      <img src="~/assets/svg/bets.svg" alt="" class="title-image">
-      {{ $t('my_bets') }}
+      <img src="~/assets/svg/bets.svg" alt="" class="title-image" />
+      {{ $t("my_bets") }}
     </h1>
 
     <progress v-if="loading" class="progress is-primary mt-6" />
     <BetsTable v-else :items="bets" timestamp keep-row>
       <template v-slot="{ item }">
         <div class="actions">
-          <div class="status" v-if="confirm !== item.id">{{ getStatus(item.status) }}</div>
+          <div class="status" v-if="confirm !== item.id">
+            {{ getStatus(item.status) }}
+          </div>
           <template v-if="item.status === 'pending'">
             <template v-if="!confirm">
               <button :class="[zButton, 'is-primary action-buttons']">
-                {{ $t('edit') }}
+                {{ $t("edit") }}
               </button>
               <button
                 :class="[zButton, 'is-danger action-buttons']"
                 @click="confirm = item.id"
               >
-                {{ $t('delete') }}
+                {{ $t("delete") }}
               </button>
             </template>
             <div v-if="confirm === item.id" class="vivify flipInX">
               <button :class="[zButton, 'my-1']" @click="confirm = false">
-                {{ $t('cancel') }}
+                {{ $t("cancel") }}
               </button>
-              <button :class="[zButton, 'is-danger my-1']" @click="deleteBet(item)">
-                {{ $t('confirm_deleting') }} 🗑
+              <button
+                :class="[zButton, 'is-danger my-1']"
+                @click="deleteBet(item)"
+              >
+                {{ $t("confirm_deleting") }} 🗑
               </button>
             </div>
           </template>
@@ -44,7 +49,7 @@ import { getBetsByUser, deleteBet } from '~/endpoints/bets'
 export default {
   name: 'MyBets',
   meta: {
-    requiresAuth: true
+    requiresAuth: true,
   },
   components: {
     BetsTable: () => import('~/components/bets/BetsTable'),
@@ -59,8 +64,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'user'
-    })
+      user: 'user',
+    }),
   },
   created() {
     getBetsByUser(this.user.uid)
@@ -88,8 +93,8 @@ export default {
 
       const notification = { type: 'success', body: this.$t('bet_deleted'), time: 4000 }
       this.$nuxt.$emit('show-notification', notification)
-    }
-  }
+    },
+  },
 }
 </script>
 

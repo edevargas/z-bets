@@ -43,7 +43,7 @@ export function betting(payload) {
   return new Promise((resolve, reject) => {
     const finalBet = {
       ...payload,
-      timestamp: $nuxt.$fireModule.firestore.Timestamp.now()
+      timestamp: $nuxt.$fireModule.firestore.Timestamp.now(),
     }
     $nuxt.$fire.firestore.collection('bets').add(finalBet)
       .then((docRef) => resolve({ error: null, data: docRef.id }))
@@ -55,7 +55,7 @@ export function betApprove(betId, approval) {
   return new Promise((resolve, reject) => {
     const betRef = $nuxt.$fire.firestore.collection('bets').doc(betId)
     betRef.update({
-      status: approval ? BET_STATUS.APPROVED : BET_STATUS.DENIED
+      status: approval ? BET_STATUS.APPROVED : BET_STATUS.DENIED,
     })
       .then(() => resolve({ error: null, data: 'ok' }))
       .catch((error) => reject({ error, data: null }))

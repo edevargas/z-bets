@@ -4,29 +4,29 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    'plugin:nuxt/base'
+    'plugin:nuxt/base',
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {
     parser: 'babel-eslint',
-    sourceType: 'module'
+    sourceType: 'module',
   },
   rules: {
     'arrow-parens': ['error', 'always'],
-    'comma-dangle': 'off',
-    indent: [1, 2, {
+    'comma-dangle': ['error', 'always-multiline'],
+    indent: ['error', 2, {
       ignoredNodes: ['TemplateLiteral'],
     }],
-    'max-len': [1, { 'code': 120 }],
+    'max-len': ['error', { 'code': 120 }],
     'no-empty-pattern': 'off',
     'no-tabs': ['error', { allowIndentationTabs: true }],
     'no-undef': 'off',
     'no-unused-expressions': 'off',
-    'object-curly-spacing': [1, 'always'],
+    'object-curly-spacing': ['error', 'always'],
     'prefer-template': 1,
     'space-before-function-paren': ['error', 'never'],
-    quotes: [1, 'single'],
-    semi: [1, 'never'],
+    quotes: ['error', 'single'],
+    semi: ['error', 'never'],
     'template-curly-spacing': 'off',
     'vue/comment-directive': 'off',
     'vue/html-indent': 'off',

@@ -15,16 +15,16 @@ export default {
   },
   data() {
     return {
-      bkg: {}
+      bkg: {},
     }
   },
   created() {
     const { image, placeholder } = this
     this.bkg = {
       final: require(`~/assets/imgs/${image}`),
-      placeholder: require(`~/assets/imgs/${placeholder}`)
+      placeholder: require(`~/assets/imgs/${placeholder}`),
     }
-  }
+  },
 }
 </script>
 

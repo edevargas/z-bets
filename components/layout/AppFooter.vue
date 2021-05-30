@@ -1,16 +1,19 @@
 <template>
   <footer
-    :class="{ 'visible': isVisible, 'show-info': showInfo }"
+    :class="{ visible: isVisible, 'show-info': showInfo }"
     :style="finalHeight"
     v-click-outside="onClickOutside"
     @click="showInfo = !showInfo"
   >
     ® Zemoga SAS · About
     <div class="content">
-      <p>Appweb desarrollada dentro del <a :href="link" target="_blank">grupo de estudio JAMstack</a></p>
-      Devs: {{ devs.join(', ') }}
-      <br>
-      QA: {{ qa.join(', ') }}
+      <p>
+        Appweb desarrollada dentro del
+        <a :href="link" target="_blank">grupo de estudio JAMstack</a>
+      </p>
+      Devs: {{ devs.join(", ") }}
+      <br />
+      QA: {{ qa.join(", ") }}
     </div>
   </footer>
 </template>
@@ -21,20 +24,14 @@ import vClickOutside from 'v-click-outside'
 export default {
   name: 'AppFooter',
   directives: {
-    clickOutside: vClickOutside.directive
+    clickOutside: vClickOutside.directive,
   },
   data() {
-    return  {
+    return {
       showInfo: false,
       link: 'https://zemoga.jira.com/wiki/spaces/ZEM/pages/1592164491/JAMstack',
-      devs: [
-        '@wbeimar.logatto',
-        '@juan.castaneda',
-        '@javier.albadan',
-      ],
-      qa: [
-        '@lourdes.montes',
-      ],
+      devs: ['@wbeimar.logatto', '@juan.castaneda', '@javier.albadan'],
+      qa: ['@lourdes.montes'],
     }
   },
   computed: {

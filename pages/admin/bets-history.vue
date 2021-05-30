@@ -11,7 +11,7 @@
             v-if="item.status === 'pending'"
             :class="[zButton, 'is-primary result']"
           >
-            {{ $t('edit') }}
+            {{ $t("edit") }}
           </button>
         </div>
       </template>

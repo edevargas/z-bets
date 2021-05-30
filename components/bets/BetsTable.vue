@@ -1,5 +1,7 @@
 <template>
-  <table class="table is-hoverable is-striped is-fullwidth vivify fadeIn duration-400">
+  <table
+    class="table is-hoverable is-striped is-fullwidth vivify fadeIn duration-400"
+  >
     <tbody>
       <BetItemRow
         v-for="(item, index) in items"
@@ -12,7 +14,9 @@
         <slot v-bind="{ item }" />
       </BetItemRow>
       <tr v-if="items.length === 0" class="has-text-centered is-size-5">
-        {{ $t('still_no_items') }}
+        {{
+          $t("still_no_items")
+        }}
       </tr>
     </tbody>
   </table>

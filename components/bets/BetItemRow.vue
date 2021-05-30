@@ -10,7 +10,11 @@
           {{ item.user.displayName }}
         </div>
         <div class="bet">
-          <Match :match="item.match" :score="getScore(item)" :keep-row="keepRow" />
+          <Match
+            :match="item.match"
+            :score="getScore(item)"
+            :keep-row="keepRow"
+          />
         </div>
         <slot v-bind="{ item }" />
       </div>
@@ -35,7 +39,7 @@ export default {
       const { homeScore, awayScore } = item
       return { homeScore, awayScore }
     },
-  }
+  },
 }
 </script>
 

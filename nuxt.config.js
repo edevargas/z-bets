@@ -11,7 +11,7 @@ export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     htmlAttrs: {
-      lang: 'es'
+      lang: 'es',
     },
     title: 'Z-Bets',
     meta: [
@@ -32,8 +32,8 @@ export default {
       { property: 'og:locale', content: 'es_CO' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
-    ]
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
+    ],
   },
 
   /*
@@ -42,13 +42,13 @@ export default {
   loading: { color: '#00D1B2' },
 
   env: {
-    Z_BUTTON: 'button is-outlined is-rounded is-small'
+    Z_BUTTON: 'button is-outlined is-rounded is-small',
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     '~/assets/css/vivify.min.css',
-    '~/assets/scss/main.scss'
+    '~/assets/scss/main.scss',
   ],
 
   router: {
@@ -59,7 +59,7 @@ export default {
   plugins: [
     '~/plugins/after-each',
     '~/plugins/filters',
-    '~/plugins/vue-progressive'
+    '~/plugins/vue-progressive',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -71,7 +71,7 @@ export default {
     '@nuxtjs/dotenv',
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/stylelint
-    '@nuxtjs/stylelint-module'
+    '@nuxtjs/stylelint-module',
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -90,9 +90,9 @@ export default {
     postcss: {
       preset: {
         features: {
-          customProperties: false
-        }
-      }
-    }
-  }
+          customProperties: false,
+        },
+      },
+    },
+  },
 }

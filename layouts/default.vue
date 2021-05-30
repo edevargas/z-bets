@@ -17,6 +17,6 @@ export default {
     AppFooter: () => import('~/components/layout/AppFooter'),
     BettingModal: () => import('~/components/bets/BettingModal'),
     Notification: () => import('~/components/utils/Notification'),
-  }
+  },
 }
 </script>

@@ -30,7 +30,7 @@ export default {
     score: { type: Object, default: () => ({}) },
     keepRow: Boolean,
     isTitle: Boolean,
-    gambling: Boolean
+    gambling: Boolean,
   },
   computed: {
     titleClass() {
@@ -42,8 +42,8 @@ export default {
     showVersus() {
       const { match, hasScore } = this
       return match.status === BET_STATUS.PENDING && !hasScore
-    }
-  }
+    },
+  },
 }
 </script>
 

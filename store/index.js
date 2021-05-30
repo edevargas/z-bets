@@ -14,7 +14,7 @@ export const mutations = {
   },
   setMatchToBet(state, payload) {
     state.matchToBet = payload
-  }
+  },
 }
 
 export const actions = {

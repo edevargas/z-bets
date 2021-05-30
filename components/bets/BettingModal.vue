@@ -3,7 +3,7 @@
     <div class="modal-background"></div>
     <div class="modal-card vivify swoopInBottom">
       <header class="modal-card-head">
-        <p class="modal-card-title">{{ $t('give_score') }}</p>
+        <p class="modal-card-title">{{ $t("give_score") }}</p>
         <button class="delete" aria-label="close" @click="closeModal" />
       </header>
       <section class="modal-card-body">
@@ -32,22 +32,24 @@
             :disabled="!validateHomeScore || !validateAwayScore"
             @click="confirm = true"
           >
-            {{ $t('bet_now') }}
+            {{ $t("bet_now") }}
           </button>
           <div v-else class="vivify flipInX">
             <p class="is-6 has-text-centered py-2">
-              {{ $t('confirm_bet') }}
+              {{ $t("confirm_bet") }}
             </p>
             <button :class="[zButton, 'mx-2']" @click="confirm = false">
-              {{ $t('edit') }}
+              {{ $t("edit") }}
             </button>
             <button :class="[zButton, 'is-primary mx-2']" @click="finish">
-              {{ $t('confirm') }} 🤞🏼
+              {{ $t("confirm") }} 🤞🏼
             </button>
           </div>
         </div>
-        <p class="has-background-dark has-text-centered has-text-warning my-5 p-2">
-          {{ $t('payroll_discount') }}
+        <p
+          class="has-background-dark has-text-centered has-text-warning my-5 p-2"
+        >
+          {{ $t("payroll_discount") }}
         </p>
       </section>
     </div>
@@ -62,7 +64,7 @@ import { BET_STATUS } from '~/plugins/constants'
 export default {
   name: 'BettingModal',
   components: {
-    Match: () => import('~/components/bets/Match')
+    Match: () => import('~/components/bets/Match'),
   },
   data() {
     return {
@@ -146,7 +148,7 @@ export default {
       this.awayScore = ''
       this.confirm = false
       this.$store.commit('setMatchToBet', {})
-    }
+    },
   },
 }
 </script>

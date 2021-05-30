@@ -20,10 +20,10 @@ export default {
       persistence: 'local',
       initialize: {
         onAuthStateChangedAction: 'onAuthStateChangedAction',
-        subscribeManually: false
+        subscribeManually: false,
       },
     },
     firestore: true,
     storage: true,
-  }
+  },
 }
