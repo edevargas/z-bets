@@ -8,35 +8,11 @@
     <progress v-if="loading" class="progress is-primary mt-6" />
     <BetsTable v-else :items="bets" timestamp keep-row>
       <template v-slot="{ item }">
-        <div class="actions">
-          <div class="status" v-if="confirm !== item.id">
-            {{ getStatus(item.status) }}
-          </div>
-          <template v-if="item.status === 'pending'">
-            <template v-if="!confirm">
-              <button :class="[zButton, 'is-primary action-buttons']">
-                {{ $t("edit") }}
-              </button>
-              <button
-                :class="[zButton, 'is-danger action-buttons']"
-                @click="confirm = item.id"
-              >
-                {{ $t("delete") }}
-              </button>
-            </template>
-            <div v-if="confirm === item.id" class="vivify flipInX">
-              <button :class="[zButton, 'my-1']" @click="confirm = false">
-                {{ $t("cancel") }}
-              </button>
-              <button
-                :class="[zButton, 'is-danger my-1']"
-                @click="deleteBet(item)"
-              >
-                {{ $t("confirm_deleting") }} 🗑
-              </button>
-            </div>
-          </template>
-        </div>
+        <BetEditButtons
+          :item="item"
+          @edit="editBet()"
+          @delete="deleteBet(item)"
+        />
       </template>
     </BetsTable>
   </main>
@@ -53,10 +29,10 @@ export default {
   },
   components: {
     BetsTable: () => import('~/components/bets/BetsTable'),
+    BetEditButtons: () => import('~/components/bets/BetEditButtons'),
   },
   data() {
     return {
-      zButton: this.$nuxt.context.env.Z_BUTTON,
       loading: true,
       bets: [],
       confirm: false,
@@ -79,8 +55,8 @@ export default {
     this.$nuxt.$off('bets-by-user')
   },
   methods: {
-    getStatus(status) {
-      return this.$t(`bet_${status}`) || ''
+    editBet() {
+      // TODO: Editar apuesta
     },
     async deleteBet(item) {
       const { error, data } = await deleteBet(item.id)
@@ -99,58 +75,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.action-buttons {
-  display: none;
-}
-
-.status {
-  display: initial;
-}
-
-tr:hover {
-  .action-buttons {
-    display: initial;
-  }
-
-  .status {
-    display: none;
-  }
-}
-
 td {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-
-  .match {
-    .bet-timestamp {
-      margin-bottom: 0.5rem;
-    }
-  }
-
-  .actions {
-    min-width: 120px;
-    text-align: center;
-  }
 }
 
 @media (max-width: 767px) {
   td {
     flex-direction: column;
-
-    .match {
-      width: 100%;
-
-      .bet-timestamp {
-        margin-bottom: 0;
-      }
-    }
-
-    .actions {
-      min-width: 100%;
-      margin-top: -0.5rem;
-    }
   }
 }
 </style>

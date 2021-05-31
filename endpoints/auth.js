@@ -1,6 +1,6 @@
 export async function logIn() {
   const provider = new $nuxt.$fireModule.auth.GoogleAuthProvider()
-  
+
   await $nuxt.$fire.auth.signInWithPopup(provider)
     .then((result) => {
       const { additionalUserInfo: { isNewUser, profile } } = result
@@ -34,11 +34,11 @@ export function getAdminAccess(email) {
     const userId = email.split('@')[0]
     const admins = firestore.collection('admins').doc(userId)
     admins.onSnapshot((doc) => {
-      if (!doc || !Object.keys(doc).length) {
+      if (!doc || !doc?.data()) {
         resolve('')
       }
-      
-      const { access } = doc.data()
+
+      const { access } = doc?.data() || {}
       resolve(access)
     })
   })

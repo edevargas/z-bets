@@ -7,6 +7,7 @@
       <template v-slot="{ item }">
         <div class="actions">
           <div class="status">{{ getStatus(item.status) }}</div>
+          <!-- TODO: Solo permitir editar el status de la apuesta -->
           <button
             v-if="item.status === 'pending'"
             :class="[zButton, 'is-primary result']"

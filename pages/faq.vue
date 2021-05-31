@@ -21,7 +21,7 @@
 <script>
 /* eslint-disable max-len */
 export default {
-  name: 'Q&A',
+  name: 'FAQ',
   data() {
     return {
       items: [

@@ -2,6 +2,10 @@ html {
   overflow-y: initial;
 }
 
+a.nuxt-link-exact-active {
+  background-color: #292929;
+}
+
 .hero.transparent {
   background: rgba($color: #111, $alpha: 0.8) !important;
 }
