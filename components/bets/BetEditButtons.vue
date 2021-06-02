@@ -2,6 +2,7 @@
   <div class="actions">
     <div v-if="item.status === 'pending'" :class="{ confirming: confirm }">
       <button
+        v-if="false"
         :class="[zButton, 'is-primary action-buttons']"
         @click="$emit('edit')"
       >
@@ -21,7 +22,7 @@
       <button :class="[zButton, 'my-1']" @click="confirm = false">
         {{ $t("cancel") }}
       </button>
-      <button :class="[zButton, 'is-danger my-1']" @click="$emit('delete')">
+      <button :class="[zButton, 'is-danger my-1']" @click="confirmDelete">
         {{ $t("confirm_deleting") }} 🗑
       </button>
     </div>
@@ -43,6 +44,10 @@ export default {
   methods: {
     getStatus(status) {
       return this.$t(`bet_${status}`) || ''
+    },
+    confirmDelete() {
+      this.confirm = false
+      this.$emit('delete')
     },
   },
 }

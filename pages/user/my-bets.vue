@@ -9,6 +9,7 @@
     <BetsTable v-else :items="bets" timestamp keep-row>
       <template v-slot="{ item }">
         <BetEditButtons
+          :key="item.id"
           :item="item"
           @edit="editBet()"
           @delete="deleteBet(item)"

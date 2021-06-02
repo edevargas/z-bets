@@ -8,13 +8,21 @@
           class="container has-text-centered vivify fadeIn"
         >
           <Match :match="nextGame" is-title />
-          <p class="subtitle is-4 mt-2 mb-2">
+
+          <div
+            v-if="isStarted"
+            class="is-flex is-justify-content-center subtitle is-4 my-2 vivify fadeIn"
+          >
+            <div class="vivify pulsate infinite mr-2">⚽️</div>
+            {{ $t("realtime") }}
+          </div>
+          <p v-else class="subtitle is-4 my-2">
             {{ nextGame.date.toDate() | formatDate }}
           </p>
           <p class="subtitle is-4 mb-5">{{ nextGame.city }}</p>
 
           <button
-            v-if="user"
+            v-if="user && isPending"
             type="button"
             :class="[zButton, 'is-primary']"
             @click="$store.commit('setMatchToBet', nextGame)"
@@ -31,6 +39,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getNextMatch } from '~/endpoints/matches'
+import { MATCH_STATUS } from '~/plugins/constants'
 
 export default {
   name: 'NextGame',
@@ -49,6 +58,12 @@ export default {
     }),
     isAvailable() {
       return Object.keys(this.nextGame).length
+    },
+    isPending() {
+      return this.nextGame.status === MATCH_STATUS.PENDING
+    },
+    isStarted() {
+      return this.nextGame.status === MATCH_STATUS.STARTED
     },
   },
   created() {

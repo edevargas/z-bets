@@ -34,7 +34,9 @@ export function isTimeAvailable({ id }) {
   return new Promise((resolve) => {
     const docRef = $nuxt.$fire.firestore.collection('matches').doc(id)
     docRef.get()
-      .then((doc) => resolve(doc?.data()?.status === MATCH_STATUS.STARTED))
+      .then((doc) => {
+        resolve(doc?.data()?.status === MATCH_STATUS.PENDING)
+      })
       .catch(() => resolve(false))
   })
 }
@@ -63,10 +65,23 @@ export function betApprove(betId, approval) {
 }
 
 export function deleteBet(betId) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const betRef = $nuxt.$fire.firestore.collection('bets').doc(betId)
-    betRef.delete()
-      .then(() => resolve({ error: null, data: 'ok' }))
-      .catch((error) => reject({ error, data: null }))
+    betRef.get()
+      .then((doc) => {
+        isTimeAvailable(doc.data())
+          .then((validateStatus) => {
+            if (validateStatus) {
+              betRef.delete()
+                .then(() => resolve({ error: null, data: 'ok' }))
+                .catch((error) => resolve({ error, data: null }))
+            } else {
+              resolve({ error: $nuxt.$t('unavailable_bet_deletition'), data: null })
+            }
+
+          })
+          .catch((error) => resolve({ error, data: null }))
+      })
+      .catch((error) => resolve({ error, data: null }))
   })
 }

@@ -34,7 +34,7 @@
           >
             {{ $t("bet_now") }}
           </button>
-          <div v-else class="vivify flipInX">
+          <div v-else-if="bettingInProgress" class="vivify flipInX">
             <p class="is-6 has-text-centered py-2">
               {{ $t("confirm_bet") }}
             </p>
@@ -45,6 +45,7 @@
               {{ $t("confirm") }} 🤞🏼
             </button>
           </div>
+          <progress v-else class="progress is-primary mt-2 mb-2" />
         </div>
         <p
           class="has-background-dark has-text-centered has-text-warning my-5 p-2"
@@ -72,6 +73,7 @@ export default {
       homeScore: '',
       awayScore: '',
       confirm: false,
+      bettingInProgress: true,
     }
   },
   computed: {
@@ -124,9 +126,13 @@ export default {
         return
       }
 
-      if (!isTimeAvailable(this.match)) {
+      this.bettingInProgress = false
+      const validateStatus = await isTimeAvailable(this.match)
+
+      if (!validateStatus) {
         const notification = { type: 'error', body: this.$t('invalid_match_status') }
         this.$nuxt.$emit('show-notification', notification)
+        this.closeModal()
         return
       }
 
@@ -136,6 +142,7 @@ export default {
       if (error && !data) {
         const notification = { type: 'error', body: error }
         this.$nuxt.$emit('show-notification', notification)
+        this.closeModal()
         return
       }
 
@@ -147,6 +154,7 @@ export default {
       this.homeScore = ''
       this.awayScore = ''
       this.confirm = false
+      this.bettingInProgress = true
       this.$store.commit('setMatchToBet', {})
     },
   },

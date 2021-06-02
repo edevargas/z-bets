@@ -5,13 +5,13 @@
       <img :src="match.homeId | flag" :alt="match.homeId" class="mx-2" />
     </div>
     <div :class="['score mb-0', titleClass]">
-      <span v-if="gambling" class="is-4">-</span>
-      <span v-else-if="showVersus" class="is-4">vs</span>
-      <span v-else>
+      <div v-if="gambling" class="is-4 vivify fadeIn">-</div>
+      <div v-else-if="showVersus" class="is-4 vivify fadeIn">vs</div>
+      <div v-else class="vivify fadeIn">
         {{ hasScore ? score.homeScore : match.homeScore }}
         -
         {{ hasScore ? score.awayScore : match.awayScore }}
-      </span>
+      </div>
     </div>
     <div :class="['team away mb-0', titleClass]">
       <img :src="match.awayId | flag" :alt="match.awayId" class="mx-2" />
