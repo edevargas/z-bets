@@ -5,7 +5,7 @@
       {{ $t("faq_title") }}
     </h1>
 
-    <table class="table is-striped is-fullwidth vivify fadeIn">
+    <table class="table is-striped is-fullwidth vivify fadeIn mb-4">
       <tbody>
         <tr v-for="(item, index) in items" :key="index">
           <td class="is-size-5">
@@ -31,6 +31,11 @@ export default {
             'Al momento de realizar una apuesta, el participante acepta y autoriza a Zemoga SAS a realizar un descuento en la siguiente nómina, por el valor acordado para la apuesta',
         },
         {
+          question: '¿Cómo se realiza la apuesta?',
+          answer:
+            'La mecánica de juego solo permitirá apostar por el marcador final dentro del tiempo reglamentario (No definiciones desde el punto penal). Solo se participará registrando el resultado (cantidad de goles por equipo)',
+        },
+        {
           question: '¿Existe un canal en slack para las notificaciones?',
           answer: 'Si, el canal #z-bets',
         },
@@ -52,6 +57,16 @@ export default {
           question: '¿Qué sucede cuando inicia el partido?',
           answer:
             'Una vez iniciado el partido, las apuestas se cerrarán sin derecho a modificar o borrar alguna. Cada apuesta registrada entrará a participar y será sujeto de descuento en la siguiente nómina',
+        },
+        {
+          question: '¿Qué sucede si varios participantes ganan en un mismo partido (mismo marcador)?',
+          answer:
+            'El monto total acumulado que está en juego para el partido correspondiente, será dividido en iguales proporciones entre el número de ganadores que hayan acertado al marcador',
+        },
+        {
+          question: '¿Cuándo y cómo es el pago al (los) ganador (es)?',
+          answer:
+            'El pago se realizará por medio de una transferencia el viernes después del partido, a la tarjeta zafiro o a la cuenta correspondiente',
         },
         {
           question: '¿Qué sucede si nadie gana la apuesta en un partido?',

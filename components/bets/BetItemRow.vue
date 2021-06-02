@@ -64,6 +64,7 @@ export default {
     display: flex;
     align-items: center;
     width: 100%;
+    min-width: 250px;
   }
 
   .actions {
