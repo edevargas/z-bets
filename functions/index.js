@@ -10,17 +10,25 @@ const app = express();
 app.use(cors());
 
 admin.initializeApp();
-const settings = { timestampsInSnapshots: true };
+const settings = { timestampsInSnapshots: true, ignoreUndefinedProperties: true };
 admin.firestore().settings(settings);
 
-app.post('/v1', (req, res, next) => {
+app.post('/status', (req, res, next) => {
   return commandsController.changeMatchCurrentStatus(req.body)
-    .then((isUpdated) => {
+    .then((response) => {
       console.log('PAYLOAD', req.body);
-      const result = isUpdated ? 'Estado del partido actualizado ✅' : 'Aún no empieza el partido ❌';
-      return res.status(200).json({
-        result,
-      });
+      return res.status(200).json({ result: response.data });
+    })
+    .catch((error) => {
+      return next(new Error(error.toString()));
+    });
+});
+
+app.post('/score', (req, res, next) => {
+  return commandsController.changeMatchCurrentScore(req.body)
+    .then((response) => {
+      console.log('PAYLOAD', req.body);
+      return res.status(200).json({ result: response.data });
     })
     .catch((error) => {
       return next(new Error(error.toString()));
@@ -46,4 +54,4 @@ exports.sendWinnersSlackNotification = functions.firestore
   .document('matches/{matchId}')
   .onUpdate(notificationsController.sendWinnersSlackNotificationController);
 
-exports.changeMatchCurrentStatus = functions.https.onRequest(app);
+exports.updatedMatch = functions.https.onRequest(app);

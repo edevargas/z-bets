@@ -15,9 +15,16 @@
 
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
-      <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_in_progress") }}</p>
-      <BetsTable :items="inProgressBets" user keep-row />
-      <hr />
+      <template v-if="pendingBets.length">
+        <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_pending") }}</p>
+        <BetsTable :items="pendingBets" user keep-row />
+        <hr />
+      </template>
+      <template v-if="inProgressBets.length">
+        <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_in_progress") }}</p>
+        <BetsTable :items="inProgressBets" user keep-row />
+        <hr />
+      </template>
       <template v-if="lostBets.length">
         <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_lost") }}</p>
         <BetsTable :items="lostBets" user keep-row />
@@ -30,6 +37,7 @@
 import { getBetSettings } from '~/endpoints/settings'
 import { getNextMatch } from '~/endpoints/matches'
 import { getBetsByMatch } from '~/endpoints/bets'
+import { BET_STATUS } from '~/plugins/constants'
 
 export default {
   name: 'Bets',
@@ -75,20 +83,17 @@ export default {
 
       return this.bets.length * this.betSettings.amount || 0
     },
+    pendingBets() {
+      return this.bets.filter(({ status }) => status === BET_STATUS.PENDING).sort(this.sorter)
+    },
     inProgressBets() {
-      return this.bets.filter(this.currentScoreLower).sort(this.sorter)
+      return this.bets.filter(({ status }) => status === BET_STATUS.IN_PROGRESS).sort(this.sorter)
     },
     lostBets() {
-      return this.bets.filter(this.currentScoreBigger).sort(this.sorter)
+      return this.bets.filter(({ status }) => status === BET_STATUS.LOST).sort(this.sorter)
     },
   },
   methods: {
-    currentScoreLower({ homeScore, awayScore }) {
-      return this.nextGame.homeScore <= homeScore && this.nextGame.awayScore <= awayScore
-    },
-    currentScoreBigger({ homeScore, awayScore }) {
-      return this.nextGame.homeScore > homeScore || this.nextGame.awayScore > awayScore
-    },
     sorter(firstEl, secondEl) {
       return firstEl.homeScore - secondEl.homeScore
     },

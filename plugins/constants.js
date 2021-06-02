@@ -8,6 +8,9 @@ export const MATCH_STATUS = {
 
 export const BET_STATUS = {
   PENDING: 'pending',
+  IN_PROGRESS: 'in-progress',
   WON: 'won',
   LOST: 'lost',
+  PAID: 'paid',
+  PENDING_PAYMENT: 'pending-payment',
 }

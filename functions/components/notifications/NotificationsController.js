@@ -8,10 +8,8 @@ exports.sendBetCreationSlackNotificationController = (dataSnapshot, context) => 
 };
 
 exports.sendWinnersSlackNotificationController = (dataSnapshot) => {
-  // TODO: Cambiar nombre del controlador a matchUpdatedController
   const changedData = dataSnapshot.after.data();
 
-  // TODO: Agregar validación por si cambia un marcador -> Cambiar status de apuestas
   if (changedData.status === MATCH_STATUS.FINISHED) {
     const notifications = new Notifications();
 
