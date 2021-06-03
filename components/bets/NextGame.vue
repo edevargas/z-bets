@@ -1,7 +1,9 @@
 <template>
   <div class="wrapper is-flex is-flex-direction-column">
     <section class="hero transparent is-dark">
-      <h1 class="title has-text-centered mt-5 mb-0">{{ $t("next_game") }}</h1>
+      <h1 class="title has-text-centered mt-5 mb-0">
+        {{ $t(isFinished ? "final_score" : "next_game") }}
+      </h1>
       <div class="hero-body pt-5">
         <div
           v-if="isAvailable"
@@ -24,7 +26,7 @@
           <button
             v-if="user && isPending"
             type="button"
-            :class="[zButton, 'is-primary']"
+            class="button is-primary is-rounded"
             @click="$store.commit('setMatchToBet', nextGame)"
           >
             {{ $t("bet_now") }}
@@ -64,6 +66,9 @@ export default {
     },
     isStarted() {
       return this.nextGame.status === MATCH_STATUS.STARTED
+    },
+    isFinished() {
+      return this.nextGame.status === MATCH_STATUS.FINISHED
     },
   },
   created() {

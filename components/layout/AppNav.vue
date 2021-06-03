@@ -6,7 +6,9 @@
     v-click-outside="onClickOutside"
   >
     <div class="navbar-brand">
-      <nuxt-link to="/" class="navbar-item"> Z-Bets </nuxt-link>
+      <nuxt-link to="/" class="navbar-item has-text-weight-bold">
+        Z-Bets
+      </nuxt-link>
       <SwitchLanguage />
 
       <a

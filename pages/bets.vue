@@ -15,6 +15,11 @@
 
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
+      <template v-if="wonBets.length">
+        <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_won") }}</p>
+        <BetsTable :items="wonBets" user keep-row />
+        <hr />
+      </template>
       <template v-if="pendingBets.length">
         <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_pending") }}</p>
         <BetsTable :items="pendingBets" user keep-row />
@@ -88,6 +93,9 @@ export default {
     },
     inProgressBets() {
       return this.bets.filter(({ status }) => status === BET_STATUS.IN_PROGRESS).sort(this.sorter)
+    },
+    wonBets() {
+      return this.bets.filter(({ status }) => status === BET_STATUS.WON).sort(this.sorter)
     },
     lostBets() {
       return this.bets.filter(({ status }) => status === BET_STATUS.LOST).sort(this.sorter)

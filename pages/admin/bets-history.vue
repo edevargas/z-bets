@@ -5,13 +5,12 @@
     <progress v-if="loading" class="progress is-primary mt-6" />
     <BetsTable v-else :items="bets" user timestamp keep-row>
       <template v-slot="{ item }">
-        <div class="actions">
-          <div class="status">{{ getStatus(item.status) }}</div>
-          <!-- TODO: Solo permitir editar el status de la apuesta -->
-          <button v-if="false" :class="[zButton, 'is-primary result']">
-            {{ $t("edit") }}
-          </button>
-        </div>
+        <BetEditButtons
+          :key="item.id"
+          :item="item"
+          edit-button
+          @edit="editBet()"
+        />
       </template>
     </BetsTable>
   </main>
@@ -28,6 +27,7 @@ export default {
   },
   components: {
     BetsTable: () => import('~/components/bets/BetsTable'),
+    BetEditButtons: () => import('~/components/bets/BetEditButtons'),
   },
   data() {
     return {
@@ -55,22 +55,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.result {
-  display: none;
-}
-
-.status {
-  display: initial;
-}
-
+<style lang="scss">
+// TODO: Edit bet
 tr:hover {
-  .result {
-    display: initial;
-  }
-
   .status {
-    display: none;
+    display: block !important;
   }
 }
 </style>

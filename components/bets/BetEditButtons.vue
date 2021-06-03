@@ -1,6 +1,10 @@
 <template>
   <div class="actions">
-    <div v-if="item.status === 'pending'" :class="{ confirming: confirm }">
+    <div
+      v-if="item.status === MATCH_STATUS.PENDING"
+      :class="{ confirming: confirm }"
+    >
+      <!-- TODO: Edit bet -->
       <button
         v-if="false"
         :class="[zButton, 'is-primary action-buttons']"
@@ -9,13 +13,17 @@
         {{ $t("edit") }}
       </button>
       <button
+        v-if="deleteButton"
         :class="[zButton, 'is-danger action-buttons']"
         @click="confirm = true"
       >
         {{ $t("delete") }}
       </button>
     </div>
-    <div v-if="!confirm" :class="{ status: item.status === 'pending' }">
+    <div
+      v-if="!confirm"
+      :class="{ status: item.status === MATCH_STATUS.PENDING }"
+    >
       {{ getStatus(item.status) }}
     </div>
     <div v-else class="vivify flipInX">
@@ -30,13 +38,18 @@
 </template>
 
 <script>
+import { MATCH_STATUS } from '~/plugins/constants'
+
 export default {
   name: 'BetEditButtons',
   props: {
     item: { type: Object, required: true },
+    editButton: Boolean,
+    deleteButton: Boolean,
   },
   data() {
     return {
+      MATCH_STATUS,
       zButton: this.$nuxt.context.env.Z_BUTTON,
       confirm: false,
     }

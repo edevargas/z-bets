@@ -1,13 +1,11 @@
-import { MATCH_STATUS } from '~/plugins/constants'
-const { PENDING, STARTED } = MATCH_STATUS
+export async function getNextMatch() {
+  const nextMatch = $nuxt.$fire.firestore.collection('settings').doc('next-match')
+  const doc = await nextMatch.get()
+  const { matchId } = doc.data()
 
-export function getNextMatch() {
-  const matches = $nuxt.$fire.firestore.collection('matches')
-  const query = matches.where('status', 'in', [PENDING, STARTED]).orderBy('date', 'asc').limit(1)
-  query.onSnapshot((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      $nuxt.$emit('next-match', { ...doc.data(), id: doc.id })
-    })
+  const matches = $nuxt.$fire.firestore.collection('matches').doc(matchId)
+  matches.onSnapshot((doc) => {
+    $nuxt.$emit('next-match', { ...doc.data(), id: doc.id })
   })
 }
 

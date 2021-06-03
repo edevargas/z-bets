@@ -11,6 +11,8 @@
         <BetEditButtons
           :key="item.id"
           :item="item"
+          edit-button
+          delete-button
           @edit="editBet()"
           @delete="deleteBet(item)"
         />
