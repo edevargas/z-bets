@@ -34,6 +34,15 @@
         <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_lost") }}</p>
         <BetsTable :items="lostBets" user keep-row />
       </template>
+      <table v-if="bets.length === 0" class="table is-fullwidth">
+        <tbody>
+          <tr class="has-text-centered is-size-5">
+            {{
+              $t("still_no_items")
+            }}
+          </tr>
+        </tbody>
+      </table>
     </template>
   </main>
 </template>

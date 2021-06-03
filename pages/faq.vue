@@ -45,8 +45,8 @@ export default {
         },
         {
           question: '¿Puedo editar mi apuesta?',
-          answer:
-            'Si. Es posible editar tu apuesta ANTES DEL INICIO del partido. La opción la encontrarás en el menú "Mis apuestas"',
+          answer: 'Esta funcionalidad estará disponible pronto',
+          // 'Si. Es posible editar tu apuesta ANTES DEL INICIO del partido. La opción la encontrarás en el menú "Mis apuestas"',
         },
         {
           question: '¿Puedo borrar mi apuesta?',
@@ -64,9 +64,9 @@ export default {
             'El monto total acumulado que está en juego para el partido correspondiente, será dividido en iguales proporciones entre el número de ganadores que hayan acertado al marcador',
         },
         {
-          question: '¿Cuándo y cómo es el pago al (los) ganador (es)?',
+          question: '¿Cuándo y cómo es el pago del premio al (los) ganador (es)?',
           answer:
-            'El pago se realizará por medio de una transferencia el viernes después del partido, a la tarjeta zafiro o a la cuenta correspondiente',
+            'Se realizará por medio de una transferencia el día viernes después del partido, a la tarjeta zafiro o a la cuenta correspondiente',
         },
         {
           question: '¿Qué sucede si nadie gana la apuesta en un partido?',

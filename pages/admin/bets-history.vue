@@ -1,5 +1,5 @@
 <template>
-  <main class="container is-max-desktop">
+  <main class="container is-max-desktop bet-history">
     <h1 class="title is-1 mt-4">{{ $t("bets_history") }}</h1>
 
     <progress v-if="loading" class="progress is-primary mt-6" />
@@ -57,9 +57,11 @@ export default {
 
 <style lang="scss">
 // TODO: Edit bet
-tr:hover {
-  .status {
-    display: block !important;
+.bet-history {
+  tr:hover {
+    .status {
+      display: block !important;
+    }
   }
 }
 </style>

@@ -29,7 +29,7 @@
             class="button is-primary is-rounded"
             @click="$store.commit('setMatchToBet', nextGame)"
           >
-            {{ $t("bet_now") }}
+            {{ $t("bet_here") }}
           </button>
         </div>
         <progress v-else class="progress is-primary my-6" />

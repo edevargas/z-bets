@@ -125,11 +125,11 @@ export default {
         this.$nuxt.$emit('show-notification', notification)
         return
       }
-      
+
       const payload = this.getPayload()
 
       const validateDuplicated = await isDuplicatedScoreByUser(payload)
-      if(!validateDuplicated) {
+      if (!validateDuplicated) {
         const notification = { type: 'error', body: this.$t('check_duplicated_score') }
         this.$nuxt.$emit('show-notification', notification)
         return
