@@ -28,6 +28,7 @@
   "bets_won": "Apuestas ganadoras 🥳",
   "betting_confirmation": "Confirma tu apuesta",
   "cancel": "Cancelar",
+  "check_duplicated_score": "Apuesta duplicada, ya apostate ese marcador.",
   "check_scores": "Revisa los marcadores",
   "check_voucher": "Revisar voucher",
   "choose_image": "Selecciona una imagen",

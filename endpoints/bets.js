@@ -30,6 +30,21 @@ export function getBetsByUser(userId) {
   })
 }
 
+export function isDuplicatedScoreByUser({ matchId, userId, awayScore, homeScore }) {
+  return new Promise((resolve) => {
+    const bets = $nuxt.$fire.firestore.collection('bets')
+    const query = bets.where('userId', '==', userId)
+      .where('matchId', '==', matchId)
+      .where('awayScore', '==', awayScore)
+      .where('homeScore', '==', homeScore)
+    query.get()
+      .then((doc) => {
+        resolve(doc?.empty)
+      })
+      .catch(() => resolve(false))
+  })
+}
+
 export function isTimeAvailable({ id }) {
   return new Promise((resolve) => {
     const docRef = $nuxt.$fire.firestore.collection('matches').doc(id)

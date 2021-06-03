@@ -28,6 +28,7 @@
   "bets_won": "Won bets 🥳",
   "betting_confirmation": "Betting confirmation",
   "cancel": "Cancelar",
+  "check_duplicated_score": "Duplicated bet, please verify scores.",
   "check_scores": "Check scores",
   "check_voucher": "Check voucher",
   "choose_image": "Choose an image",

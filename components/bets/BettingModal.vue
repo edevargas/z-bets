@@ -59,7 +59,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { isTimeAvailable, betting } from '~/endpoints/bets'
+import { isTimeAvailable, betting, isDuplicatedScoreByUser } from '~/endpoints/bets'
 import { BET_STATUS } from '~/plugins/constants'
 
 export default {
@@ -125,6 +125,15 @@ export default {
         this.$nuxt.$emit('show-notification', notification)
         return
       }
+      
+      const payload = this.getPayload()
+
+      const validateDuplicated = await isDuplicatedScoreByUser(payload)
+      if(!validateDuplicated) {
+        const notification = { type: 'error', body: this.$t('check_duplicated_score') }
+        this.$nuxt.$emit('show-notification', notification)
+        return
+      }
 
       this.bettingInProgress = false
       const validateStatus = await isTimeAvailable(this.match)
@@ -136,7 +145,6 @@ export default {
         return
       }
 
-      const payload = this.getPayload()
       const { error, data } = await betting(payload)
 
       if (error && !data) {
