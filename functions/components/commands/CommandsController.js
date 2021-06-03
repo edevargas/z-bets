@@ -9,7 +9,6 @@ exports.changeMatchCurrentStatus = (payload) => {
   const isAdmin = DEFAULT_ADMINS.includes(user_name);
 
   if (isAdmin && command) {
-    console.log('🚀 ~ file: CommandsController.js ~ line 12 ~ command', command);
     if (command === SLACK_COMMANDS.START) {
       return commands.changeMatchCurrentStatus(MATCH_STATUS.PENDING, MATCH_STATUS.STARTED);
     }

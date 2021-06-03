@@ -21,7 +21,7 @@ class Commands {
     let homeScore;
     let awayScore;
 
-    const updateStatus = (dataSnapshot) => {
+    const updateMatchStatus = (dataSnapshot) => {
       dataSnapshot.forEach((doc) => {
         const match = doc.data();
         const MATCH_DATE = utcToZonedTime(match.date.toDate(), TIME_ZONE);
@@ -46,10 +46,6 @@ class Commands {
     };
 
     const setBetsInProgress = (response) => {
-      if (response.error) {
-        return response;
-      }
-
       return BETS_DB
         .where('matchId', '==', matchId)
         .get()
@@ -57,6 +53,54 @@ class Commands {
           dataSnapshot.forEach((doc) => BETS_DB.doc(doc.id).update({ status: BET_STATUS.IN_PROGRESS }));
           return response;
         });
+    };
+
+    const setBetsFinalStatus = (response) => {
+      return BETS_DB
+        .where('matchId', '==', matchId)
+        .get()
+        .then((dataSnapshot) => {
+          let winners = [];
+
+          dataSnapshot.forEach((bet) => {
+            let finalStatus = BET_STATUS.LOST;
+            const betData = bet.data();
+            const betId = bet.id;
+            if (betData.homeScore === homeScore && betData.awayScore === awayScore) {
+              finalStatus = BET_STATUS.WON;
+              winners.push(betData);
+            }
+
+            BETS_DB.doc(betId).update({ status: finalStatus });
+          });
+
+          let customMsg = 'Nadie ganó 😭';
+          const userNames = winners.map(({ user }) => user.displayName);
+
+          if (userNames.length === 1) {
+            customMsg = `El ganador es ${userNames.join('')} 🥳🥳🥳`;
+          } else if (userNames.length > 1) {
+            customMsg = `Los ganadores son ${userNames.join(', ')} 🥳🥳🥳`;
+          }
+
+          notifications.sendSlackNotification({ text: customMsg });
+
+          return response;
+        });
+    };
+
+    const updateBetsStatus = (response) => {
+      if (response.error) {
+        return response;
+      }
+
+      if (newStatus === MATCH_STATUS.STARTED) {
+        return setBetsInProgress(response);
+      }
+
+      if (newStatus === MATCH_STATUS.FINISHED) {
+        return setBetsFinalStatus(response);
+      }
     };
 
     const sendNotification = (response) => {
@@ -76,9 +120,9 @@ class Commands {
       .orderBy('date', 'asc')
       .limit(1)
       .get()
-      .then(updateStatus)
-      .then(setBetsInProgress)
-      .then(sendNotification);
+      .then(updateMatchStatus)
+      .then(sendNotification)
+      .then(updateBetsStatus);
   }
 
   changeMatchCurrentScore(command) {

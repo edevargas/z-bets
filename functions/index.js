@@ -50,8 +50,4 @@ exports.sendBetCreationSlackNotification = functions.firestore
   .document('bets/{betId}')
   .onCreate(notificationsController.sendBetCreationSlackNotificationController);
 
-exports.sendWinnersSlackNotification = functions.firestore
-  .document('matches/{matchId}')
-  .onUpdate(notificationsController.sendWinnersSlackNotificationController);
-
 exports.updatedMatch = functions.https.onRequest(app);
