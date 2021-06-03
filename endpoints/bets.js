@@ -45,12 +45,14 @@ export function isDuplicatedScoreByUser({ matchId, userId, awayScore, homeScore 
   })
 }
 
-export function isTimeAvailable({ id }) {
+export function isTimeAvailable({ id, matchId }) {
+  const finalId = id || matchId
   return new Promise((resolve) => {
-    const docRef = $nuxt.$fire.firestore.collection('matches').doc(id)
+    const docRef = $nuxt.$fire.firestore.collection('matches').doc(finalId)
     docRef.get()
       .then((doc) => {
-        resolve(doc?.data()?.status === MATCH_STATUS.PENDING)
+        const matchData = doc?.data()
+        resolve(matchData.status === MATCH_STATUS.PENDING)
       })
       .catch(() => resolve(false))
   })
