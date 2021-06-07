@@ -8,12 +8,7 @@
 
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
-      <table
-        :class="[
-          'table is-hoverable is-striped is-fullwidth vivify fadeIn',
-          previousGames,
-        ]"
-      >
+      <table class="table is-hoverable is-striped is-fullwidth vivify fadeIn">
         <tbody>
           <tr v-if="!previousGames">
             <td
@@ -23,28 +18,23 @@
               {{ $t("load_previous_games") }}
             </td>
           </tr>
-          <tr
-            v-for="(item, index) in matches"
-            :key="index"
-            :class="isFinished(item, index)"
-          >
-            <td class="is-vcentered is-size-5">
-              <div class="info">
-                {{ item.city }}
-                <br />
-                {{ item.date.toDate() | formatDate }}
-                <div class="tags">
-                  <span :class="getTagClasses(item.tournament)">{{
-                    $t(item.tournament)
-                  }}</span>
-                  <span v-if="isFinished(item)" class="tag is-light">{{
-                    $t("finished")
-                  }}</span>
-                </div>
-              </div>
-              <Match :match="item" keep-row />
-            </td>
-          </tr>
+          <template v-for="(item, index) in matches">
+            <MatchRow
+              :key="`match-${index}`"
+              :item="item"
+              :index="index"
+              :previous-games="previousGames"
+              hide-previous
+              @show-bets="showBets(item)"
+            />
+            <div
+              :key="`bets-${index}`"
+              :class="['bets-table', matchIdToGetBets === item.id ? 'show' : '']"
+            >
+              <p class="subtitle is-5 my-2">{{ $t("bets_results") }}:</p>
+              <BetsTable :items="betsByMatch[item.id]" user allow-groups show-won />
+            </div>
+          </template>
         </tbody>
       </table>
     </template>
@@ -53,48 +43,50 @@
 
 <script>
 import { getAllMatches } from '~/endpoints/matches'
-import { MATCH_STATUS } from '~/plugins/constants'
+import { getBetsByMatch } from '~/endpoints/bets'
 
 export default {
-  name: 'Matches',
+  name: 'Fixture',
   components: {
-    Match: () => import('~/components/bets/Match'),
+    MatchRow: () => import('~/components/matches/MatchRow'),
   },
   data() {
     return {
       loading: true,
       previousGames: '',
       matches: [],
+      matchIdToGetBets: '',
+      betsByMatch: {},
     }
   },
   async created() {
     this.matches = await getAllMatches()
     this.loading = false
+
+    this.$nuxt.$on('bets-by-match', (data) => {
+      if (data) {
+        this.$set(this.betsByMatch, this.matchIdToGetBets, data)
+      }
+    })
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('bets-by-match')
   },
   methods: {
-    getTagClasses(tournament) {
-      const tagColor = tournament === 'qualifiers' ? 'is-success' : 'is-link'
-      return `tag ${tagColor} is-light`
-    },
-    isFinished({ status }, index) {
-      return status === MATCH_STATUS.FINISHED ? `is-finished vivify fadeInTop duration-200 delay-${index}00` : ''
-    },
     showPrevious() {
       this.previousGames = 'show'
+    },
+    showBets({ id }) {
+      if (!this.betsByMatch[id]) {
+        getBetsByMatch(id)
+      }
+      this.matchIdToGetBets = this.matchIdToGetBets ? '' : id
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-tr {
-  transition: 0.2s;
-
-  &.is-finished {
-    display: none;
-  }
-}
-
 td {
   display: flex;
   flex-direction: row;
@@ -106,18 +98,13 @@ td {
   }
 }
 
-table {
-  &.show {
-    tr.is-finished {
-      display: table-row;
-      background: #eee;
-    }
-  }
-}
+.bets-table {
+  display: none;
+  padding: 0.1rem 1rem 1rem 1rem;
+  background: #ddd;
 
-@media (max-width: 767px) {
-  td {
-    flex-direction: column;
+  &.show {
+    display: block;
   }
 }
 </style>

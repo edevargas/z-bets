@@ -26,7 +26,7 @@
 export default {
   name: 'BetItemRow',
   components: {
-    Match: () => import('~/components/bets/Match'),
+    Match: () => import('~/components/matches/Match'),
     Avatar: () => import('~/components/utils/Avatar'),
   },
   props: {

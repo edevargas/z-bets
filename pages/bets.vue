@@ -16,19 +16,19 @@
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
       <template v-if="wonBets.length">
-        <BetsTable :items="wonBets" title="bets_won" user />
+        <BetsTable :items="wonBets" title="bets_won" user allow-groups />
         <hr />
       </template>
       <template v-if="pendingBets.length">
-        <BetsTable :items="pendingBets" title="bets_pending" user />
+        <BetsTable :items="pendingBets" title="bets_pending" user allow-groups />
         <hr />
       </template>
       <template v-if="inProgressBets.length">
-        <BetsTable :items="inProgressBets" title="bets_in_progress" user />
+        <BetsTable :items="inProgressBets" title="bets_in_progress" user allow-groups />
         <hr />
       </template>
       <template v-if="lostBets.length">
-        <BetsTable :items="lostBets" title="bets_lost" user />
+        <BetsTable :items="lostBets" title="bets_lost" user allow-groups />
       </template>
       <table v-if="bets.length === 0" class="table is-fullwidth">
         <tbody>
@@ -55,7 +55,7 @@ export default {
     requiresAuth: true,
   },
   components: {
-    Match: () => import('~/components/bets/Match'),
+    Match: () => import('~/components/matches/Match'),
     BetsTable: () => import('~/components/bets/BetsTable'),
   },
   data() {

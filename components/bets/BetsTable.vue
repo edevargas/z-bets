@@ -6,7 +6,7 @@
     <table
       class="table is-hoverable is-striped is-fullwidth vivify fadeIn duration-400"
     >
-      <tbody v-if="originalItems">
+      <tbody v-if="!allowGroups || originalItems">
         <BetItemRow
           v-for="(item, index) in sortedItems"
           :key="index"
@@ -27,6 +27,7 @@
           v-for="(items, index, key) in groupedByScore"
           :key="key"
           :items="items"
+          :show-won="showWon"
         />
       </tbody>
     </table>
@@ -47,10 +48,14 @@ export default {
     title: { type: String, default: '' },
     user: Boolean,
     timestamp: Boolean,
+    showWon: Boolean,
+    allowGroups: Boolean,
+    sorterProvider: { type: Function, default: null },
   },
   computed: {
     sortedItems() {
-      return this.items.sort(this.sorterByScore)
+      const finalSorter = this.sorterProvider || this.sorterByScore
+      return this.items.sort(finalSorter)
     },
     originalItems() {
       return this.items.length < LIMIT_TO_GROUP

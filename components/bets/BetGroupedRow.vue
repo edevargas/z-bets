@@ -5,22 +5,24 @@
         <div class="gamblers">
           <template v-for="item in gamblers">
             <Avatar
-              :key="'score'+item.uid"
-              :user="item"
+              :key="`score${item.id}`"
+              :user="item.user"
               :modifier="grouped ? 'grouped' : ''"
               class="avatar vivify fadeIn"
             />
             <span
               v-show="!grouped"
-              :key="'name'+item.uid"
+              :key="`name${item.id}`"
               class="vivify fadeIn"
             >
-              {{ item.displayName }}
+              {{ item.user.displayName }}
+              <span v-if="showWon && isWonRow">🏆</span>
             </span>
           </template>
         </div>
         <div v-show="grouped" class="user-names vivify fadeIn">
           {{ userNames }}
+          <span v-if="showWon && isWonRow">🏆</span>
         </div>
         <div class="bet">
           <Match
@@ -35,16 +37,18 @@
 </template>
 
 <script>
+import { BET_STATUS } from '~/plugins/constants'
 const AVATARS_TO_SHOW = 3
 
 export default {
   name: 'BetGroupedRow',
   components: {
-    Match: () => import('~/components/bets/Match'),
+    Match: () => import('~/components/matches/Match'),
     Avatar: () => import('~/components/utils/Avatar'),
   },
   props: {
     items: { type: Array, required: true },
+    showWon: Boolean,
   },
   data() {
     return  {
@@ -63,27 +67,22 @@ export default {
       return this.grouped ? AVATARS_TO_SHOW : this.items.length
     },
     gamblers() {
-      return this.items
-        .map(({ user }) => user)
-        .splice(0, this.itemsToShow)
+      return this.items.slice(0, this.itemsToShow)
     },
     userNames() {
-      const { displayName } = this.referenceItem.user
+      const { displayName } = this.referenceItem.user || {}
       const rest = `+${this.items.length - 1}`
       return this.items.length > 1 ? `${displayName}, ${rest}` : displayName
     },
-  },
-  methods: {
+    isWonRow() {
+      return this.referenceItem.status === BET_STATUS.WON
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 $space-left: 0.5rem;
-
-tr {
-  cursor: pointer;
-}
 
 .bet-info {
   display: grid;

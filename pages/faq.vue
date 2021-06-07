@@ -45,8 +45,7 @@ export default {
         },
         {
           question: '¿Puedo editar mi apuesta?',
-          answer: 'Esta funcionalidad estará disponible pronto',
-          // 'Si. Es posible editar tu apuesta ANTES DEL INICIO del partido. La opción la encontrarás en el menú "Mis apuestas"',
+          answer: 'Si. Es posible editar tu apuesta ANTES DEL INICIO del partido. La opción la encontrarás en el menú "Mis apuestas"',
         },
         {
           question: '¿Puedo borrar mi apuesta?',
