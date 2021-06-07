@@ -13,7 +13,7 @@
           <Match
             :match="item.match"
             :score="getScore(item)"
-            :keep-row="keepRow"
+            keep-row
           />
         </div>
         <slot v-bind="{ item }" />
@@ -26,13 +26,13 @@
 export default {
   name: 'BetItemRow',
   components: {
+    Match: () => import('~/components/bets/Match'),
     Avatar: () => import('~/components/utils/Avatar'),
   },
   props: {
     item: { type: Object, required: true },
     user: Boolean,
     timestamp: Boolean,
-    keepRow: Boolean,
   },
   methods: {
     getScore(item) {
@@ -49,10 +49,9 @@ export default {
 }
 
 .bet-info {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: auto;
 
   .bet {
     width: 100%;
@@ -66,28 +65,22 @@ export default {
     width: 100%;
     min-width: 250px;
   }
-
-  .actions {
-    min-width: 200px;
-    text-align: right;
-  }
 }
 
 @media (max-width: 767px) {
   .bet-info {
-    flex-direction: column;
+    display: flex;
+    flex-wrap: wrap;
 
     .match {
-      width: 100%;
-
       .bet-timestamp {
         margin-bottom: 0;
       }
     }
 
     .actions {
-      min-width: 100%;
-      margin-top: -0.5rem;
+      padding-right: 0.5rem;
+      text-align: right;
     }
   }
 }

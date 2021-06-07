@@ -3,7 +3,7 @@
     <h1 class="title is-1 mt-4">{{ $t("bets_history") }}</h1>
 
     <progress v-if="loading" class="progress is-primary mt-6" />
-    <BetsTable v-else :items="bets" user timestamp keep-row>
+    <BetsTable v-else :items="bets" user timestamp>
       <template v-slot="{ item }">
         <BetEditButtons
           :key="item.id"

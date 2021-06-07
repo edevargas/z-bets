@@ -1,5 +1,5 @@
 <template>
-  <main class="container is-max-desktop">
+  <main class="container is-max-desktop mb-5">
     <h1 class="title is-1 mt-4">
       <img src="~/assets/svg/live.svg" alt="" class="title-image" />
       {{ $t("realtime_bets") }}
@@ -16,23 +16,19 @@
     <progress v-if="loading" class="progress is-primary mt-6" />
     <template v-else>
       <template v-if="wonBets.length">
-        <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_won") }}</p>
-        <BetsTable :items="wonBets" user keep-row />
+        <BetsTable :items="wonBets" title="bets_won" user />
         <hr />
       </template>
       <template v-if="pendingBets.length">
-        <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_pending") }}</p>
-        <BetsTable :items="pendingBets" user keep-row />
+        <BetsTable :items="pendingBets" title="bets_pending" user />
         <hr />
       </template>
       <template v-if="inProgressBets.length">
-        <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_in_progress") }}</p>
-        <BetsTable :items="inProgressBets" user keep-row />
+        <BetsTable :items="inProgressBets" title="bets_in_progress" user />
         <hr />
       </template>
       <template v-if="lostBets.length">
-        <p class="subtitle is-3 mt-1 mb-3">{{ $t("bets_lost") }}</p>
-        <BetsTable :items="lostBets" user keep-row />
+        <BetsTable :items="lostBets" title="bets_lost" user />
       </template>
       <table v-if="bets.length === 0" class="table is-fullwidth">
         <tbody>
@@ -98,22 +94,19 @@ export default {
       return this.bets.length * this.betSettings.amount || 0
     },
     pendingBets() {
-      return this.bets.filter(({ status }) => status === BET_STATUS.PENDING).sort(this.sorter)
+      return this.bets.filter(({ status }) => status === BET_STATUS.PENDING)
     },
     inProgressBets() {
-      return this.bets.filter(({ status }) => status === BET_STATUS.IN_PROGRESS).sort(this.sorter)
+      return this.bets.filter(({ status }) => status === BET_STATUS.IN_PROGRESS)
     },
     wonBets() {
-      return this.bets.filter(({ status }) => status === BET_STATUS.WON).sort(this.sorter)
+      return this.bets.filter(({ status }) => status === BET_STATUS.WON)
     },
     lostBets() {
-      return this.bets.filter(({ status }) => status === BET_STATUS.LOST).sort(this.sorter)
+      return this.bets.filter(({ status }) => status === BET_STATUS.LOST)
     },
   },
   methods: {
-    sorter(firstEl, secondEl) {
-      return firstEl.homeScore - secondEl.homeScore
-    },
     getStatus(status) {
       return this.$t(`bet_${status}`) || ''
     },

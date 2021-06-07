@@ -6,7 +6,7 @@
     </h1>
 
     <progress v-if="loading" class="progress is-primary mt-6" />
-    <BetsTable v-else :items="bets" timestamp keep-row>
+    <BetsTable v-else :items="bets" timestamp>
       <template v-slot="{ item }">
         <BetEditButtons
           :key="item.id"
