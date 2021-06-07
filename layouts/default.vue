@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-5">
+  <div class="pb-6">
     <AppNav />
     <Nuxt />
     <AppFooter />

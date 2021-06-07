@@ -2,7 +2,7 @@
   <div class="wrapper is-flex is-flex-direction-column">
     <section class="hero transparent is-dark">
       <h1 class="title has-text-centered mt-5 mb-0">
-        {{ $t(isFinished ? "final_score" : "next_game") }}
+        {{ title }}
       </h1>
       <div class="hero-body pt-5">
         <div
@@ -58,6 +58,14 @@ export default {
     ...mapGetters({
       user: 'user',
     }),
+    title() {
+      const mapper = {
+        [MATCH_STATUS.PENDING]: 'next_game',
+        [MATCH_STATUS.STARTED]: 'game_in_progress',
+        [MATCH_STATUS.FINISHED]: 'final_score',
+      }
+      return this.$t(mapper[this.nextGame.status])
+    },
     isAvailable() {
       return Object.keys(this.nextGame).length
     },

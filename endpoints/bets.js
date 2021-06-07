@@ -93,7 +93,7 @@ export function deleteBet(betId) {
                 .then(() => resolve({ error: null, data: 'ok' }))
                 .catch((error) => resolve({ error, data: null }))
             } else {
-              resolve({ error: $nuxt.$t('unavailable_bet_deletition'), data: null })
+              resolve({ error: $nuxt.$t('unavailable_bet_deletion'), data: null })
             }
 
           })
