@@ -1,5 +1,6 @@
 import firebaseConfig from './firebase.config'
 import i18nConfig from './i18n.config'
+import * as PACKAGE from './package.json'
 
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
@@ -43,6 +44,7 @@ export default {
 
   env: {
     Z_BUTTON: 'button is-outlined is-rounded is-small',
+    VERSION: PACKAGE.version,
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)

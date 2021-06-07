@@ -4,6 +4,7 @@ const utcToZonedTime = require('date-fns-tz/utcToZonedTime');
 const { Notifications } = require('../notifications/Notifications');
 const { MATCH_STATUS, BET_STATUS } = require('../constants');
 const { getSlackFlag, getScoreMsg } = require('../utils/flag-mapper');
+const { sorterByName, sorterByScore } = require('../utils/misc');
 
 class Commands {
   changeMatchCurrentStatus(currentStatus, newStatus) {
@@ -11,6 +12,7 @@ class Commands {
 
     const MATCHES_DB = admin.firestore().collection('matches');
     const BETS_DB = admin.firestore().collection('bets');
+    const SETTINGS_BETS = admin.firestore().collection('settings').doc('bets');
     const TIME_ZONE = 'America/Bogota';
     const TODAY = utcToZonedTime(new Date(), TIME_ZONE);
 
@@ -18,8 +20,11 @@ class Commands {
     let matchId;
     let homeId;
     let awayId;
+    let homeTeam;
+    let awayTeam;
     let homeScore;
     let awayScore;
+    let betsInProgress = [];
 
     const updateMatchStatus = (dataSnapshot) => {
       dataSnapshot.forEach((doc) => {
@@ -35,6 +40,8 @@ class Commands {
         matchId = doc.id;
         homeId = match.homeId;
         awayId = match.awayId;
+        homeTeam = match.homeTeam;
+        awayTeam = match.awayTeam;
         homeScore = match.homeScore;
         awayScore = match.awayScore;
         response.data = 'Estado del partido actualizado ✅';
@@ -45,12 +52,31 @@ class Commands {
       return response;
     };
 
+    const sendNotification = (response) => {
+      if (!response.error) {
+        let text;
+        if (newStatus === MATCH_STATUS.STARTED) {
+          const matchStarted = `${homeTeam} ${getSlackFlag(homeId)} - ${getSlackFlag(awayId)} ${awayTeam}`;
+          text = `📣📣 Empezó el partido: ${matchStarted}. ¡Apuestas cerradas! ⚽️`;
+        } else if (newStatus === MATCH_STATUS.FINISHED) {
+          text = `📣📣 Terminó el partido ${getScoreMsg(homeId, homeScore, awayId, awayScore)}`;
+        }
+
+        notifications.sendSlackNotification({ text });
+      }
+
+      return response;
+    };
+
     const setBetsInProgress = (response) => {
       return BETS_DB
         .where('matchId', '==', matchId)
         .get()
         .then((dataSnapshot) => {
-          dataSnapshot.forEach((doc) => BETS_DB.doc(doc.id).update({ status: BET_STATUS.IN_PROGRESS }));
+          dataSnapshot.forEach((doc) => {
+            betsInProgress.push(doc.data());
+            BETS_DB.doc(doc.id).update({ status: BET_STATUS.IN_PROGRESS });
+          });
           return response;
         });
     };
@@ -103,13 +129,43 @@ class Commands {
       }
     };
 
-    const sendNotification = (response) => {
-      if (!response.error) {
-        const text = newStatus === MATCH_STATUS.STARTED
-          ? `📣📣 Empezó el partido ${getSlackFlag(homeId)} - ${getSlackFlag(awayId)}. ¡Apuestas cerradas! ⚽️`
-          : `📣📣 Terminó el partido ${getScoreMsg(homeId, homeScore, awayId, awayScore)}`;
+    const sendGamblers = (response) => {
+      if (!response.error && newStatus === MATCH_STATUS.STARTED) {
+        const groupByScore = (acc, value) => {
+          const grouper = `${value.homeScore}-${value.awayScore}`;
+          const getBetsArray = [
+            ...(acc[grouper] || []),
+            value.user.displayName,
+          ].sort(sorterByScore);
+          return Object.assign(acc, { [grouper]: getBetsArray.sort(sorterByName) });
+        };
 
-        notifications.sendSlackNotification({ text });
+        const reducerUsers = (acc, pair) => {
+          const [key, users] = pair;
+          const [homeScore, awayScore] = key.split('-');
+          const score = `:flag-co: ${homeScore} - ${awayScore} :flag-ar:`;
+          const quoted = users.join('\n>');
+          return `${acc}\n${score}\n>${quoted}\n`;
+        };
+
+        const groupedGamblers = betsInProgress.reduce(groupByScore, {});
+        const finalBets = Object.entries(groupedGamblers).reduce(reducerUsers, '');
+
+        notifications.sendSlackNotification({ text: `Listado final:\n${finalBets}` });
+      }
+
+      return response;
+    };
+
+    const sendAmountReward = (response) => {
+      if (!response.error) {
+        SETTINGS_BETS.get().then((doc) => {
+          const { amount } = doc.data();
+          const reward = betsInProgress.length * amount;
+          const currencyOptions = { style: 'currency', currency: 'COP', maximumSignificantDigits: 3 };
+          const finalAmount = new Intl.NumberFormat('es-CO', currencyOptions).format(reward);
+          notifications.sendSlackNotification({ text: `💰💰💰 Monto en juego: ${finalAmount}` });
+        });
       }
 
       return response;
@@ -122,7 +178,9 @@ class Commands {
       .get()
       .then(updateMatchStatus)
       .then(sendNotification)
-      .then(updateBetsStatus);
+      .then(updateBetsStatus)
+      .then(sendGamblers)
+      .then(sendAmountReward);
   }
 
   changeMatchCurrentScore(command) {

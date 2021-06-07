@@ -5,7 +5,7 @@
     v-click-outside="onClickOutside"
     @click="showInfo = !showInfo"
   >
-    ® Zemoga SAS · About
+    Z-BETS by Zemoga SAS · {{ version }} · About
     <div class="content">
       <p>
         Appweb desarrollada dentro del
@@ -28,6 +28,7 @@ export default {
   },
   data() {
     return {
+      version: `v.${this.$nuxt.context.env.VERSION}`,
       showInfo: false,
       link: 'https://zemoga.jira.com/wiki/spaces/ZEM/pages/1592164491/JAMstack',
       devs: ['@wbeimar.logatto', '@juan.castaneda', '@javier.albadan'],
