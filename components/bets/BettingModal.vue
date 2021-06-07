@@ -3,10 +3,10 @@
     <div class="modal-background"></div>
     <div class="modal-card vivify swoopInBottom">
       <header class="modal-card-head">
-        <p class="modal-card-title">{{ $t("give_score") }}</p>
+        <p class="modal-card-title">{{ $t(isEdition ? "give_new_score" : "give_score") }}</p>
         <button class="delete" aria-label="close" @click="closeModal" />
       </header>
-      <section class="modal-card-body">
+      <section v-if="isOpen" class="modal-card-body">
         <Match :match="match" is-title gambling />
         <div class="wrap-inputs is-flex is-align-items-center title is-4">
           <input
@@ -14,7 +14,7 @@
             type="number"
             class="input is-medium"
             :placeholder="match.homeId"
-            :disabled="confirm"
+            :disabled="confirming"
           />
           vs
           <input
@@ -22,15 +22,15 @@
             type="number"
             class="input is-medium"
             :placeholder="match.awayId"
-            :disabled="confirm"
+            :disabled="confirming"
           />
         </div>
         <div class="is-flex is-justify-content-center">
           <button
-            v-if="!confirm"
+            v-if="!confirming"
             :class="[zButton, 'is-primary vivify flipInX']"
             :disabled="!validateHomeScore || !validateAwayScore"
-            @click="confirm = true"
+            @click="confirming = true"
           >
             {{ $t("bet_now") }}
           </button>
@@ -38,10 +38,10 @@
             <p class="is-6 has-text-centered py-2">
               {{ $t("confirm_bet") }}
             </p>
-            <button :class="[zButton, 'mx-2']" @click="confirm = false">
+            <button :class="[zButton, 'mx-2']" @click="confirming = false">
               {{ $t("edit") }}
             </button>
-            <button :class="[zButton, 'is-primary mx-2']" @click="finish">
+            <button :class="[zButton, 'is-primary mx-2']" @click="confirmBet">
               {{ $t("confirm") }} 🤞🏼
             </button>
           </div>
@@ -50,7 +50,8 @@
         <p
           class="has-background-dark has-text-centered has-text-warning my-5 p-2"
         >
-          {{ $t("payroll_discount") }}
+          {{ $t(isEdition ? "edit_in_progress" : "payroll_discount") }}
+          <span v-if="isEdition">{{ betToEdit.homeScore }} - {{ betToEdit.awayScore }}</span>
         </p>
       </section>
     </div>
@@ -59,28 +60,35 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { isTimeAvailable, betting, isDuplicatedScoreByUser } from '~/endpoints/bets'
+import { isTimeAvailable, isDuplicatedScoreByUser, betting, editBet } from '~/endpoints/bets'
 import { BET_STATUS } from '~/plugins/constants'
 
 export default {
   name: 'BettingModal',
   components: {
-    Match: () => import('~/components/bets/Match'),
+    Match: () => import('~/components/matches/Match'),
+  },
+  props: {
+    isEdition: Boolean,
   },
   data() {
     return {
       zButton: this.$nuxt.context.env.Z_BUTTON,
       homeScore: '',
       awayScore: '',
-      confirm: false,
+      confirming: false,
       bettingInProgress: true,
     }
   },
   computed: {
     ...mapGetters({
       user: 'user',
-      match: 'matchToBet',
+      matchToBet: 'matchToBet',
+      betToEdit: 'betToEdit',
     }),
+    match() {
+      return this.isEdition ? this.betToEdit.match : this.matchToBet
+    },
     isOpen() {
       return Object.keys(this.match || {}).length
     },
@@ -104,6 +112,28 @@ export default {
       this.$nuxt.$emit('show-notification', notification)
       return false
     },
+    confirmBet() {
+      this.isEdition ? this.editBet() : this.createBet()
+    },
+    async editBet() {
+      const newScore = {
+        homeScore: Number(this.homeScore),
+        awayScore: Number(this.awayScore),
+      }
+      const { error, data } = await editBet(this.betToEdit.id, newScore)
+
+      this.bettingInProgress = false
+
+      if (error && !data) {
+        const notification = { type: 'error', body: error }
+        this.$nuxt.$emit('show-notification', notification)
+        return
+      }
+
+      const notification = { type: 'success', body: this.$t('bet_edited'), time: 4000 }
+      this.$nuxt.$emit('show-notification', notification)
+      this.closeModal()
+    },
     getPayload() {
       const { uid: userId } = this.user
       const { id: matchId } = this.match
@@ -119,7 +149,7 @@ export default {
         status: BET_STATUS.PENDING,
       }
     },
-    async finish() {
+    async createBet() {
       if (!this.validateHomeScore || !this.validateAwayScore) {
         const notification = { type: 'error', body: this.$t('check_scores') }
         this.$nuxt.$emit('show-notification', notification)
@@ -132,6 +162,7 @@ export default {
       if (!validateDuplicated) {
         const notification = { type: 'error', body: this.$t('check_duplicated_score') }
         this.$nuxt.$emit('show-notification', notification)
+        this.confirming = false
         return
       }
 
@@ -146,7 +177,6 @@ export default {
       }
 
       const { error, data } = await betting(payload)
-
       if (error && !data) {
         const notification = { type: 'error', body: error }
         this.$nuxt.$emit('show-notification', notification)
@@ -161,9 +191,10 @@ export default {
     closeModal() {
       this.homeScore = ''
       this.awayScore = ''
-      this.confirm = false
+      this.confirming = false
       this.bettingInProgress = true
       this.$store.commit('setMatchToBet', {})
+      this.$store.commit('setBetToEdit', {})
     },
   },
 }

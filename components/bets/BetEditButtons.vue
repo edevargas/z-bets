@@ -4,11 +4,9 @@
       v-if="item.status === MATCH_STATUS.PENDING"
       :class="{ confirming: confirm }"
     >
-      <!-- TODO: Edit bet -->
       <button
-        v-if="false"
         :class="[zButton, 'is-primary action-buttons']"
-        @click="$emit('edit')"
+        @click="action('edit')"
       >
         {{ $t("edit") }}
       </button>
@@ -30,7 +28,7 @@
       <button :class="[zButton, 'my-1']" @click="confirm = false">
         {{ $t("cancel") }}
       </button>
-      <button :class="[zButton, 'is-danger my-1']" @click="confirmDelete">
+      <button :class="[zButton, 'is-danger my-1']" @click="action('delete')">
         {{ $t("confirm_deleting") }} 🗑
       </button>
     </div>
@@ -58,9 +56,9 @@ export default {
     getStatus(status) {
       return this.$t(`bet_${status}`) || ''
     },
-    confirmDelete() {
+    action(value) {
       this.confirm = false
-      this.$emit('delete')
+      this.$emit(value)
     },
   },
 }

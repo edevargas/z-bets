@@ -4,6 +4,7 @@ export const state = () => ({
   firstLogin: false,
   user: null,
   matchToBet: {},
+  betToEdit: {},
 })
 
 export const mutations = {
@@ -14,6 +15,9 @@ export const mutations = {
   },
   setMatchToBet(state, payload) {
     state.matchToBet = payload
+  },
+  setBetToEdit(state, payload) {
+    state.betToEdit = payload
   },
 }
 
@@ -39,4 +43,5 @@ export const actions = {
 export const getters = {
   user: ({ user }) => user,
   matchToBet: ({ matchToBet }) => matchToBet,
+  betToEdit: ({ betToEdit }) => betToEdit,
 }

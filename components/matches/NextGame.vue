@@ -46,7 +46,7 @@ import { MATCH_STATUS } from '~/plugins/constants'
 export default {
   name: 'NextGame',
   components: {
-    Match: () => import('~/components/bets/Match'),
+    Match: () => import('~/components/matches/Match'),
   },
   data() {
     return {

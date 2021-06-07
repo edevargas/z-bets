@@ -6,18 +6,20 @@
     </h1>
 
     <progress v-if="loading" class="progress is-primary mt-6" />
-    <BetsTable v-else :items="bets" timestamp>
+    <BetsTable v-else :items="bets" :sorter-provider="sortByTimestamp" timestamp>
       <template v-slot="{ item }">
         <BetEditButtons
           :key="item.id"
           :item="item"
           edit-button
           delete-button
-          @edit="editBet()"
+          @edit="$store.commit('setBetToEdit', item)"
           @delete="deleteBet(item)"
         />
       </template>
     </BetsTable>
+
+    <BettingModal is-edition />
   </main>
 </template>
 
@@ -58,9 +60,6 @@ export default {
     this.$nuxt.$off('bets-by-user')
   },
   methods: {
-    editBet() {
-      // TODO: Editar apuesta
-    },
     async deleteBet(item) {
       const { error, data } = await deleteBet(item.id)
 
@@ -72,6 +71,9 @@ export default {
 
       const notification = { type: 'success', body: this.$t('bet_deleted'), time: 4000 }
       this.$nuxt.$emit('show-notification', notification)
+    },
+    sortByTimestamp() {
+      return (a, b) => a.timestamp.toDate() > b.timestamp.toDate()
     },
   },
 }

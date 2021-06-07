@@ -12,7 +12,7 @@ export default {
   name: 'Index',
   components: {
     BackgroundImg: () => import('~/components/layout/BackgroundImg'),
-    NextGame: () => import('~/components/bets/NextGame'),
+    NextGame: () => import('~/components/matches/NextGame'),
   },
 }
 </script>

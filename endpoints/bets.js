@@ -81,6 +81,15 @@ export function betApprove(betId, approval) {
   })
 }
 
+export function editBet(betId, newData) {
+  return new Promise((resolve, reject) => {
+    const betRef = $nuxt.$fire.firestore.collection('bets').doc(betId)
+    betRef.update({ ...newData })
+      .then(() => resolve({ error: null, data: 'ok' }))
+      .catch((error) => reject({ error, data: null }))
+  })
+}
+
 export function deleteBet(betId) {
   return new Promise((resolve) => {
     const betRef = $nuxt.$fire.firestore.collection('bets').doc(betId)

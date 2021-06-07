@@ -24,6 +24,10 @@ progress {
   }
 }
 
+tr {
+  cursor: pointer;
+}
+
 @media (max-width: 1023px) {
   progress {
     max-width: 75%;
