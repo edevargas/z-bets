@@ -158,7 +158,7 @@ class Commands {
     };
 
     const sendAmountReward = (response) => {
-      if (!response.error) {
+      if (!response.error && newStatus === MATCH_STATUS.STARTED) {
         SETTINGS_BETS.get().then((doc) => {
           const { amount } = doc.data();
           const reward = betsInProgress.length * amount;
