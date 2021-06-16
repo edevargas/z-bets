@@ -143,7 +143,7 @@ class Commands {
         const reducerUsers = (acc, pair) => {
           const [key, users] = pair;
           const [homeScore, awayScore] = key.split('-');
-          const score = `:flag-co: ${homeScore} - ${awayScore} :flag-ar:`;
+          const score = `${getSlackFlag(homeId)}: ${homeScore} - ${awayScore} ${getSlackFlag(awayId)}`;
           const quoted = users.join('\n>');
           return `${acc}\n${score}\n>${quoted}\n`;
         };
