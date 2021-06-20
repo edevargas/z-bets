@@ -4,7 +4,7 @@
       <div class="info">
         {{ item.city }}
         <button
-          v-if="hasBets"
+          v-if="user && hasBets"
           class="button is-rounded is-small is-primary"
           @click="$emit('show-bets')"
         >
@@ -13,9 +13,7 @@
         <br />
         {{ item.date.toDate() | formatDate }}
         <div class="tags">
-          <span :class="getTagClasses">
-            {{ $t(item.tournament) }}
-          </span>
+          <TournamentTag :tournament="item.tournament" />
           <span v-if="isFinished" class="tag is-light">
             {{ $t("finished") }}
           </span>
@@ -27,12 +25,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { MATCH_STATUS } from '~/plugins/constants'
 
 export default {
   name: 'MatchRow',
   components: {
     Match: () => import('~/components/matches/Match'),
+    TournamentTag: () => import('~/components/matches/TournamentTag'),
   },
   props: {
     item: { type: Object, required: true, default: () => ({}) },
@@ -41,14 +41,13 @@ export default {
     hidePrevious: Boolean,
   },
   computed: {
+    ...mapGetters({
+      user: 'user',
+    }),
     isFinished() {
       return this.hidePrevious && this.item.status === MATCH_STATUS.FINISHED
         ? `is-finished vivify fadeInTop duration-200 delay-${this.index}00`
         : ''
-    },
-    getTagClasses() {
-      const tagColor = this.item.tournament === 'qualifiers' ? 'is-success' : 'is-link'
-      return `tag ${tagColor} is-light`
     },
     hasBets() {
       const MATCHES_WITH_BETS = new Date('2021-06-01')

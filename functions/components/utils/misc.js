@@ -11,7 +11,18 @@ const sorterByScore = (a, b) => {
   return a.homeScore - b.homeScore;
 };
 
+const getAmount = (value) => {
+  let currencyOptions = {
+    style: 'currency',
+    currency: 'USD',
+    maximumSignificantDigits: 3
+  };
+  let finalAmount = new Intl.NumberFormat('en-US', currencyOptions);
+  return finalAmount.format(value);
+};
+
 module.exports = {
+  getAmount,
   sorterByName,
   sorterByScore
 };

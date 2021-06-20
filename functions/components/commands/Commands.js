@@ -4,7 +4,7 @@ const utcToZonedTime = require('date-fns-tz/utcToZonedTime');
 const { Notifications } = require('../notifications/Notifications');
 const { MATCH_STATUS, BET_STATUS } = require('../constants');
 const { getSlackFlag, getScoreMsg } = require('../utils/flag-mapper');
-const { sorterByName, sorterByScore } = require('../utils/misc');
+const { getAmount, sorterByName, sorterByScore } = require('../utils/misc');
 
 class Commands {
   changeMatchCurrentStatus(currentStatus, newStatus) {
@@ -25,6 +25,8 @@ class Commands {
     let homeScore;
     let awayScore;
     let betsInProgress = [];
+    let betsFinal = [];
+    let winners = [];
 
     const updateMatchStatus = (dataSnapshot) => {
       dataSnapshot.forEach((doc) => {
@@ -86,12 +88,12 @@ class Commands {
         .where('matchId', '==', matchId)
         .get()
         .then((dataSnapshot) => {
-          let winners = [];
-
           dataSnapshot.forEach((bet) => {
-            let finalStatus = BET_STATUS.LOST;
             const betData = bet.data();
             const betId = bet.id;
+            let finalStatus = BET_STATUS.LOST;
+            betsFinal.push(betData);
+
             if (betData.homeScore === homeScore && betData.awayScore === awayScore) {
               finalStatus = BET_STATUS.WON;
               winners.push(betData);
@@ -99,17 +101,6 @@ class Commands {
 
             BETS_DB.doc(betId).update({ status: finalStatus });
           });
-
-          let customMsg = 'Nadie ganó 😭';
-          const userNames = winners.map(({ user }) => user.displayName);
-
-          if (userNames.length === 1) {
-            customMsg = `El ganador es ${userNames.join('')} 🥳🥳🥳`;
-          } else if (userNames.length > 1) {
-            customMsg = `Los ganadores son ${userNames.join(', ')} 🥳🥳🥳`;
-          }
-
-          notifications.sendSlackNotification({ text: customMsg });
 
           return response;
         });
@@ -143,7 +134,7 @@ class Commands {
         const reducerUsers = (acc, pair) => {
           const [key, users] = pair;
           const [homeScore, awayScore] = key.split('-');
-          const score = `${getSlackFlag(homeId)}: ${homeScore} - ${awayScore} ${getSlackFlag(awayId)}`;
+          const score = `${getSlackFlag(homeId)} ${homeScore} - ${awayScore} ${getSlackFlag(awayId)}`;
           const quoted = users.join('\n>');
           return `${acc}\n${score}\n>${quoted}\n`;
         };
@@ -158,16 +149,34 @@ class Commands {
     };
 
     const sendAmountReward = (response) => {
-      if (!response.error && newStatus === MATCH_STATUS.STARTED) {
-        SETTINGS_BETS.get().then((doc) => {
-          const { amount } = doc.data();
-          const reward = betsInProgress.length * amount;
-          const currencyOptions = { style: 'currency', currency: 'COP', maximumSignificantDigits: 3 };
-          const finalAmount = new Intl.NumberFormat('es-CO', currencyOptions).format(reward);
-          notifications.sendSlackNotification({ text: `💰💰💰 Monto en juego: ${finalAmount}` });
-        });
+      if (response.error) {
+        return response;
       }
 
+      let customMsg;
+
+      SETTINGS_BETS.get().then((doc) => {
+        const { amount } = doc.data();
+        let reward = (betsInProgress.length || betsFinal.length) * amount;
+
+        if (newStatus === MATCH_STATUS.STARTED) {
+          customMsg = `💰💰💰 Monto en juego: ${getAmount(reward)}`;
+        }
+
+        if (newStatus === MATCH_STATUS.FINISHED) {
+          const userNames = winners.map(({ user }) => user.displayName);
+          customMsg = '😭😭😭 Nadie ganó';
+
+          if (userNames.length === 1) {
+            customMsg = `🥳🥳🥳 ${userNames.join('')} ha ganado ${getAmount(reward)} 💰💰💰`;
+          } else if (userNames.length > 1) {
+            reward = parseFloat((reward / userNames.length).toFixed(1));
+            customMsg = `🥳🥳🥳 ${userNames.join(', ')} han ganado ${getAmount(reward)} cada uno 💰💰💰`;
+          }
+        }
+
+        notifications.sendSlackNotification({ text: customMsg });
+      });
       return response;
     };
 

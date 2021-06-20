@@ -4,11 +4,12 @@
       <h1 class="title has-text-centered mt-5 mb-0">
         {{ title }}
       </h1>
-      <div class="hero-body pt-5">
+      <div class="hero-body pt-2">
         <div
           v-if="isAvailable"
           class="container has-text-centered vivify fadeIn"
         >
+          <TournamentTag :tournament="nextGame.tournament" class="my-3" />
           <Match :match="nextGame" is-title />
 
           <div
@@ -47,6 +48,7 @@ export default {
   name: 'NextGame',
   components: {
     Match: () => import('~/components/matches/Match'),
+    TournamentTag: () => import('~/components/matches/TournamentTag'),
   },
   data() {
     return {
