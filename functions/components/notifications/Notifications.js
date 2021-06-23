@@ -11,10 +11,20 @@ class Notifications {
   }
 
   betCreation(betData) {
+    const action = 'registró una nueva apuesta';
+    this.betNotification(betData, action);
+  }
+
+  betUpdate(betData) {
+    const action = 'actualizó su apuesta a';
+    this.betNotification(betData, action);
+  }
+
+  betNotification(betData, action) {
     const { displayName } = betData.user;
     const { homeId, awayId } = betData.match;
     const { homeScore, awayScore } = betData;
-    const text = `${displayName} registró una nueva apuesta: ${getScoreMsg(homeId, homeScore, awayId, awayScore)}`;
+    const text = `${displayName} ${action}: ${getScoreMsg(homeId, homeScore, awayId, awayScore)}`;
 
     return this.sendSlackNotification({ text });
   }

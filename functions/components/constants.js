@@ -9,8 +9,6 @@ const BET_STATUS = {
   IN_PROGRESS: 'in-progress',
   WON: 'won',
   LOST: 'lost',
-  PAID: 'paid',
-  PENDING_PAYMENT: 'pending-payment',
 };
 
 // DEV: pyKzpfS3E8SxA3FRbGjr6T7n

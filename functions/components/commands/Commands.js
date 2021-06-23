@@ -91,15 +91,15 @@ class Commands {
           dataSnapshot.forEach((bet) => {
             const betData = bet.data();
             const betId = bet.id;
-            let finalStatus = BET_STATUS.LOST;
+            let finalStatus = { status: BET_STATUS.LOST };
             betsFinal.push(betData);
 
             if (betData.homeScore === homeScore && betData.awayScore === awayScore) {
-              finalStatus = BET_STATUS.WON;
+              finalStatus = { status: BET_STATUS.WON, paid: false };
               winners.push(betData);
             }
 
-            BETS_DB.doc(betId).update({ status: finalStatus });
+            BETS_DB.doc(betId).update(finalStatus);
           });
 
           return response;
