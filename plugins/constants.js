@@ -11,6 +11,4 @@ export const BET_STATUS = {
   IN_PROGRESS: 'in-progress',
   WON: 'won',
   LOST: 'lost',
-  PAID: 'paid',
-  PENDING_PAYMENT: 'pending-payment',
 }

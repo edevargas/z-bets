@@ -19,8 +19,13 @@
               :key="`bets-${index}`"
               :class="['bets-table', matchIdToGetBets === item.id ? 'show' : '']"
             >
-              <p class="subtitle is-5 my-2">{{ $t("bets_results") }}:</p>
-              <BetsTable :items="betsByMatch[item.id]" user timestamp show-won>
+              <BetsTable
+                :items="betsByMatch[item.id]"
+                user
+                timestamp
+                show-won
+                subtitle="bets_results"
+              >
                 <template v-slot="{ item }">
                   <BetEditButtons
                     :key="item.id"

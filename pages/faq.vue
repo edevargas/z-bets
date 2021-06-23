@@ -69,7 +69,7 @@ export default {
         },
         {
           question: '¿Qué sucede si nadie gana la apuesta en un partido?',
-          answer: 'El monto será acumulado para el siguiente partido',
+          answer: 'El monto acumulado NO se tendrá en cuenta para el siguiente partido y por ende tampoco se descontará de la nómina. Cada partido iniciará su acumulado en cero',
         },
       ],
     }

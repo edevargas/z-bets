@@ -31,8 +31,13 @@
               :key="`bets-${index}`"
               :class="['bets-table', matchIdToGetBets === item.id ? 'show' : '']"
             >
-              <p class="subtitle is-5 my-2">{{ $t("bets_results") }}:</p>
-              <BetsTable :items="betsByMatch[item.id]" user allow-groups show-won />
+              <BetsTable
+                :items="betsByMatch[item.id]"
+                user
+                allow-groups
+                show-won
+                subtitle="bets_results"
+              />
             </div>
           </template>
         </tbody>

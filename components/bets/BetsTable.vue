@@ -3,6 +3,9 @@
     <p v-if="title" class="subtitle is-3 mt-1 mb-3">
       {{ $t(title) }} · ({{ items.length }})
     </p>
+    <p v-if="subtitle" class="subtitle is-5 my-2">
+      {{ $t(subtitle) }} · ({{ items.length }})
+    </p>
     <table
       class="table is-hoverable is-striped is-fullwidth vivify fadeIn duration-400"
     >
@@ -46,6 +49,7 @@ export default {
   props: {
     items: { type: [Array, Object], required: true, default: () => [] },
     title: { type: String, default: '' },
+    subtitle: { type: String, default: '' },
     user: Boolean,
     timestamp: Boolean,
     showWon: Boolean,

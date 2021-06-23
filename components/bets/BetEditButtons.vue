@@ -23,6 +23,9 @@
       :class="{ status: item.status === MATCH_STATUS.PENDING }"
     >
       {{ getStatus(item.status) }}
+      <template v-if="item.status === BET_STATUS.WON">
+        · {{ $t(item.paid ? "bet_paid" : "bet_pending_payment") }}
+      </template>
     </div>
     <div v-else class="vivify flipInX">
       <button :class="[zButton, 'my-1']" @click="confirm = false">
@@ -36,7 +39,7 @@
 </template>
 
 <script>
-import { MATCH_STATUS } from '~/plugins/constants'
+import { MATCH_STATUS, BET_STATUS } from '~/plugins/constants'
 
 export default {
   name: 'BetEditButtons',
@@ -48,6 +51,7 @@ export default {
   data() {
     return {
       MATCH_STATUS,
+      BET_STATUS,
       zButton: this.$nuxt.context.env.Z_BUTTON,
       confirm: false,
     }
