@@ -25,12 +25,12 @@
           <p class="subtitle is-4 mb-5">{{ nextGame.city }}</p>
 
           <button
-            v-if="user && isPending"
             type="button"
-            class="button is-primary is-rounded"
+            :class="['button is-rounded', isEnabled ? 'is-primary' : 'is-warning']"
+            :disabled="!isEnabled"
             @click="$store.commit('setMatchToBet', nextGame)"
           >
-            {{ $t("bet_here") }}
+            {{ $t(isEnabled ? "bet_here" : "coming_soon") }}
           </button>
         </div>
         <progress v-else class="progress is-primary my-6" />
@@ -53,6 +53,7 @@ export default {
   data() {
     return {
       zButton: this.$nuxt.context.env.Z_BUTTON,
+      enabledBets: false,
       nextGame: {},
     }
   },
@@ -79,6 +80,9 @@ export default {
     },
     isFinished() {
       return this.nextGame.status === MATCH_STATUS.FINISHED
+    },
+    isEnabled() {
+      return this.enabledBets ? this.user && this.isPending : false
     },
   },
   created() {
