@@ -1,48 +1,41 @@
-
-
 image: node:10.15.3
 
-# Workflow Configuration
+clone:
+  depth: full # SonarCloud scanner needs the full history to assign issues properly
 
-pipelines:
-  default:
-    - parallel:
+definitions:
+  caches:
+    sonar: ~/.sonar/cache # Caching SonarCloud artifacts will speed up your build
+  steps:
+    - step: &build-test-sonarcloud
+        name: Build, test and analyze on SonarCloud
+        caches:
+          - node # See https://confluence.atlassian.com/bitbucket/caching-dependencies-895552876.html
+          - sonar
+        script:
+          - npm install
+          - pipe: sonarsource/sonarcloud-scan:1.2.1
+    - step: &check-quality-gate-sonarcloud
+        name: Check the Quality Gate on SonarCloud
+        script:
+          - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
+
+pipelines: # More info here: https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html
+  branches:
+    master:
       - step:
           name: Build and Test
           caches:
             - node
           script:
             - npm install
-#            - npm test
-#      - step:
-#          name: Lint the node package
-#          script:
-#            # Run your linter of choice here
-#            - npm install
-#            - npm run lint
-#          caches:
-#            - node
-  branches:
-    develop:
-      - parallel:
-        - step:
-            name: Build and Test
-            caches:
-              - node
-            script:
-              - npm install
-#              - npm test
-              - npm run build
-              - npm run generate
-            artifacts:
-              - build/**
-      - step:
-          name: Deploy to Production
-          deployment: Production
-          trigger: manual
-          clone:
-            enabled: false
-          script:
-            - pipe: atlassian/firebase-deploy:0.3.0
-              variables:
-                FIREBASE_TOKEN: '$FIREBASE_TOKEN_CI'
+            - npm run build
+            - npm run generate
+          artifacts:
+            - build/**
+      - step: *build-test-sonarcloud
+      - step: *check-quality-gate-sonarcloud
+  pull-requests:
+    "**":
+      - step: *build-test-sonarcloud
+      - step: *check-quality-gate-sonarcloud
