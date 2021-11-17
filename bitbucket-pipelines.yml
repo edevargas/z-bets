@@ -14,6 +14,7 @@ definitions:
     - step: &build-test-sonarcloud
         name: Build, test and analyze on SonarCloud
         caches:
+          - docker
           - node
           - sonar
         script:
