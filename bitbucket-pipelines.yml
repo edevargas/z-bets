@@ -10,10 +10,12 @@ definitions:
     - step: &build-test-sonarcloud
         name: Build, test and analyze on SonarCloud
         caches:
-          - node # See https://confluence.atlassian.com/bitbucket/caching-dependencies-895552876.html
+          - node
           - sonar
         script:
           - npm install
+          - npm run build
+          - npm run generate
           - pipe: sonarsource/sonarcloud-scan:1.2.1
     - step: &check-quality-gate-sonarcloud
         name: Check the Quality Gate on SonarCloud
@@ -23,16 +25,6 @@ definitions:
 pipelines: # More info here: https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html
   branches:
     master:
-      - step:
-          name: Build and Test
-          caches:
-            - node
-          script:
-            - npm install
-            - npm run build
-            - npm run generate
-          artifacts:
-            - build/**
       - step: *build-test-sonarcloud
       - step: *check-quality-gate-sonarcloud
   pull-requests:
