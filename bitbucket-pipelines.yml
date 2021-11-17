@@ -7,7 +7,7 @@ options:
 definitions:
   services:
     docker:
-      memory: 7128
+      memory: 17128
   caches:
     sonar: ~/.sonar/cache # Caching SonarCloud artifacts will speed up your build
   steps:
